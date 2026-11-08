@@ -247,7 +247,7 @@ La simulation (spice/hm2.py) donne 59 dB de gain avant écrêtage à fond, 24 dB
 
 ### Retrouver le son du Line 6
 
-La topologie est la même, mélange avant l'ampli donc avant le tone stack : le mécanisme se transpose, pas les chiffres. Les niveaux numériques du Line 6 ne sont pas des volts, un modèle n'est pas un clone, et l'ampli compte. Or le preset n'utilise pas le Solo Lead OD mais le Badonk, un ampli original de Line 6, sur deux 4×12 en Vintage 30 : refaire le preset sur le Helix avec le Solo Lead OD (le canal OD du SLO-100), puis avec une IR de 4×12 en Karnivore, dira avant de construire si la base SLO et le baffle prévu gardent le son. Réglages du preset (snapshot Rythm ; entre parenthèses, les autres snapshots) :
+La topologie est la même, mélange avant l'ampli donc avant le tone stack : le mécanisme se transpose, pas les chiffres. Les niveaux numériques du Line 6 ne sont pas des volts et un modèle n'est pas un clone : ces réglages sont un point de départ. Réglages du preset (snapshot Rythm ; entre parenthèses, les autres snapshots) :
 
 | Bloc | Preset | Dans la tête |
 | --- | --- | --- |
@@ -256,8 +256,6 @@ La topologie est la même, mélange avant l'ampli donc avant le tone stack : le 
 | Swedish Chainsaw, chemin B | Drive 0,60 (0,50 en Djenty, coupé en Crunch), Bass 1, Treble 1, Level 0,60 | Color Mix à fond, RV503 vers mi-course ; VCA B à −46 dB |
 | Fusion | A 0 dB, B −30 dB, polarité normale | 42 dB entre les deux VCA, K503 au repos |
 | Gates | à l'entrée −44 dB (−40 à −50) ; après la fusion −60 dB (−40 en Djenty, coupé en Lead et Crunch) ; decay 10 ms | gate analogique, fermeture à 10 ms (RV801), seuil par preset |
-| Ampli | Badonk : Drive 0,42 (0,25 à 0,50), Bass 0,50, Mid 0,45, Treble 0,75, Presence 0,80, Depth 0,50, Master 0,53 | SLO, canal OD, gain motorisé : à recaler à l'oreille |
-| Baffle | deux IR de 4×12 en Vintage 30 (XXL V30 et Cali V30), un 57 dynamique et le micro n° 6 de la liste du Helix, à 1 et 1,25 pouce | 4×12 Karnivore et robot de micro |
 | Après le baffle | égaliseur +1 dB à 1 kHz, +2,5 dB à 2 kHz, +4,5 dB à 4 kHz, +4 dB à 8 kHz (et un léger coupe-bas en Lead) ; delay et reverb en Lead seulement | dans la DAW |
 
 Ce que valent ces réglages, calculés sur les modèles des deux pédales (spice/preset\_levels.py, lois logarithmiques supposées pour les Level et le drive de la TS) : le Level de la TS à 0,90 vaut −4 dB, celui de la HM-2 à 0,60 −16,5 dB, et la fusion retire 30 dB au chemin B, soit 42 dB d'écart à sortie égale. Mais la HM-2 sort saturée vers +3 dBu quand la TS ne sort que −27 à −7 dBu. À l'entrée de l'ampli, par rapport à la TS, la HM-2 arrive donc à :
@@ -547,7 +545,7 @@ La simulation couvre maintenant tout le circuit, alimentation, commutations et b
 - [ ] Au prototype : polarisation des 6L6GC, stabilité au signal carré sur charge résistive avec presence au minimum, ronflette ; essayer 10 à 33 kΩ en grid stopper de V1B.
 - [ ] Confirmer chez un distributeur ALPS : RK16812MG à 2 pistes en 10 kΩ log, 10 kΩ lin. (Blend), 20 kΩ lin., 100 kΩ lin. et log.
 - [ ] Baffle : 4 Eminence Karnivore 16 Ω (chiffrés), ou 2 Karnivore et 2 Vintage 30.
-- [ ] Entrée : refaire le preset sur le Helix avec le Solo Lead OD, puis une IR Karnivore ; enregistrer des DI de référence, recaler la TS et la HM-2 bloc par bloc, puis le blend sur l'ampli en partant de −4 et −46 dB ; essayer les deux polarités du chemin B.
+- [ ] Entrée : enregistrer des DI de référence, recaler la TS et la HM-2 bloc par bloc, puis le blend sur l'ampli en partant de −4 et −46 dB ; essayer les deux polarités du chemin B.
 - [ ] Drive de la TS et Dist de la HM-2 : ajustables fixes, ou sixième Motoron et deux pots ALPS pour suivre les snapshots (TS 0,10 à 0,15, HM-2 0,50 à 0,60).
 - [ ] Hors tête : le Whammy en pédale devant l'entrée ; l'égaliseur d'après baffle, le delay et la reverb dans la DAW.
 - [ ] Pilotage : valider la boucle de position des pots (Motoron et MCP3208), la correction en température des VCA et le démarrage du Pi en lecture seule.
