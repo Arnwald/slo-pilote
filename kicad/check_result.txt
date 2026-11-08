@@ -1,0 +1,16 @@
+410 composants, 411 réseaux, 49 étiquettes globales
+Structure : aucun problème
+SPICE : 168 éléments retrouvés, 0 en défaut, 5 écarts voulus, 29 propres au modèle
+  ~ Cb3 40u → C105 47µ 550 V (+18 %)
+  ~ Rat1 94000 → R210 91k (-3 %)
+  ~ Cbr 5e-09 → C207 4.7n (-6 %)
+  ~ Rcl39 7200 → R213 7.5k (+4 %)
+  ~ Rgla1 440k → R401 470k (+7 %)
+  ~ Rgla2 440k → R411 470k (+7 %)
+  ~ Rglb1 440k → R421 470k (+7 %)
+  ~ Rglb2 440k → R431 470k (+7 %)
+  = Cb1 : 2 × 470 µF 350 V en série (235 µF) pour 200 µF simulés
+  = Rbl : 2 × 220 k en série (équilibrage des condensateurs en série)
+  = Cb2 : 2 × 220 µF 350 V en série (110 µF) pour 100 µF simulés
+  = Rmdu : Mid : 10 k log + 3,3 k en parallèle au lieu d'un 2,5 k introuvable en motorisé (≤ 1 dB, mid_test.py)
+  = Rmdd : idem

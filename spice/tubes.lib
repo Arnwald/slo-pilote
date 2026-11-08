@@ -1,0 +1,44 @@
+* Koren tube models for ngspice (behavioural sources)
+* Triode: P G K ; Pentode/beam tetrode: P G2 G1 K
+* Grid current: simple 1.5-power law for positive grid (about 1 mA at +1.5 V)
+
+.subckt TRIODE P G K MU=100 EX=1.4 KG1=1060 KP=600 KVB=300 CGK=1.6p CGP=1.7p CPK=0.46p
+Rguard1 P K 1e9
+Rguard2 G K 1e9
+Barg arg 0 V = {KP*(1/MU + V(G,K)/sqrt(KVB + V(P,K)*V(P,K)))}
+Rarg arg 0 1e9
+Be1 e1 0 V = {V(P,K) > 0 ? min(V(P,K)/KP*(V(arg) > 30 ? V(arg) : ln(1 + exp(V(arg)))), 1e4) : 0}
+Re1 e1 0 1e9
+Bp P K I = {V(e1) > 0 ? 2*pow(V(e1), EX)/KG1 : 0}
+Bg G K I = {V(G,K) > 0 ? 5.4e-4*pow(min(V(G,K), 1e3), 1.5) : 0}
+Cgk G K {CGK}
+Cgp G P {CGP}
+Cpk P K {CPK}
+.ends
+
+.subckt 12AX7 P G K
+X1 P G K TRIODE MU=100 EX=1.4 KG1=1060 KP=600 KVB=300 CGK=1.6p CGP=1.7p CPK=0.46p
+.ends
+.subckt 12AT7 P G K
+X1 P G K TRIODE MU=60 EX=1.35 KG1=460 KP=300 KVB=300 CGK=2.2p CGP=1.5p CPK=0.5p
+.ends
+.subckt 12AU7 P G K
+X1 P G K TRIODE MU=21.5 EX=1.3 KG1=1180 KP=84 KVB=300 CGK=1.6p CGP=1.5p CPK=0.5p
+.ends
+
+* 6L6GC, Koren: MU=8.7 EX=1.35 KG1=1460 KG2=4500 KP=48 KVB=12
+.subckt 6L6GC P G2 G1 K
+Rguard1 P K 1e9
+Rguard2 G2 K 1e9
+Rguard3 G1 K 1e9
+Barg arg 0 V = {48*(1/8.7 + V(G1,K)/(V(G2,K) > 1 ? V(G2,K) : 1))}
+Rarg arg 0 1e9
+Be1 e1 0 V = {V(G2,K) > 0 ? min(V(G2,K)/48*(V(arg) > 30 ? V(arg) : ln(1 + exp(V(arg)))), 1e4) : 0}
+Re1 e1 0 1e9
+Bp P K I = {V(e1) > 0 ? 2*pow(V(e1), 1.35)/1460*atan((V(P,K) > 0 ? V(P,K) : 0)/12) : 0}
+Bg2 G2 K I = {(V(G2,K)/8.7 + V(G1,K)) > 0 ? exp(1.35*ln(min(V(G2,K)/8.7 + V(G1,K), 1e4) + 1e-9))/4500 : 0}
+Bg1 G1 K I = {V(G1,K) > 0 ? 2e-3*pow(min(V(G1,K), 1e3), 1.5) : 0}
+Cg1k G1 K 14p
+Cg1p G1 P 0.85p
+Cpk P K 12p
+.ends

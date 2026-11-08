@@ -1,0 +1,500 @@
+{
+ "parts": [
+  {
+   "name": "arc_dente",
+   "group": "X",
+   "printed": true,
+   "volume_cm3": 104.54,
+   "bbox": [
+    218.7,
+    109.5,
+    18.0
+   ]
+  },
+  {
+   "name": "plaque_X",
+   "group": "X",
+   "printed": true,
+   "volume_cm3": 17.04,
+   "bbox": [
+    52.0,
+    58.0,
+    6.0
+   ]
+  },
+  {
+   "name": "bloc_ecrou_X",
+   "group": "X",
+   "printed": true,
+   "volume_cm3": 8.3,
+   "bbox": [
+    12.0,
+    24.0,
+    35.0
+   ]
+  },
+  {
+   "name": "chariot_MGN12H_X",
+   "group": "X",
+   "printed": false,
+   "volume_cm3": 9.19,
+   "bbox": [
+    45.4,
+    27.0,
+    10.0
+   ]
+  },
+  {
+   "name": "plaque_angle",
+   "group": "A",
+   "printed": true,
+   "volume_cm3": 47.93,
+   "bbox": [
+    146.6,
+    92.3,
+    6.0
+   ]
+  },
+  {
+   "name": "collier_micro",
+   "group": "A",
+   "printed": true,
+   "volume_cm3": 17.33,
+   "bbox": [
+    44.0,
+    20.0,
+    70.0
+   ]
+  },
+  {
+   "name": "manchon_TPU",
+   "group": "A",
+   "printed": true,
+   "volume_cm3": 3.85,
+   "bbox": [
+    36.0,
+    18.0,
+    36.0
+   ]
+  },
+  {
+   "name": "servo_angle",
+   "group": "A",
+   "printed": false,
+   "volume_cm3": 97.69,
+   "bbox": [
+    58.4,
+    57.8,
+    78.0
+   ]
+  },
+  {
+   "name": "pignon",
+   "group": "A",
+   "printed": true,
+   "volume_cm3": 3.19,
+   "bbox": [
+    24.0,
+    23.6,
+    14.0
+   ]
+  },
+  {
+   "name": "roue_V_int-",
+   "group": "A",
+   "printed": false,
+   "volume_cm3": 1.23,
+   "bbox": [
+    15.2,
+    15.2,
+    8.8
+   ]
+  },
+  {
+   "name": "roue_V_int+",
+   "group": "A",
+   "printed": false,
+   "volume_cm3": 1.23,
+   "bbox": [
+    15.2,
+    15.2,
+    8.8
+   ]
+  },
+  {
+   "name": "roue_V_ext",
+   "group": "A",
+   "printed": false,
+   "volume_cm3": 1.23,
+   "bbox": [
+    15.2,
+    15.2,
+    8.8
+   ]
+  },
+  {
+   "name": "micro_SM57",
+   "group": "A",
+   "printed": false,
+   "volume_cm3": 113.64,
+   "bbox": [
+    32.0,
+    157.0,
+    32.0
+   ]
+  },
+  {
+   "name": "poutre_X",
+   "group": "Z",
+   "printed": false,
+   "volume_cm3": 81.05,
+   "bbox": [
+    260.0,
+    20.0,
+    20.0
+   ]
+  },
+  {
+   "name": "rail_X",
+   "group": "Z",
+   "printed": false,
+   "volume_cm3": 24.0,
+   "bbox": [
+    250.0,
+    12.0,
+    8.0
+   ]
+  },
+  {
+   "name": "bloc_moteur_X",
+   "group": "Z",
+   "printed": true,
+   "volume_cm3": 59.58,
+   "bbox": [
+    26.0,
+    66.0,
+    44.0
+   ]
+  },
+  {
+   "name": "palier_X",
+   "group": "Z",
+   "printed": true,
+   "volume_cm3": 67.4,
+   "bbox": [
+    26.0,
+    66.0,
+    44.0
+   ]
+  },
+  {
+   "name": "servo_X",
+   "group": "Z",
+   "printed": false,
+   "volume_cm3": 97.69,
+   "bbox": [
+    78.0,
+    42.3,
+    48.3
+   ]
+  },
+  {
+   "name": "vis_X",
+   "group": "Z",
+   "printed": false,
+   "volume_cm3": 14.58,
+   "bbox": [
+    290.0,
+    8.0,
+    8.0
+   ]
+  },
+  {
+   "name": "plaque_Z",
+   "group": "Z",
+   "printed": true,
+   "volume_cm3": 19.11,
+   "bbox": [
+    74.0,
+    34.0,
+    8.0
+   ]
+  },
+  {
+   "name": "bloc_ecrou_Z",
+   "group": "Z",
+   "printed": true,
+   "volume_cm3": 8.3,
+   "bbox": [
+    24.0,
+    12.0,
+    35.0
+   ]
+  },
+  {
+   "name": "chariot_MGN12H_Z",
+   "group": "Z",
+   "printed": false,
+   "volume_cm3": 9.19,
+   "bbox": [
+    27.0,
+    45.4,
+    10.0
+   ]
+  },
+  {
+   "name": "poutre_Z",
+   "group": "fixe",
+   "printed": false,
+   "volume_cm3": 77.94,
+   "bbox": [
+    20.0,
+    250.0,
+    20.0
+   ]
+  },
+  {
+   "name": "rail_Z",
+   "group": "fixe",
+   "printed": false,
+   "volume_cm3": 23.04,
+   "bbox": [
+    12.0,
+    240.0,
+    8.0
+   ]
+  },
+  {
+   "name": "bloc_moteur_Z",
+   "group": "fixe",
+   "printed": true,
+   "volume_cm3": 59.58,
+   "bbox": [
+    66.0,
+    26.0,
+    44.0
+   ]
+  },
+  {
+   "name": "palier_Z",
+   "group": "fixe",
+   "printed": true,
+   "volume_cm3": 67.4,
+   "bbox": [
+    66.0,
+    26.0,
+    44.0
+   ]
+  },
+  {
+   "name": "servo_Z",
+   "group": "fixe",
+   "printed": false,
+   "volume_cm3": 97.69,
+   "bbox": [
+    48.3,
+    78.0,
+    42.3
+   ]
+  },
+  {
+   "name": "vis_Z",
+   "group": "fixe",
+   "printed": false,
+   "volume_cm3": 14.58,
+   "bbox": [
+    8.0,
+    290.0,
+    8.0
+   ]
+  },
+  {
+   "name": "adaptateur_pied",
+   "group": "fixe",
+   "printed": true,
+   "volume_cm3": 49.7,
+   "bbox": [
+    36.0,
+    60.0,
+    25.0
+   ]
+  },
+  {
+   "name": "pied_tube",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 160.52,
+   "bbox": [
+    25.0,
+    25.0,
+    327.0
+   ]
+  },
+  {
+   "name": "pied_jambe0",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 66.35,
+   "bbox": [
+    16.0,
+    326.1,
+    84.3
+   ]
+  },
+  {
+   "name": "pied_jambe1",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 66.35,
+   "bbox": [
+    288.0,
+    175.4,
+    84.3
+   ]
+  },
+  {
+   "name": "pied_jambe2",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 66.35,
+   "bbox": [
+    288.0,
+    175.4,
+    84.3
+   ]
+  },
+  {
+   "name": "baffle",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 197539.2,
+   "bbox": [
+    760.0,
+    342.0,
+    760.0
+   ]
+  },
+  {
+   "name": "grille",
+   "group": "grille",
+   "printed": false,
+   "volume_cm3": 1598.7,
+   "bbox": [
+    730.0,
+    3.0,
+    730.0
+   ]
+  },
+  {
+   "name": "hp_0_0",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 184.73,
+   "bbox": [
+    280.0,
+    3.0,
+    280.0
+   ]
+  },
+  {
+   "name": "cache_0_0",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 7.85,
+   "bbox": [
+    50.0,
+    4.0,
+    50.0
+   ]
+  },
+  {
+   "name": "hp_360_0",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 184.73,
+   "bbox": [
+    280.0,
+    3.0,
+    280.0
+   ]
+  },
+  {
+   "name": "cache_360_0",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 7.85,
+   "bbox": [
+    50.0,
+    4.0,
+    50.0
+   ]
+  },
+  {
+   "name": "hp_0_-360",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 184.73,
+   "bbox": [
+    280.0,
+    3.0,
+    280.0
+   ]
+  },
+  {
+   "name": "cache_0_-360",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 7.85,
+   "bbox": [
+    50.0,
+    4.0,
+    50.0
+   ]
+  },
+  {
+   "name": "hp_360_-360",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 184.73,
+   "bbox": [
+    280.0,
+    3.0,
+    280.0
+   ]
+  },
+  {
+   "name": "cache_360_-360",
+   "group": "decor",
+   "printed": false,
+   "volume_cm3": 7.85,
+   "bbox": [
+    50.0,
+    4.0,
+    50.0
+   ]
+  }
+ ],
+ "params": {
+  "R_IN": 84.0,
+  "R_OUT": 112.0,
+  "RP": 111.0,
+  "teeth": 148,
+  "pinion": 14,
+  "module": 1.5,
+  "R_PIN": 121.5,
+  "travel_x": [
+   -15.0,
+   135.0
+  ],
+  "travel_d": [
+   10.0,
+   160.0
+  ],
+  "travel_a": [
+   -50.0,
+   50.0
+  ],
+  "y_home": 10.0,
+  "stand_y": 215.3
+ }
+}

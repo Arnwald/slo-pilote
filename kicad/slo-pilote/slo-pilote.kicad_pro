@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "filename": "slo-pilote.kicad_pro",
+    "version": 1
+  },
+  "sheets": [
+    [
+      "ff062753-f77d-5eb0-8b55-4149d7f2c8c9",
+      "Root"
+    ],
+    [
+      "9b3f27ab-f6ad-5497-86d8-3ab260c9ebba",
+      "Alimentation"
+    ],
+    [
+      "69a76248-aa59-5e6e-b086-545cb0d8ad5d",
+      "Pr\u00e9ampli"
+    ],
+    [
+      "65857320-06c7-5a3a-9353-b3b3677fdad9",
+      "Tone stack et d\u00e9phaseur"
+    ],
+    [
+      "52140f5a-50b8-5650-9245-775ff12b5873",
+      "Puissance"
+    ],
+    [
+      "1269757e-911c-5ec6-84f4-8af63056a48d",
+      "Bo\u00eetier d'entr\u00e9e"
+    ],
+    [
+      "77ec15e9-b274-5c31-8eb3-77d96dd9a7a3",
+      "Pilotage"
+    ],
+    [
+      "f2a0f689-facd-5c6b-b241-1c289c036315",
+      "Commandes"
+    ]
+  ]
+}
