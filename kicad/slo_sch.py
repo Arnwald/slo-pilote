@@ -447,7 +447,7 @@ S5.add(Part("C506", "C", "1µ film", (X + 15, Y + 30), rotation=90, nets={1: "BU
 two(S5, "R507", "R", "10k", X + 30, Y + 60, "TS_X1", "TS_VB")
 S5.add(Part("U503", "NJM4558", "NJM4558D", (X + 60, Y + 32), unit=1, nets={3: "TS_X1", 2: "TS_NF", 1: "TS_O1"}))
 S5.add(Part("R508", "R", "51k", (X + 95, Y + 20), rotation=90, nets={1: "TS_O1", 2: "TS_ND"}))
-S5.add(Part("RV501", "POT", "500k trim (Drive)", (X + 120, Y + 35), nets={1: "TS_ND", 2: "TS_NF", 3: "TS_NF"}))
+S5.add(Part("RV501", "POT", "100k trim (Drive)", (X + 120, Y + 35), nets={1: "TS_ND", 2: "TS_NF", 3: "TS_NF"}))
 two(S5, "C507", "C", "51p", X + 140, Y + 60, "TS_O1", "TS_NF")
 S5.add(Part("D501", "D", "1N914", (X + 160, Y + 25), nets={1: "TS_O1", 2: "TS_NF"}))
 S5.add(Part("D502", "D", "1N914", (X + 160, Y + 40), nets={1: "TS_NF", 2: "TS_O1"}))
@@ -463,8 +463,8 @@ two(S5, "R512", "R", "1k", X + 300, Y + 60, "TS_O2", "TS_TN")
 S5.add(Part("C511", "C", "1µ film", (X + 320, Y + 32), rotation=90, nets={1: "TS_O2", 2: "TS_OUT"}))
 two(S5, "R513", "R", "100k", X + 340, Y + 60, "TS_OUT", "GND")
 S5.add(Part("U503", "NJM4558", "NJM4558D", (X + 340, Y + 90), unit=3, nets={8: "+9V_TS", 4: "GND"}))
-S5.note("Drive et tone sur trimmers multitours, réglés une fois au recalage sur le preset Line 6 (TS808, 1N914).",
-        X + 5, Y + 105, 1.4)
+S5.note("Drive et tone sur ajustables multitours. Preset de référence : Gain 0,10 soit ≈ 3 kΩ sur la loi log du 500 k d'origine "
+        "(0,15 ≈ 5 kΩ), Tone 0,90.", X + 5, Y + 105, 1.4)
 
 X, Y = 15, 135
 S5.frame(X, Y, X + 570, Y + 140, "HM-2 (schéma Boss MIJ) : préampli à transistors, écrêtage, zone morte germanium (9 V)")
@@ -478,7 +478,7 @@ two(S5, "R520", "R", "22", X + 78, Y + 75, "HM_E6", "GND")
 two(S5, "R521", "R", "10k", X + 95, Y + 30, "HM_S", "HM_C6")
 two(S5, "R522", "R", "150", X + 105, Y + 70, "HM_C6", "HM_N49")
 two(S5, "C519", "CP", "10µ 16 V", X + 105, Y + 95, "HM_N49", "HM_P7")
-S5.add(Part("RV503", "POT", "250k trim (Dist)", (X + 125, Y + 115), nets={1: "HM_P7", 2: "GND", 3: "HM_P10"}))
+S5.add(Part("RV503", "POT", "250k trim (Dist, vers mi-course)", (X + 125, Y + 115), nets={1: "HM_P7", 2: "GND", 3: "HM_P10"}))
 S5.add(Part("C520", "C", "47n film", (X + 125, Y + 45), rotation=90, nets={1: "HM_C6", 2: "HM_N11"}))
 S5.add(Part("R523", "R", "22k", (X + 145, Y + 45), rotation=90, nets={1: "HM_N11", 2: "HM_B7"}))
 two(S5, "R524", "R", "100k", X + 160, Y + 25, "HM_S", "HM_B7")
@@ -847,7 +847,7 @@ S8.add(Part("U809", "DS18B20", "DS18B20", (X + 260, Y + 45), nets={3: "+3V3", 2:
 S8.add(Part("U804", "TL074", "TL074", (X + 360, Y + 60), unit=5, nets={4: "+15V", 11: "-15V"}))
 S8.note("U809 collé sur U802 : la constante de commande dérive de −3300 ppm/K (kT/q) ; le Pi corrige les tensions.",
         X + 5, Y + 108, 1.4)
-S8.note("Loi du bouton Blend (logiciel) : TS fixe, HM-2 de −∞ à 0 dB par rapport à elle, toute la course sur la plage utile.",
+S8.note("Bouton Blend (logiciel) : VCA B de −∞ à −20 dB, toute la course sur −60 à −30 dB ; preset de référence : A −4 dB, B −46 dB.",
         X + 5, Y + 115, 1.4)
 
 X, Y = 15, 145
@@ -869,14 +869,14 @@ S8.add(Part("R832", "R", "20k", (X + 235, Y + 25), rotation=90, nets={1: "FW_OUT
 S8.add(Part("U805", "TL074", "TL074", (X + 290, Y + 47), unit=4, nets={12: "FW_OUT", 13: "ENV", 14: "PK_O"}))
 S8.add(Part("D812", "D", "1N4148", (X + 320, Y + 47), nets={1: "PK_O", 2: "ENV"}))
 two(S8, "C810", "C", "1µ film", X + 340, Y + 75, "ENV", "GND")
-two(S8, "R833", "R", "47k", X + 355, Y + 75, "ENV", "GND")
+two(S8, "R833", "R", "22k", X + 355, Y + 75, "ENV", "GND")
 S8.add(Part("R834", "R", "10k", (X + 380, Y + 30), rotation=90, nets={1: "DAC_THR", 2: "THR_H"}))
 S8.add(Part("R835", "R", "10M", (X + 420, Y + 18), rotation=90, nets={1: "CMP_A", 2: "THR_H"}))
 S8.add(Part("U806", "LM393", "LM393", (X + 430, Y + 47), unit=1, nets={3: "THR_H", 2: "ENV", 1: "CMP_A"}))
 S8.add(Part("R840", "R", "470", (X + 465, Y + 47), rotation=90, nets={1: "CMP_A", 2: "GATE_CAP"}))
 two(S8, "R839", "R", "47k", X + 495, Y + 25, "+15V", "REL_X")
-S8.add(Part("RV801", "POT", "1M trim (Release)", (X + 495, Y + 55), nets={1: "REL_X", 2: "GATE_CAP", 3: "GATE_CAP"}))
-two(S8, "C811", "C", "1µ film", X + 515, Y + 85, "GATE_CAP", "GND")
+S8.add(Part("RV801", "POT", "2M trim (Release)", (X + 495, Y + 55), nets={1: "REL_X", 2: "GATE_CAP", 3: "GATE_CAP"}))
+two(S8, "C811", "C", "220n film", X + 515, Y + 85, "GATE_CAP", "GND")
 two(S8, "R836", "R", "120k", X + 545, Y + 25, "+15V", "GOFF_REF")
 two(S8, "R837", "R", "15k", X + 545, Y + 60, "GOFF_REF", "GND")
 S8.add(Part("U806", "LM393", "LM393", (X + 580, Y + 47), unit=2, nets={5: "GOFF_REF", 6: "GATE_OFF", 7: "CMP_B"}))
@@ -897,9 +897,9 @@ two(S8, "R843", "R", "10k", X + 400, Y + 130, "ENV_MON", "GND")
 two(S8, "C812", "C", "100n", X + 415, Y + 130, "ENV_MON", "GND")
 S8.add(Part("U805", "TL074", "TL074", (X + 280, Y + 120), unit=5, nets={4: "+15V", 11: "-15V"}))
 S8.add(Part("U806", "LM393", "LM393", (X + 580, Y + 120), unit=3, nets={8: "+15V", 4: "GND"}))
-S8.note("Guitare propre ×11 (passe-haut 48 Hz), redressement double alternance de précision, crête 1 µF / 47 k (47 ms). "
+S8.note("Guitare propre ×11 (passe-haut 48 Hz), redressement double alternance de précision, crête 1 µF / 22 k (22 ms). "
         "Comparateur U806A : seuil DAC_THR, hystérésis par 10 M.", X + 5, Y + 141, 1.4)
-S8.note("Ouverture par 470 Ω (0,5 ms), fermeture par 47 k + RV801 (τ 0,05 à 1 s). GATE_OFF à 3,3 V : U806B court-circuite "
+S8.note("Ouverture par 470 Ω (0,1 ms), fermeture par 47 k + RV801 (τ 10 à 450 ms ; preset de référence : 10 ms). GATE_OFF : U806B court-circuite "
         "GATE_CAP, gate ouvert. CV_G = GATE_CAP/4 + DAC_FADE − 75 mV, bornée à 0 V par D815.", X + 5, Y + 148, 1.4)
 
 X, Y = 15, 310

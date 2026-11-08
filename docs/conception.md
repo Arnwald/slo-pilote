@@ -1,6 +1,6 @@
 # Ampli SLO pilotable — dossier de conception
 
-*Export du dossier de conception de travail, état du 8 novembre 2026 (révision 0.2 : Raspberry Pi 4, entrée TS808 ∥ HM-2, gate analogique). Les figures interactives du document d'origine sont remplacées par des liens vers les scripts et les données qui les produisent.*
+*Export du dossier de conception de travail, état du 8 novembre 2026. Les figures interactives du document d'origine sont remplacées par des liens vers les scripts et les données qui les produisent.*
 
 ## Objectif et périmètre
 
@@ -212,7 +212,7 @@ Toutes les commutations passent par des LDR ou des relais, et tous les potentiom
 
 ## Boîtier d'entrée : TS808 et HM-2 en parallèle, gate analogique
 
-Tout le signal reste analogique, dans un compartiment blindé près du jack ; le Pi ne fournit que des tensions de commande et des contacts. Le son visé vient d'un preset Line 6 : un Tube Screamer et une HM-2 « presque à fond » mélangés avant l'ampli, la TS pour la précision djent, une pointe de HM-2 qu'on entend surtout sur les palm mutes. Chaîne du signal :
+Tout le signal reste analogique, dans un compartiment blindé près du jack ; le Pi ne fournit que des tensions de commande et des contacts. Le son visé vient d'un preset Line 6 : un Tube Screamer en boost serré et une HM-2 au Color Mix à fond, Dist à mi-course, mélangés avant l'ampli ; la TS pour la précision djent, une pointe de HM-2 qu'on entend surtout sur les palm mutes. Chaîne du signal :
 
 1. Buffer d'entrée, 1 MΩ (OPA2134).
 2. Chemin A : TS808 d'origine, contournable par relais. Chemin B : clone de HM-2, ou une pédale branchée sur l'insert.
@@ -221,7 +221,7 @@ Tout le signal reste analogique, dans un compartiment blindé près du jack ; le
 
 ### Tube Screamer
 
-Le TS808 tel quel, en 9 V (78L09), avec un NJM4558D et deux 1N914. Drive et tone passent sur des ajustables multitours, réglés une fois en recalant sur le preset Line 6 ; le niveau est celui de la VCA du chemin A. Les potentiomètres numériques de la révision 0.1 disparaissent : aucun n'existe en boîtier traversant avec la valeur et la tension voulues, et la TS en boost serré ne bouge guère d'un preset à l'autre. Pour tourner drive et tone en jouant, il suffira d'un sixième Motoron et de deux pots ALPS, avec la branche de gain divisée par 5.
+Le TS808 tel quel, en 9 V (78L09), avec un NJM4558D et deux 1N914. Le preset le règle en boost : Gain 0,10 (0,15 sur le snapshot Lead), Tone 0,90, Level 0,90. Sur la loi log du 500 kΩ d'origine, 0,10 ne laisse qu'environ 3 kΩ dans la contre-réaction : le drive passe donc sur un ajustable multitour de 100 kΩ (RV501), qui couvre aussi le cas d'une loi linéaire (50 kΩ), et le tone sur un ajustable de 20 kΩ (RV502) ; le niveau est celui de la VCA du chemin A. Les potentiomètres numériques de la révision 0.1 disparaissent : aucun n'existe en boîtier traversant avec la valeur et la tension voulues. Le passage de 0,10 à 0,15 vaut 0,3 dB de gain sur une loi log, 1,8 dB sur une loi linéaire ; pour suivre les snapshots, il faudrait un sixième Motoron et deux pots ALPS (drive de la TS et Dist de la HM-2).
 
 ### Clone de HM-2
 
@@ -230,10 +230,10 @@ D'après le schéma Boss de la version japonaise, celle que modélise le Swedish
 | Bloc | Original | Clone |
 | --- | --- | --- |
 | Préampli | Q6 2SC2240, Q7 2SA970 : deux étages à contre-réaction 470 k / 22 k, chacun derrière 47 nF (passe-haut vers 150 Hz) | BC550C, BC560C, mêmes valeurs |
-| Dist | 250 kΩ, loi D : extrémités vers le collecteur de Q6 (150 Ω et 10 µF) et vers la jambe de masse de l'écrêteur, curseur à la masse | ajustable 250 kΩ |
+| Dist | 250 kΩ, loi D : extrémités vers le collecteur de Q6 (150 Ω et 10 µF) et vers la jambe de masse de l'écrêteur, curseur à la masse | ajustable 250 kΩ, vers mi-course (Drive 0,50 à 0,60 dans le preset) |
 | Écrêtage | IC1b, 220 k ∥ 100 pF ∥ diodes asymétriques (une dans un sens, deux dans l'autre) | NJM4558D, 1N4148 |
 | Zone morte | deux germanium 1S188FM tête-bêche en série, puis deux silicium à la masse | 1N34A, 1N4148 |
-| Color Mix | gyrateurs : 84 Hz (Low), 0,95 et 1,26 kHz (High), +20 à +22 dB à fond | ajustables 10 kΩ |
+| Color Mix | gyrateurs : 84 Hz (Low), 0,95 et 1,26 kHz (High), +20 à +22 dB à fond | ajustables 10 kΩ, à fond comme dans le preset (Bass et Treble à 1) |
 | Level | 10 kΩ log derrière 10 kΩ | au maximum ; le niveau passe par la VCA du chemin B |
 | Alimentation | pile 9 V, ou adaptateur ACA par 330 Ω et une diode | 9 V régulés (78L09) |
 
@@ -241,29 +241,51 @@ La simulation (spice/hm2.py) donne 59 dB de gain avant écrêtage à fond, 24 dB
 
 ### Pourquoi ce mélange marche, et pourquoi il est si sensible
 
-- La TS n'amplifie pas le grave : son gain ne monte qu'au-dessus d'environ 720 Hz. La HM-2 à fond le gonfle (+20 dB à 84 Hz). Sous quelques centaines de hertz, c'est donc la HM-2 qui domine même dosée bas, et la TS au-dessus : d'où le côté baveux des palm mutes et la précision ailleurs. À faible niveau, la TS sort 10 dB plus bas à 82 Hz qu'à 440 Hz.
+- La TS n'amplifie pas le grave : son gain ne monte qu'au-dessus d'environ 720 Hz. La HM-2, Color Mix à fond, le gonfle (+20 dB à 84 Hz). Sous quelques centaines de hertz, la HM-2 pèse donc bien plus que dans les médiums : au réglage du preset, elle arrive 12 dB sous la TS à 82 Hz en jeu léger, contre 24 dB sous elle à 440 Hz. D'où le côté baveux des palm mutes et la précision ailleurs.
 - L'ampli sature ensuite la somme. Dans un étage saturé, le signal le plus faible est écrasé (effet de capture, jusqu'à 6 dB dans un écrêteur dur), et la fréquence où l'un prend le dessus sur l'autre bouge vite avec le dosage. Chaque preset garde donc le blend et le gain ensemble.
 - La sortie de la TS suit l'attaque, celle de la HM-2 non : en fin de note et en jeu léger, la HM-2 pèse relativement plus.
 
 ### Retrouver le son du Line 6
 
-La topologie est la même, mélange avant l'ampli donc avant le tone stack : le mécanisme se transpose, pas les chiffres. Les niveaux numériques du Line 6 ne sont pas des volts, un modèle n'est pas un clone, et l'ampli compte ; si le preset utilise le Solo Lead OD, c'est le canal OD du SLO-100. Méthode :
+La topologie est la même, mélange avant l'ampli donc avant le tone stack : le mécanisme se transpose, pas les chiffres. Les niveaux numériques du Line 6 ne sont pas des volts, un modèle n'est pas un clone, et l'ampli compte. Or le preset n'utilise pas le Solo Lead OD mais le Badonk, un ampli original de Line 6, sur deux 4×12 en Vintage 30 : refaire le preset sur le Helix avec le Solo Lead OD (le canal OD du SLO-100), puis avec une IR de 4×12 en Karnivore, dira avant de construire si la base SLO et le baffle prévu gardent le son. Réglages du preset (snapshot Rythm ; entre parenthèses, les autres snapshots) :
+
+| Bloc | Preset | Dans la tête |
+| --- | --- | --- |
+| Whammy, en tête de chaîne | actif sauf en Lead | une pédale devant la tête |
+| Scream 808, chemin A | Gain 0,10 (0,15 en Lead, coupé en Crunch), Tone 0,90, Level 0,90 | RV501 vers 3 kΩ, RV502 vers 0,9 ; VCA A à −4 dB |
+| Swedish Chainsaw, chemin B | Drive 0,60 (0,50 en Djenty, coupé en Crunch), Bass 1, Treble 1, Level 0,60 | Color Mix à fond, RV503 vers mi-course ; VCA B à −46 dB |
+| Fusion | A 0 dB, B −30 dB, polarité normale | 42 dB entre les deux VCA, K503 au repos |
+| Gates | à l'entrée −44 dB (−40 à −50) ; après la fusion −60 dB (−40 en Djenty, coupé en Lead et Crunch) ; decay 10 ms | gate analogique, fermeture à 10 ms (RV801), seuil par preset |
+| Ampli | Badonk : Drive 0,42 (0,25 à 0,50), Bass 0,50, Mid 0,45, Treble 0,75, Presence 0,80, Depth 0,50, Master 0,53 | SLO, canal OD, gain motorisé : à recaler à l'oreille |
+| Baffle | deux IR de 4×12 en Vintage 30 (XXL V30 et Cali V30), un 57 dynamique et le micro n° 6 de la liste du Helix, à 1 et 1,25 pouce | 4×12 Karnivore et robot de micro |
+| Après le baffle | égaliseur +1 dB à 1 kHz, +2,5 dB à 2 kHz, +4,5 dB à 4 kHz, +4 dB à 8 kHz (et un léger coupe-bas en Lead) ; delay et reverb en Lead seulement | dans la DAW |
+
+Ce que valent ces réglages, calculés sur les modèles des deux pédales (spice/preset\_levels.py, lois logarithmiques supposées pour les Level et le drive de la TS) : le Level de la TS à 0,90 vaut −4 dB, celui de la HM-2 à 0,60 −16,5 dB, et la fusion retire 30 dB au chemin B, soit 42 dB d'écart à sortie égale. Mais la HM-2 sort saturée vers +3 dBu quand la TS ne sort que −27 à −7 dBu. À l'entrée de l'ampli, par rapport à la TS, la HM-2 arrive donc à :
+
+| Note | Jeu léger (30 mV crête) | Moyen (100 mV) | Fort (300 mV) |
+| --- | --- | --- | --- |
+| 82 Hz | −11,6 dB | −21,9 dB | −30,9 dB |
+| 110 Hz | −14,2 dB | −24,4 dB | −32,2 dB |
+| 440 Hz | −23,7 dB | −30,7 dB | −34,6 dB |
+| 1 kHz | −20,3 dB | −26,1 dB | −30,1 dB |
+
+C'est le « peu de HM-2 » du preset en chiffres : 12 dB sous la TS sur un mi grave joué doucement, plus de 30 dB sous elle sur une attaque franche. Dans la tête, clones au Level maximum, le même dosage donne VCA A à −4 dB et VCA B à −46 dB : c'est le point de départ du Blend, à une dizaine de décibels près, puisque la loi des potentiomètres du Helix n'est pas publiée. Méthode pour le recaler :
 
 1. Enregistrer des DI des riffs de référence.
 2. Les repasser dans le Line 6 avec la TS seule, puis la HM-2 seule, sans ampli ni HP : ce sont les cibles de chaque pédale.
 3. Régler les ajustables des clones jusqu'à coller à ces cibles sur les mêmes DI (spectre, niveau, forme d'onde).
-4. Doser sur le vrai ampli, au micro du robot, contre le preset complet. Vérifier la polarité du second chemin dans le preset (B Polarity du bloc de fusion sur un Helix) : le relais K503 l'inverse au besoin.
+4. Doser sur le vrai ampli, au micro du robot, contre le preset complet, en partant de −4 et −46 dB. Le chemin B est en polarité normale dans le preset, mais la phase du clone n'est pas forcément celle du modèle : essayer les deux positions du relais K503.
 
 ### VCA et commandes
 
-Deux AS2164 d'Alfa (DIP-16, brochage du SSM2164), disponibles en boîtier traversant ; le THAT 2181 de la révision 0.1 porte désormais une mention de fin de vie chez THAT. À 0 V de commande la VCA est à 0 dB, puis +33 mV/dB d'atténuation : les MCP4822 (0 à 2,048 V), multipliés par 1,62, couvrent 0 à −100 dB au pas de 0,02 dB. Le chemin A est remonté de 12 dB avant sa VCA et redescendu d'autant à la sommation, si bien que le souffle des VCA n'ajoute qu'environ 2 dB à celui de l'ampli, gate ouvert. La constante de commande suit kT/q (−3300 ppm/K) : une DS18B20 collée sur la VCA donne la température au Pi, qui corrige ; sans cela, 20 °C de plus décaleraient un dosage à −15 dB de 1 dB.
+Deux AS2164 d'Alfa (DIP-16, brochage du SSM2164), disponibles en boîtier traversant ; le THAT 2181 de la révision 0.1 porte désormais une mention de fin de vie chez THAT. À 0 V de commande la VCA est à 0 dB, puis +33 mV/dB d'atténuation : les MCP4822 (0 à 2,048 V), multipliés par 1,62, couvrent 0 à −100 dB au pas de 0,02 dB. Le chemin A est remonté de 12 dB avant sa VCA et redescendu d'autant à la sommation, si bien que le souffle des VCA n'ajoute qu'environ 2 dB à celui de l'ampli, gate ouvert. La constante de commande suit kT/q (−3300 ppm/K) : une DS18B20 collée sur la VCA donne la température au Pi, qui corrige ; sans cela, 20 °C de plus décaleraient un dosage à −15 dB de 1 dB. Le bouton Blend motorisé commande la VCA B : −∞ en butée basse, −20 dB en butée haute, et l'essentiel de la course entre −60 et −30 dB, là où se joue le dosage du preset.
 
 ### Noise gate
 
 La détection se fait sur la guitare propre, au buffer d'entrée, et l'action après le préampli, comme un ISP Decimator branché en « 4 câbles » : le gate coupe aussi le souffle des étages à lampes, de la TS et de la HM-2, et ses décisions restent nettes puisque le signal de détection n'est pas compressé.
 
-- Détection : gain ×11 avec passe-haut à 48 Hz, redressement double alternance de précision, détecteur de crête (1 µF, 47 kΩ), comparateur LM393 à hystérésis contre le seuil fixé par le Pi.
-- Forme : ouverture en 0,5 ms, fermeture réglable de 0,05 à 1 s par un ajustable, commande bornée à 0 V pour que le gate ouvert soit exactement à 0 dB. Le Pi peut aussi fondre le signal (DAC\_FADE) et neutraliser le gate (GATE\_OFF, gate ouvert par défaut au démarrage).
+- Détection : gain ×11 avec passe-haut à 48 Hz, redressement double alternance de précision, détecteur de crête (1 µF, 22 kΩ, soit 22 ms), comparateur LM393 à hystérésis contre le seuil fixé par le Pi.
+- Forme : ouverture en 0,1 ms, fermeture réglable de 10 à 450 ms par un ajustable, mise à 10 ms comme le decay des deux gates du preset ; commande bornée à 0 V pour que le gate ouvert soit exactement à 0 dB. Le Pi peut aussi fondre le signal (DAC\_FADE) et neutraliser le gate (GATE\_OFF, gate ouvert par défaut au démarrage) ; chaque preset garde son seuil, comme les snapshots du Line 6.
 - VCA : un AS2164 entre la sélection des masters et le déphaseur, avec un tampon et un convertisseur courant-tension OPA2134, sur une petite carte près de V5. Le signal n'y dépasse pas quelques volts, dans la plage d'une VCA en ±15 V. Le mute LDR304 reste en amont.
 
 ## Vérification par simulation
@@ -525,7 +547,9 @@ La simulation couvre maintenant tout le circuit, alimentation, commutations et b
 - [ ] Au prototype : polarisation des 6L6GC, stabilité au signal carré sur charge résistive avec presence au minimum, ronflette ; essayer 10 à 33 kΩ en grid stopper de V1B.
 - [ ] Confirmer chez un distributeur ALPS : RK16812MG à 2 pistes en 10 kΩ log, 10 kΩ lin. (Blend), 20 kΩ lin., 100 kΩ lin. et log.
 - [ ] Baffle : 4 Eminence Karnivore 16 Ω (chiffrés), ou 2 Karnivore et 2 Vintage 30.
-- [ ] Entrée : exporter le preset Line 6 (TS, HM-2, mélangeur, ampli), enregistrer des DI de référence, recaler la TS et la HM-2 bloc par bloc, puis le blend sur l'ampli ; vérifier la polarité du chemin B.
+- [ ] Entrée : refaire le preset sur le Helix avec le Solo Lead OD, puis une IR Karnivore ; enregistrer des DI de référence, recaler la TS et la HM-2 bloc par bloc, puis le blend sur l'ampli en partant de −4 et −46 dB ; essayer les deux polarités du chemin B.
+- [ ] Drive de la TS et Dist de la HM-2 : ajustables fixes, ou sixième Motoron et deux pots ALPS pour suivre les snapshots (TS 0,10 à 0,15, HM-2 0,50 à 0,60).
+- [ ] Hors tête : le Whammy en pédale devant l'entrée ; l'égaliseur d'après baffle, le delay et la reverb dans la DAW.
 - [ ] Pilotage : valider la boucle de position des pots (Motoron et MCP3208), la correction en température des VCA et le démarrage du Pi en lecture seule.
 - [ ] Robot de micro : imprimer un segment d'arc et le chariot d'angle pour valider les roues V et l'engrènement avant le reste ; choisir un pied court à embase lourde.
 - [ ] Spécifier les transformateurs, choisir la self, dessiner le turret board et la carte d'interface à partir du schéma KiCad.

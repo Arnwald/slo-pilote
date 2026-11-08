@@ -4,13 +4,13 @@ Catégorie;Ensemble;Symbole;Valeur;Quantité;Repères
 78XX;Pilotage;78XX;LM7815;1;U601
 79XX;Pilotage;79XX;LM7915;1;U602
 AS2164;VCA et noise gate;AS2164;AS2164;2;U802 U808
+Ajustable;Boîtier d'entrée;POT;100k trim (Drive);1;RV501
 Ajustable;Boîtier d'entrée;POT;10k trim (Color Mix H);1;RV505
 Ajustable;Boîtier d'entrée;POT;10k trim (Color Mix L);1;RV504
-Ajustable;VCA et noise gate;POT;1M trim (Release);1;RV801
 Ajustable;Boîtier d'entrée;POT;20k trim (Tone);1;RV502
-Ajustable;Boîtier d'entrée;POT;250k trim (Dist);1;RV503
+Ajustable;Boîtier d'entrée;POT;250k trim (Dist, vers mi-course);1;RV503
 Ajustable;tête;POT;25k trim;4;RV101 RV102 RV103 RV104
-Ajustable;Boîtier d'entrée;POT;500k trim (Drive);1;RV501
+Ajustable;VCA et noise gate;POT;2M trim (Release);1;RV801
 BOLT;tête;BOLT;Point de masse unique;1;E102
 BOLT;tête;BOLT;Terre secteur;1;E101
 BUCK_MOD;Pilotage;BUCK_MOD;LM2596 → 5,0 V 3 A;1;U603
@@ -26,9 +26,10 @@ Condensateur céramique / film basse tension;VCA et noise gate;C;100p;1;C814
 Condensateur céramique / film basse tension;Pilotage;C;10n;3;C607 C608 C609
 Condensateur céramique / film basse tension;Boîtier d'entrée;C;1n;1;C525
 Condensateur céramique / film basse tension;Boîtier d'entrée;C;1µ film;3;C506 C511 C535
-Condensateur céramique / film basse tension;VCA et noise gate;C;1µ film;5;C806 C807 C808 C810 C811
+Condensateur céramique / film basse tension;VCA et noise gate;C;1µ film;4;C806 C807 C808 C810
 Condensateur céramique / film basse tension;VCA et noise gate;C;2.2µ film;2;C801 C803
 Condensateur céramique / film basse tension;Boîtier d'entrée;C;220n;2;C509 C510
+Condensateur céramique / film basse tension;VCA et noise gate;C;220n film;1;C811
 Condensateur céramique / film basse tension;Boîtier d'entrée;C;330n;2;C502 C512
 Condensateur céramique / film basse tension;Pilotage;C;330n;1;C603
 Condensateur céramique / film basse tension;VCA et noise gate;C;390p;1;C805
@@ -158,6 +159,7 @@ Résistance 1/4 W 1 % (basse tension);Commandes;R;220;14;R721 R722 R723 R724 R72
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;220;1;R610
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;220k;1;R529
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;22k;2;R517 R523
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;22k;1;R833
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;3.3k;2;R534 R535
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;30k;5;R802 R804 R818 R845 R848
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;33;1;R613
@@ -168,7 +170,7 @@ Résistance 1/4 W 1 % (basse tension);Pilotage;R;4.7k;1;R650
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;470;1;R840
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;470k;2;R519 R525
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;47k;1;R530
-Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;47k;3;R833 R839 R842
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;47k;2;R839 R842
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;500;3;R805 R808 R846
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;51k;1;R508
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;6.2k;2;R813 R816
