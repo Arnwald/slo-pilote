@@ -25,6 +25,11 @@ Prérequis : ngspice (≥ 42), Python 3 avec numpy. Chaque script se lance depui
 - `hm2.py` : Boss HM-2 (MIJ) avec les valeurs du schéma Boss : préampli à transistors, Dist, écrêtage asymétrique,
   zone morte germanium, Color Mix à gyrateurs (84 Hz, 0,95 et 1,26 kHz : +20 à +22 dB à fond), sortie. Positions des
   potentiomètres en fraction de course, loi linéaire.
+- `steps.py` : réglages pilotés de la TS et de la HM-2 et fermeture du gate. Chaque potentiomètre devient une échelle de
+  résistances lue par un multiplexeur ADG406 (16 positions) ou ADG408 (8) ; les prises sont placées pour des paliers réguliers
+  en dB, arrondies en E96 et resimulées avec 50 Ω de multiplexeur dans le curseur (`hm2.py` et `ts.py` ont les options
+  `ron`, `r8`, `rgyr`, `kb`, `r49`, `rpots`, `rdrv`). Résultat dans `steps_result.txt`, prises dans `steps.json` (lu par le
+  schéma).
 - `preset_levels.py` : niveaux de la TS et de la HM-2 aux réglages du preset Line 6 de référence (TS Gain 0,10, Tone 0,90,
   Level 0,90 ; HM-2 Drive 0,55, Color Mix à fond, Level 0,60 ; chemin B à −30 dB), et rapport HM-2 / TS à l'entrée de
   l'ampli selon la note et l'attaque. Point de départ obtenu : VCA A à −4 dB, VCA B à −46 dB.

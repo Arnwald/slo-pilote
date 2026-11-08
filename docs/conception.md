@@ -180,17 +180,17 @@ Le châssis repose sur le fond, tenu par 4 vis M4 à travers les retours de ses 
 
 ## Estimation du coût
 
-La nomenclature sourcée (77 lignes, tableur joint, avec références, fournisseurs et liens) donne environ 1 520 CHF de composants pour la tête. Avec la TVA suisse à l'import (\~120 CHF), le port et le dédouanement de dix fournisseurs (\~190 CHF) et 5 % d'imprévus, on arrive vers 1 910 CHF, contre 1 680 CHF pour la révision 0.1 : le Raspberry Pi, les Motoron, le clone de HM-2 et les VCA coûtent environ 230 CHF de plus que le NUCLEO et l'entrée à potentiomètres numériques. Le baffle 4×12 en Eminence Karnivore (198 € pièce chez Thomann) ajoute environ 810 CHF, ou 710 CHF avec 2 Karnivore et 2 Vintage 30. Les prix des postes principaux sont relevés en novembre 2026, les autres estimés ; 1 € est compté 0,94 CHF, à ajuster.
+La nomenclature sourcée (80 lignes, tableur joint, avec références, fournisseurs et liens) donne environ 1 620 CHF de composants pour la tête. Avec la TVA suisse à l'import (\~130 CHF), le port et le dédouanement de dix fournisseurs (\~190 CHF) et 5 % d'imprévus, on arrive vers 2 030 CHF, contre 1 680 CHF pour la révision 0.1 : le Raspberry Pi, les Motoron, le clone de HM-2, les VCA et les multiplexeurs des réglages de l'entrée coûtent environ 350 CHF de plus que le NUCLEO et l'entrée à potentiomètres numériques. Le baffle 4×12 en Eminence Karnivore (198 € pièce chez Thomann) ajoute environ 810 CHF, ou 710 CHF avec 2 Karnivore et 2 Vintage 30. Les prix des postes principaux sont relevés en novembre 2026, les autres estimés ; 1 € est compté 0,94 CHF, à ajuster.
 
 > Nomenclature détaillée et sourcée : [`bom/nomenclature_tete_100W.xlsx`](../bom/nomenclature_tete_100W.xlsx) (générée par [`bom/build_bom.py`](../bom/build_bom.py)) ; prix relevés en novembre 2026 quand une source est citée, estimations sinon.
 
-Le cœur incompressible tient en trois postes : transformateurs, lampes et pots motorisés, environ 640 CHF. Les économies sont ailleurs : regrouper les commandes chez Tube-Town et un seul distributeur électronique (\~80 CHF de port en moins), un capot en bois et tolex au lieu de l'aluminium (\~60 CHF), une peinture maison au lieu du thermolaquage (\~50 CHF). On descend alors vers 1 700 CHF pour la tête.
+Le cœur incompressible tient en trois postes : transformateurs, lampes et pots motorisés, environ 640 CHF. Les économies sont ailleurs : regrouper les commandes chez Tube-Town et un seul distributeur électronique (\~80 CHF de port en moins), un capot en bois et tolex au lieu de l'aluminium (\~60 CHF), une peinture maison au lieu du thermolaquage (\~50 CHF). On descend alors vers 1 840 CHF pour la tête, et vers 1 750 CHF avec des CD4051 au lieu des ADG406 pour les réglages de l'entrée.
 
 Risque d'approvisionnement : un revendeur indique la version 100 kΩ log du RK16812MG comme arrêtée, avec fin de stock. Il faut confirmer la disponibilité des ALPS avant de figer les valeurs, ou qualifier une alternative.
 
 ## Commutations et pilotage
 
-Toutes les commutations passent par des LDR ou des relais, et tous les potentiomètres par des moteurs asservis ; le contrôleur ne touche jamais au chemin audio autrement que par la lumière, un contact, un arbre mécanique ou la tension de commande d'une VCA.
+Toutes les commutations passent par des LDR ou des relais, les potentiomètres de l'ampli par des moteurs asservis et ceux des pédales par des échelles de résistances commutées ; le contrôleur ne touche jamais au chemin audio autrement que par la lumière, un contact, un arbre mécanique, un multiplexeur analogique ou la tension de commande d'une VCA.
 
 | Fonction | Organe | Côté contrôleur |
 | --- | --- | --- |
@@ -198,11 +198,12 @@ Toutes les commutations passent par des LDR ou des relais, et tous les potentiom
 | Crunch / clean | 2 LDR à la place du DPDT | idem |
 | Bright | 1 LDR | idem |
 | 10 potentiomètres, dont le Blend | ALPS RK168 motorisés | 5 Motoron M2T256 (I²C), piste capteur lue par un MCP3208, boucle de position |
+| Réglages des pédales, fermeture du gate | 6 échelles de résistances 1 %, multiplexeurs ADG406 et ADG408 | 3 × 74HC595 sur SPI1, verrou sur GPIO14, nappe vers le boîtier d'entrée |
 | Mute pendant un rappel | 1 LDR en shunt à l'entrée du déphaseur | Actif tant qu'un moteur tourne, et de 50 ms avant à 300 ms après un changement du cold clipper |
 | Surveillance du bias | Résistances 1 Ω dans les cathodes des 6L6GC | MCP6004 (gain 21) et MCP3208, \~40 mV par tube |
 | Commande | MIDI (program change), page web et OSC sur Ethernet | Rappel et sauvegarde des presets |
 
-- **Contrôleur** : un Raspberry Pi 4 B pour la tête et le robot. Il n'a ni entrées ni sorties analogiques : une carte d'interface en boîtiers DIP porte deux MCP3208 (pistes capteur, bias, enveloppe du gate), deux MCP4822 (VCA, seuil et fondu du gate), deux MCP23017 et trois ULN2803 (LED des LDR, relais). Ce qui demande un vrai temps réel reste analogique, à commencer par le gate ; le Pi ne fait que régler. Il démarre en une vingtaine de secondes, masquées par la chauffe des lampes ; le système est en lecture seule et les presets s'écrivent de façon atomique, pour couper l'ampli à l'interrupteur sans risque ; Wi-Fi et Bluetooth sont désactivés, le chien de garde actif.
+- **Contrôleur** : un Raspberry Pi 4 B pour la tête et le robot. Il n'a ni entrées ni sorties analogiques : une carte d'interface en boîtiers DIP porte deux MCP3208 (pistes capteur, bias, enveloppe du gate), deux MCP4822 (VCA, seuil et fondu du gate), deux MCP23017 et trois ULN2803 (LED des LDR, relais), et trois 74HC595 qui tiennent les positions des réglages des pédales. Ce qui demande un vrai temps réel reste analogique, à commencer par le gate ; le Pi ne fait que régler. Il démarre en une vingtaine de secondes, masquées par la chauffe des lampes ; le système est en lecture seule et les presets s'écrivent de façon atomique, pour couper l'ampli à l'interrupteur sans risque ; Wi-Fi et Bluetooth sont désactivés, le chien de garde actif.
 - **Réseau et robot** : l'Ethernet du Pi relie la tête à la régie, sans Wi-Fi, pour la page de commande, l'OSC et le MIDI. Un HAT CAN (MCP2515, interface can0 de Linux) pilote le robot de micro par un câble M12 qui porte aussi son 24 V.
 - **Moteurs** : cinq Motoron M2T256 (deux moteurs chacun, I²C) sur une barrette près de la façade, reliés au Pi par un seul câble. PWM à 20 kHz, hors de la bande audio ; ils coupent les moteurs si le Pi cesse d'émettre. Environ 100 mA par moteur en rotation et 150 mA en butée ; on n'en fait tourner que quelques-uns à la fois.
 - **Résistance des LDR** : bloquée, plusieurs MΩ, et passante, quelques centaines d'ohms. Face à des nœuds de 10 à 100 kΩ, la fuite et la perte d'insertion restent négligeables.
@@ -212,7 +213,7 @@ Toutes les commutations passent par des LDR ou des relais, et tous les potentiom
 
 ## Boîtier d'entrée : TS808 et HM-2 en parallèle, gate analogique
 
-Tout le signal reste analogique, dans un compartiment blindé près du jack ; le Pi ne fournit que des tensions de commande et des contacts. Le son visé vient d'un preset Line 6 : un Tube Screamer en boost serré et une HM-2 au Color Mix à fond, Dist à mi-course, mélangés avant l'ampli ; la TS pour la précision djent, une pointe de HM-2 qu'on entend surtout sur les palm mutes. Chaîne du signal :
+Tout le signal reste analogique, dans un compartiment blindé près du jack ; le Pi ne fournit que des tensions de commande, des contacts et les adresses des multiplexeurs des réglages. Le son visé vient d'un preset Line 6 : un Tube Screamer en boost serré et une HM-2 au Color Mix à fond, Dist à mi-course, mélangés avant l'ampli ; la TS pour la précision djent, une pointe de HM-2 qu'on entend surtout sur les palm mutes. Chaîne du signal :
 
 1. Buffer d'entrée, 1 MΩ (OPA2134).
 2. Chemin A : TS808 d'origine, contournable par relais. Chemin B : clone de HM-2, ou une pédale branchée sur l'insert.
@@ -221,7 +222,7 @@ Tout le signal reste analogique, dans un compartiment blindé près du jack ; le
 
 ### Tube Screamer
 
-Le TS808 tel quel, en 9 V (78L09), avec un NJM4558D et deux 1N914. Le preset le règle en boost : Gain 0,10 (0,15 sur le snapshot Lead), Tone 0,90, Level 0,90. Sur la loi log du 500 kΩ d'origine, 0,10 ne laisse qu'environ 3 kΩ dans la contre-réaction : le drive passe donc sur un ajustable multitour de 100 kΩ (RV501), qui couvre aussi le cas d'une loi linéaire (50 kΩ), et le tone sur un ajustable de 20 kΩ (RV502) ; le niveau est celui de la VCA du chemin A. Les potentiomètres numériques de la révision 0.1 disparaissent : aucun n'existe en boîtier traversant avec la valeur et la tension voulues. Le passage de 0,10 à 0,15 vaut 0,3 dB de gain sur une loi log, 1,8 dB sur une loi linéaire ; pour suivre les snapshots, il faudrait un sixième Motoron et deux pots ALPS (drive de la TS et Dist de la HM-2).
+Le TS808 tel quel, en 9 V (78L09), avec un NJM4558D et deux 1N914. Le drive et le tone sont pilotés : chaque potentiomètre devient une échelle de résistances 1 % dont un multiplexeur analogique relie l'une des 16 prises au curseur (voir Réglages des pédales pilotés). Le drive couvre 0 à 500 kΩ, soit 21,5 à 41,5 dB de gain par pas de 1,33 dB ; le preset de référence (Gain 0,10 à 0,15, environ 3 à 5 kΩ sur la loi log d'origine) tombe sur les positions 0 et 1. Le tone couvre toute sa course en 16 pas de 1 dB. Le niveau est celui de la VCA du chemin A.
 
 ### Clone de HM-2
 
@@ -230,10 +231,10 @@ D'après le schéma Boss de la version japonaise, celle que modélise le Swedish
 | Bloc | Original | Clone |
 | --- | --- | --- |
 | Préampli | Q6 2SC2240, Q7 2SA970 : deux étages à contre-réaction 470 k / 22 k, chacun derrière 47 nF (passe-haut vers 150 Hz) | BC550C, BC560C, mêmes valeurs |
-| Dist | 250 kΩ, loi D : extrémités vers le collecteur de Q6 (150 Ω et 10 µF) et vers la jambe de masse de l'écrêteur, curseur à la masse | ajustable 250 kΩ, vers mi-course (Drive 0,50 à 0,60 dans le preset) |
+| Dist | 250 kΩ, loi D : extrémités vers le collecteur de Q6 (150 Ω et 10 µF) et vers la jambe de masse de l'écrêteur, curseur à la masse | échelle de 16 positions, 24 à 59 dB par pas de 2,3 dB ; 100 Ω au lieu de 150 Ω pour compter le multiplexeur |
 | Écrêtage | IC1b, 220 k ∥ 100 pF ∥ diodes asymétriques (une dans un sens, deux dans l'autre) | NJM4558D, 1N4148 |
 | Zone morte | deux germanium 1S188FM tête-bêche en série, puis deux silicium à la masse | 1N34A, 1N4148 |
-| Color Mix | gyrateurs : 84 Hz (Low), 0,95 et 1,26 kHz (High), +20 à +22 dB à fond | ajustables 10 kΩ, à fond comme dans le preset (Bass et Treble à 1) |
+| Color Mix | gyrateurs : 84 Hz (Low), 0,95 et 1,26 kHz (High), +20 à +22 dB à fond | deux échelles de 15 positions, ±20 dB par pas de 2,8 à 3,2 dB, plates au milieu ; gyrateurs à 270 Ω et 120 k / 100 k / 120 k pour compter le multiplexeur |
 | Level | 10 kΩ log derrière 10 kΩ | au maximum ; le niveau passe par la VCA du chemin B |
 | Alimentation | pile 9 V, ou adaptateur ACA par 330 Ω et une diode | 9 V régulés (78L09) |
 
@@ -252,10 +253,10 @@ La topologie est la même, mélange avant l'ampli donc avant le tone stack : le 
 | Bloc | Preset | Dans la tête |
 | --- | --- | --- |
 | Whammy, en tête de chaîne | actif sauf en Lead | une pédale devant la tête |
-| Scream 808, chemin A | Gain 0,10 (0,15 en Lead, coupé en Crunch), Tone 0,90, Level 0,90 | RV501 vers 3 kΩ, RV502 vers 0,9 ; VCA A à −4 dB |
-| Swedish Chainsaw, chemin B | Drive 0,60 (0,50 en Djenty, coupé en Crunch), Bass 1, Treble 1, Level 0,60 | Color Mix à fond, RV503 vers mi-course ; VCA B à −46 dB |
+| Scream 808, chemin A | Gain 0,10 (0,15 en Lead, coupé en Crunch), Tone 0,90, Level 0,90 | Drive en position 0 ou 1, Tone à recaler à l'oreille ; VCA A à −4 dB |
+| Swedish Chainsaw, chemin B | Drive 0,60 (0,50 en Djenty, coupé en Crunch), Bass 1, Treble 1, Level 0,60 | Color Mix en position 14 (à fond), Dist en position 11 ou 12 ; VCA B à −46 dB |
 | Fusion | A 0 dB, B −30 dB, polarité normale | 42 dB entre les deux VCA, K503 au repos |
-| Gates | à l'entrée −44 dB (−40 à −50) ; après la fusion −60 dB (−40 en Djenty, coupé en Lead et Crunch) ; decay 10 ms | gate analogique, fermeture à 10 ms (RV801), seuil par preset |
+| Gates | à l'entrée −44 dB (−40 à −50) ; après la fusion −60 dB (−40 en Djenty, coupé en Lead et Crunch) ; decay 10 ms | gate analogique, fermeture en position 0 (10 ms), seuil par preset |
 | Après le baffle | égaliseur +1 dB à 1 kHz, +2,5 dB à 2 kHz, +4,5 dB à 4 kHz, +4 dB à 8 kHz (et un léger coupe-bas en Lead) ; delay et reverb en Lead seulement | dans la DAW |
 
 Ce que valent ces réglages, calculés sur les modèles des deux pédales (spice/preset\_levels.py, lois logarithmiques supposées pour les Level et le drive de la TS) : le Level de la TS à 0,90 vaut −4 dB, celui de la HM-2 à 0,60 −16,5 dB, et la fusion retire 30 dB au chemin B, soit 42 dB d'écart à sortie égale. Mais la HM-2 sort saturée vers +3 dBu quand la TS ne sort que −27 à −7 dBu. À l'entrée de l'ampli, par rapport à la TS, la HM-2 arrive donc à :
@@ -278,12 +279,29 @@ C'est le « peu de HM-2 » du preset en chiffres : 12 dB sous la TS sur un mi gr
 
 Deux AS2164 d'Alfa (DIP-16, brochage du SSM2164), disponibles en boîtier traversant ; le THAT 2181 de la révision 0.1 porte désormais une mention de fin de vie chez THAT. À 0 V de commande la VCA est à 0 dB, puis +33 mV/dB d'atténuation : les MCP4822 (0 à 2,048 V), multipliés par 1,62, couvrent 0 à −100 dB au pas de 0,02 dB. Le chemin A est remonté de 12 dB avant sa VCA et redescendu d'autant à la sommation, si bien que le souffle des VCA n'ajoute qu'environ 2 dB à celui de l'ampli, gate ouvert. La constante de commande suit kT/q (−3300 ppm/K) : une DS18B20 collée sur la VCA donne la température au Pi, qui corrige ; sans cela, 20 °C de plus décaleraient un dosage à −15 dB de 1 dB. Le bouton Blend motorisé commande la VCA B : −∞ en butée basse, −20 dB en butée haute, et l'essentiel de la course entre −60 et −30 dB, là où se joue le dosage du preset.
 
+### Réglages des pédales pilotés
+
+Tous les réglages de la TS et de la HM-2 se mémorisent par preset, sans pot motorisé ni potentiomètre numérique. Les potentiomètres numériques en boîtier DIP (MCP41xxx) n'acceptent que 0 à 5 V sur leurs bornes et environ 1 mA, alors que les nœuds des pédales vont de 0 à 9 V et qu'un curseur de Color Mix porte jusqu'à 9 mA vers ses gyrateurs. Chaque potentiomètre devient donc une chaîne de résistances 1 % ; un multiplexeur analogique ADG406 (DIP-28, ±15 V, 50 Ω typiques, 20 mA) relie l'une de ses prises au nœud du curseur, comme un commutateur rotatif. Les prises sont placées par simulation pour des paliers réguliers en dB, multiplexeur compris (spice/steps.py) :
+
+| Réglage | Positions | Plage | Pas |
+| --- | --- | --- | --- |
+| TS Drive (0 à 500 kΩ) | 16 | 21,5 à 41,5 dB de gain | 1,33 dB |
+| TS Tone (20 kΩ) | 16 | −2,4 à −17,4 dB à 4 kHz par rapport à 200 Hz | 1 dB |
+| HM-2 Dist (250 kΩ) | 16 | 24 à 59 dB de gain avant écrêtage | 2,3 dB |
+| HM-2 Color Mix L (10 kΩ) | 15 | −20 à +20 dB à 84 Hz, plat au milieu | 2,8 dB |
+| HM-2 Color Mix H (10 kΩ) | 15 | −22 à +22 dB vers 1 kHz, plat au milieu | 3,2 dB |
+| Fermeture du gate (0 à 2 MΩ) | 8 (ADG408) | 10 à 450 ms | ×1,7 |
+
+Avec des incréments E96, chaque position tient à 0,1 dB de sa cible, à 0,3 et 0,7 dB pour les Color Mix aux extrêmes. La résistance du multiplexeur est retirée des résistances voisines : 169 Ω au lieu de 220 Ω dans le tone de la TS, 100 Ω au lieu de 150 Ω avant le Dist, 270 Ω dans les gyrateurs avec des polarisations relevées pour garder la même inductance. Sa dispersion (30 à 80 Ω) ne compte qu'au bas du Dist : ±1,5 dB sur la première position.
+
+Trois 74HC595 de la carte d'interface tiennent les 23 bits d'adresse : le Pi les écrit sur SPI1 puis les verrouille par GPIO14, et une nappe de 26 fils les porte au boîtier d'entrée. En jeu, ces lignes sont statiques, rien ne bouge près de la guitare. Un changement de position se fait sous le fondu des VCA, en quelques millisecondes, donc aussi entre deux parties d'un morceau, ce que les pots motorisés ne permettent pas. Le prix : cinq ADG406 à une vingtaine d'euros pièce, environ 100 CHF de plus que les ajustables. Des CD4051 à quelques dizaines de centimes feraient le même travail, mais à deux boîtiers par réglage, avec un ±9 V et des niveaux logiques en 9 V à fabriquer : beaucoup plus de câblage pour 90 CHF d'économie.
+
 ### Noise gate
 
 La détection se fait sur la guitare propre, au buffer d'entrée, et l'action après le préampli, comme un ISP Decimator branché en « 4 câbles » : le gate coupe aussi le souffle des étages à lampes, de la TS et de la HM-2, et ses décisions restent nettes puisque le signal de détection n'est pas compressé.
 
 - Détection : gain ×11 avec passe-haut à 48 Hz, redressement double alternance de précision, détecteur de crête (1 µF, 22 kΩ, soit 22 ms), comparateur LM393 à hystérésis contre le seuil fixé par le Pi.
-- Forme : ouverture en 0,1 ms, fermeture réglable de 10 à 450 ms par un ajustable, mise à 10 ms comme le decay des deux gates du preset ; commande bornée à 0 V pour que le gate ouvert soit exactement à 0 dB. Le Pi peut aussi fondre le signal (DAC\_FADE) et neutraliser le gate (GATE\_OFF, gate ouvert par défaut au démarrage) ; chaque preset garde son seuil, comme les snapshots du Line 6.
+- Forme : ouverture en 0,1 ms, fermeture en 8 positions de 10 à 450 ms (multiplexeur ADG408), 10 ms comme le decay des deux gates du preset ; commande bornée à 0 V pour que le gate ouvert soit exactement à 0 dB. Le Pi peut aussi fondre le signal (DAC\_FADE) et neutraliser le gate (GATE\_OFF, gate ouvert par défaut au démarrage) ; chaque preset garde son seuil et sa fermeture.
 - VCA : un AS2164 entre la sélection des masters et le déphaseur, avec un tampon et un convertisseur courant-tension OPA2134, sur une petite carte près de V5. Le signal n'y dépasse pas quelques volts, dans la plage d'une VCA en ±15 V. Le mute LDR304 reste en amont.
 
 ## Vérification par simulation
@@ -390,6 +408,8 @@ TS808 d'origine (spice/ts.py, 9 V, drive à 10 %, tone à mi-course, level au ma
 
 Color Mix à fond : +20,4 dB à 84 Hz, +22,2 dB à 946 Hz, +22,4 dB à 1,26 kHz, +3,6 dB à 300 Hz ; réponse plate à mi-course ; −20,7 dB vers 1,1 kHz au minimum. Gain avant écrêtage : 58,7 dB vers 750 Hz à fond, 24 dB au minimum du Dist. La HM-2 sature sa propre égalisation : la sortie de son étage Color Mix bute à ±3 V en 9 V, quel que soit le jeu.
 
+Réglages en échelles (spice/steps.py, multiplexeur à 50 Ω) : chaque position tient à 0,1 dB de sa cible, sauf les Color Mix aux extrêmes (0,3 dB pour L, 0,7 dB pour H). Avec 30 ou 80 Ω de multiplexeur, seul le bas du Dist bouge : 23,1 à 25,7 dB au lieu de 24,2 dB sur la position 0, moins de 0,5 dB à partir de la position 4.
+
 ### Corrections issues de cette campagne
 
 Elles sont reportées dans les sections concernées, dans la nomenclature et dans les fichiers de simulation.
@@ -405,7 +425,7 @@ Le modèle a aussi gagné la capacité de bobinage du transfo de sortie (470 pF 
 
 ## Schéma KiCad
 
-Le schéma complet est dessiné en KiCad : 8 feuilles et 560 composants, générés par script et vérifiés contre la simulation. Les 168 éléments du modèle SPICE s'y retrouvent avec les mêmes nœuds et la même valeur, à la série normalisée près (huit écarts de 3 à 18 %) ; la TS et la HM-2 ont leurs propres modèles. Tout est publié sur [GitHub](https://github.com/Arnwald/slo-pilote) sous licence CERN-OHL-S v2.
+Le schéma complet est dessiné en KiCad : 9 feuilles et 666 composants, générés par script et vérifiés contre la simulation. Les 168 éléments du modèle SPICE s'y retrouvent avec les mêmes nœuds et la même valeur, à la série normalisée près (huit écarts de 3 à 18 %) ; la TS et la HM-2 ont leurs propres modèles, et les échelles de leurs réglages sortent de spice/steps.py. Tout est publié sur [GitHub](https://github.com/Arnwald/slo-pilote) sous licence CERN-OHL-S v2.
 
 | Feuille | Contenu |
 | --- | --- |
@@ -414,9 +434,10 @@ Le schéma complet est dessiné en KiCad : 8 feuilles et 560 composants, génér
 | Tone stack et déphaseur | atténuateur, White CF, tone stack ÷10, masters, mute, déphaseur, presence, depth |
 | Puissance | 4 × 6L6GC, mesure du courant, transfo de sortie, sélecteur d'impédance |
 | Boîtier d'entrée | buffer, TS808 en 9 V, clone de HM-2 en 9 V, insert, relais de chemin et de polarité |
-| Pilotage | alimentations ±15 V et 24 V, Raspberry Pi 4 B et HAT CAN, carte d'interface, écran, encodeur, pédalier, MIDI, mesure du bias |
+| Pilotage | alimentations ±15 V et 24 V, Raspberry Pi 4 B et HAT CAN, carte d'interface, registres des réglages de l'entrée, écran, encodeur, pédalier, MIDI, mesure du bias |
 | Commandes | 5 Motoron M2T256, moteurs et pistes capteur des 10 pots, LED des LDR, bobines des relais |
 | VCA et noise gate | mélange TS / HM-2 par deux VCA, tensions de commande, détection du gate, VCA entre masters et déphaseur |
+| Commandes de l'entrée | échelles de résistances et multiplexeurs des réglages de la TS, de la HM-2 et de la fermeture du gate, nappe depuis la carte d'interface |
 
 Chaque broche porte le nom de son nœud, repris de la simulation. On peut donc déplacer les composants dans KiCad sans rien débrancher, puis redessiner les liaisons au fil de l'implantation.
 
@@ -436,7 +457,7 @@ Le dessin a corrigé plusieurs points :
 Révision 0.2 du 8 novembre 2026 :
 
 - Pilotage : Raspberry Pi 4 B avec HAT CAN, carte d'interface en boîtiers DIP, cinq Motoron M2T256. Plus de NUCLEO, W5500, PCA9685, DRV8833 ni MCP41HV51 : il ne reste aucun composant CMS à souder.
-- Entrée : TS808 et clone de HM-2 en 9 V, insert, relais de polarité ; nouvelle feuille VCA et noise gate, avec le bouton Blend (dixième pot motorisé, sans audio).
+- Entrée : TS808 et clone de HM-2 en 9 V, insert, relais de polarité ; nouvelle feuille VCA et noise gate, avec le bouton Blend (dixième pot motorisé, sans audio) ; réglages des deux pédales et fermeture du gate pilotés par échelles de résistances et multiplexeurs (feuille Commandes de l'entrée).
 - Gate : la VCA s'insère entre la sélection des masters (PI\_IN) et le condensateur de liaison du déphaseur (PI\_DRV). Le modèle SPICE la représente par un tampon idéal de gain 1, et la comparaison reste sans défaut.
 - Protection des entrées de mesure du bias en BAT85 traversantes au lieu de BAT54.
 
@@ -546,7 +567,7 @@ La simulation couvre maintenant tout le circuit, alimentation, commutations et b
 - [ ] Confirmer chez un distributeur ALPS : RK16812MG à 2 pistes en 10 kΩ log, 10 kΩ lin. (Blend), 20 kΩ lin., 100 kΩ lin. et log.
 - [ ] Baffle : 4 Eminence Karnivore 16 Ω (chiffrés), ou 2 Karnivore et 2 Vintage 30.
 - [ ] Entrée : enregistrer des DI de référence, recaler la TS et la HM-2 bloc par bloc, puis le blend sur l'ampli en partant de −4 et −46 dB ; essayer les deux polarités du chemin B.
-- [ ] Drive de la TS et Dist de la HM-2 : ajustables fixes, ou sixième Motoron et deux pots ALPS pour suivre les snapshots (TS 0,10 à 0,15, HM-2 0,50 à 0,60).
+- [ ] Au prototype : écouter les pas des réglages des pédales (1 à 3 dB), vérifier qu'un changement de position ne s'entend pas sous le fondu, et le brochage des ADG406 et ADG408.
 - [ ] Hors tête : le Whammy en pédale devant l'entrée ; l'égaliseur d'après baffle, le delay et la reverb dans la DAW.
 - [ ] Pilotage : valider la boucle de position des pots (Motoron et MCP3208), la correction en température des VCA et le démarrage du Pi en lecture seule.
 - [ ] Robot de micro : imprimer un segment d'arc et le chariot d'angle pour valider les roues V et l'engrènement avant le reste ; choisir un pied court à embase lourde.

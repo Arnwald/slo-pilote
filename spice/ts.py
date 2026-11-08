@@ -34,9 +34,11 @@ DIODES = ".model D914 D(IS=2.52n N=1.752 RS=0.568 CJO=4p)\n.model DLED D(IS=1e-1
 
 
 def netlist(version="ts808", drive=0.0, tone=0.5, level=1.0, vin_spec="0", analysis="", diode="D914",
-            stage="all", tone_code=None):
+            stage="all", tone_code=None, ron=0.0, r8=220.0, rdrv=None):
     """version: "ts808" or "pilot"; drive/tone/level in 0..1 (pot fraction, i.e. after the firmware law).
-    stage: "all", "clip" (output at o1), "tone" (tone stage driven directly, output at o2)."""
+    stage: "all", "clip" (output at o1), "tone" (tone stage driven directly, output at o2).
+    ron: multiplexer on-resistance in series with the drive rheostat and the tone wiper; r8: tone wiper resistor;
+    rdrv: drive resistance in ohms (overrides drive)."""
     pilot = version == "pilot"
     L = ["* Tube Screamer " + version, OPAMP, DIODES]
     if pilot:
@@ -50,7 +52,7 @@ def netlist(version="ts808", drive=0.0, tone=0.5, level=1.0, vin_spec="0", analy
     else:
         L += [f"Vin in 0 {vin_spec}", "Ebuf b0 vb in 0 1", "C2 b0 x1 1u", "R5 x1 vb 10k",
               "X1 x1 nf o1 vcc vee OPA",
-              f"R6 o1 nd {rs:g}", f"Rdrv nd nf {max(rdmax * drive, 75):g}", f"C4 o1 nf {cf:g}",
+              f"R6 o1 nd {rs:g}", f"Rdrv nd nf {max((rdmax * drive if rdrv is None else rdrv) + ron, 75):g}", f"C4 o1 nf {cf:g}",
               f"D1 o1 nf {diode}", f"D2 nf o1 {diode}",
               f"R4 nf ng {rg:g}", f"C3 ng vb {cg:g}", "R7 o1 ta 1k"]
     if stage != "clip":
@@ -60,7 +62,7 @@ def netlist(version="ts808", drive=0.0, tone=0.5, level=1.0, vin_spec="0", analy
             x = tone
         L += ["C5 ta vb 0.22u",
               f"Rtp1 ta tw {max(rtone * (1 - x), 1):g}", f"Rtp2 tw tn {max(rtone * x, 1):g}",
-              "R8 tw tc 220" if not pilot else "R8 tw tc 150", "C6 tc vb 0.22u",
+              f"R8 tw tc {r8 + ron:g}" if not pilot else "R8 tw tc 150", "C6 tc vb 0.22u",
               "X2 ta tn o2 vcc vee OPA", "R9 o2 tn 1k",
               "C7 o2 vo 1u", f"Rlv1 vo out {max(100e3 * (1 - level), 1):g}", f"Rlv2 out vb {max(100e3 * level, 1):g}",
               "Rload out vb 1Meg"]

@@ -100,6 +100,28 @@ P.symbol(Sym("TL074", "U", [q4[0], q4[1], q4c[0], q4c[1], q4[2]], pin_names_hidd
              val_at=(1.27, -6.35), desc="Quadruple ampli op JFET, DIP-14"))
 
 
+ADG406_S = [(19 + i if i < 8 else 11 - (i - 8), f"S{i + 1}") for i in range(16)]
+P.symbol(ic_symbol("ADG406", "U", ADG406_S,
+                   [(28, "D"), None, (17, "A0", "input"), (16, "A1", "input"), (15, "A2", "input"), (14, "A3", "input"),
+                    (18, "EN", "input"), None, (1, "VDD", "power_in"), (27, "VSS", "power_in"), (12, "GND", "power_in"),
+                    (2, "NC"), (3, "NC"), (13, "NC")], 15.24,
+                   "Multiplexeur analogique 16:1, +/-15 V, entrees TTL, 50 ohms typ. (ADG406BNZ, DIP-28)"))
+P.symbol(ic_symbol("ADG408", "U", [(4, "S1"), (5, "S2"), (6, "S3"), (7, "S4"), (12, "S5"), (11, "S6"), (10, "S7"), (9, "S8")],
+                   [(8, "D"), None, (1, "A0", "input"), (16, "A1", "input"), (15, "A2", "input"), (2, "EN", "input"), None,
+                    (13, "VDD", "power_in"), (3, "VSS", "power_in"), (14, "GND", "power_in")], 15.24,
+                   "Multiplexeur analogique 8:1, +/-15 V, entrees TTL (ADG408BNZ, DIP-16)"))
+P.symbol(ic_symbol("74HC595", "U", [(14, "SER", "input"), (11, "SRCLK", "input"), (12, "RCLK", "input"),
+                                    (10, "~{SRCLR}", "input"), (13, "~{OE}", "input"), None, (16, "VCC", "power_in"),
+                                    (8, "GND", "power_in")],
+                   [(15, "QA", "output"), (1, "QB", "output"), (2, "QC", "output"), (3, "QD", "output"), (4, "QE", "output"),
+                    (5, "QF", "output"), (6, "QG", "output"), (7, "QH", "output"), None, (9, "QH'", "output")], 12.7,
+                   "Registre a decalage 8 bits a verrou, DIP-16"))
+P.symbol(ic_symbol("HDR_2x13", "J", [(2 * i + 1, str(2 * i + 1)) for i in range(13)], [(2 * i + 2, str(2 * i + 2)) for i in range(13)],
+                   7.62, "Embase IDC 2 x 13 au pas de 2,54 mm (nappe)"))
+P.symbol(ic_symbol("RN_SIP9", "RN", [(1, "COM")], [(i, f"R{i - 1}") for i in range(2, 10)], 7.62,
+                   "Reseau de 8 resistances a point commun, SIP-9"))
+
+
 def bjt_symbol(name, pnp, desc):
     g = [circle(0.635, 0, 3.175), poly([(-0.635, 1.905), (-0.635, -1.905)], 0.508),
          poly([(-0.635, 0.762), (2.54, 2.54)], 0.254), poly([(-0.635, -0.762), (2.54, -2.54)], 0.254)]
@@ -447,7 +469,6 @@ S5.add(Part("C506", "C", "1µ film", (X + 15, Y + 30), rotation=90, nets={1: "BU
 two(S5, "R507", "R", "10k", X + 30, Y + 60, "TS_X1", "TS_VB")
 S5.add(Part("U503", "NJM4558", "NJM4558D", (X + 60, Y + 32), unit=1, nets={3: "TS_X1", 2: "TS_NF", 1: "TS_O1"}))
 S5.add(Part("R508", "R", "51k", (X + 95, Y + 20), rotation=90, nets={1: "TS_O1", 2: "TS_ND"}))
-S5.add(Part("RV501", "POT", "100k trim (Drive)", (X + 120, Y + 35), nets={1: "TS_ND", 2: "TS_NF", 3: "TS_NF"}))
 two(S5, "C507", "C", "51p", X + 140, Y + 60, "TS_O1", "TS_NF")
 S5.add(Part("D501", "D", "1N914", (X + 160, Y + 25), nets={1: "TS_O1", 2: "TS_NF"}))
 S5.add(Part("D502", "D", "1N914", (X + 160, Y + 40), nets={1: "TS_NF", 2: "TS_O1"}))
@@ -455,16 +476,15 @@ two(S5, "R509", "R", "4.7k", X + 180, Y + 60, "TS_NF", "TS_NG")
 two(S5, "C508", "C", "47n", X + 180, Y + 85, "TS_NG", "TS_VB")
 S5.add(Part("R510", "R", "1k", (X + 200, Y + 32), rotation=90, nets={1: "TS_O1", 2: "TS_TA"}))
 two(S5, "C509", "C", "220n", X + 215, Y + 60, "TS_TA", "TS_VB")
-S5.add(Part("RV502", "POT", "20k trim (Tone)", (X + 235, Y + 55), nets={3: "TS_TA", 2: "TS_TW", 1: "TS_TN"}))
-two(S5, "R511", "R", "220", X + 255, Y + 75, "TS_TW", "TS_TC")
+two(S5, "R511", "R", "169", X + 255, Y + 75, "TS_TW", "TS_TC")
 two(S5, "C510", "C", "220n", X + 255, Y + 95, "TS_TC", "TS_VB")
 S5.add(Part("U503", "NJM4558", "NJM4558D", (X + 285, Y + 32), unit=2, nets={5: "TS_TA", 6: "TS_TN", 7: "TS_O2"}))
 two(S5, "R512", "R", "1k", X + 300, Y + 60, "TS_O2", "TS_TN")
 S5.add(Part("C511", "C", "1µ film", (X + 320, Y + 32), rotation=90, nets={1: "TS_O2", 2: "TS_OUT"}))
 two(S5, "R513", "R", "100k", X + 340, Y + 60, "TS_OUT", "GND")
 S5.add(Part("U503", "NJM4558", "NJM4558D", (X + 340, Y + 90), unit=3, nets={8: "+9V_TS", 4: "GND"}))
-S5.note("Drive et tone sur ajustables multitours. Preset de référence : Gain 0,10 soit ≈ 3 kΩ sur la loi log du 500 k d'origine "
-        "(0,15 ≈ 5 kΩ), Tone 0,90.", X + 5, Y + 105, 1.4)
+S5.note("Drive (TS_ND-TS_NF, 0 à 500 k) et tone (TS_TN-TS_TA, curseur TS_TW) : échelles à 16 positions, feuille Commandes "
+        "de l'entrée. R511 : 169 Ω + 50 Ω du multiplexeur = 220 Ω d'origine.", X + 5, Y + 105, 1.4)
 
 X, Y = 15, 135
 S5.frame(X, Y, X + 570, Y + 140, "HM-2 (schéma Boss MIJ) : préampli à transistors, écrêtage, zone morte germanium (9 V)")
@@ -476,9 +496,8 @@ S5.add(Part("C518", "C", "100p", (X + 70, Y + 28), rotation=90, nets={1: "HM_C6"
 S5.add(Part("Q501", "Q_NPN", "BC550C", (X + 75, Y + 50), nets={1: "HM_C6", 2: "HM_B6", 3: "HM_E6"}))
 two(S5, "R520", "R", "22", X + 78, Y + 75, "HM_E6", "GND")
 two(S5, "R521", "R", "10k", X + 95, Y + 30, "HM_S", "HM_C6")
-two(S5, "R522", "R", "150", X + 105, Y + 70, "HM_C6", "HM_N49")
+two(S5, "R522", "R", "100", X + 105, Y + 70, "HM_C6", "HM_N49")
 two(S5, "C519", "CP", "10µ 16 V", X + 105, Y + 95, "HM_N49", "HM_P7")
-S5.add(Part("RV503", "POT", "250k trim (Dist, vers mi-course)", (X + 125, Y + 115), nets={1: "HM_P7", 2: "GND", 3: "HM_P10"}))
 S5.add(Part("C520", "C", "47n film", (X + 125, Y + 45), rotation=90, nets={1: "HM_C6", 2: "HM_N11"}))
 S5.add(Part("R523", "R", "22k", (X + 145, Y + 45), rotation=90, nets={1: "HM_N11", 2: "HM_B7"}))
 two(S5, "R524", "R", "100k", X + 160, Y + 25, "HM_S", "HM_B7")
@@ -509,7 +528,8 @@ two(S5, "R533", "R", "68k", X + 455, Y + 85, "HM_N1A", "HM_VB")
 S5.add(Part("U505", "NJM4558", "NJM4558D", (X + 490, Y + 57), unit=1, nets={3: "HM_N1A", 2: "HM_O1A", 1: "HM_O1A"}))
 S5.note("Q501, Q502 : BC550C et BC560C pour 2SC2240-GR et 2SA970-GR. D503-D505, D508, D509 : 1N4148 (1S2473) ; "
         "D506, D507 : germanium 1N34A (1S188FM).", X + 5, Y + 128, 1.4)
-S5.note("Dist (RV503) : extrémités vers le collecteur de Q501 (150 Ω + 10 µF) et vers la jambe de masse de U505B ; curseur à la masse.",
+S5.note("Dist : échelle de 250 k à 16 positions (feuille Commandes de l'entrée) entre HM_P7 et HM_P10, sortie du multiplexeur à la "
+        "masse. R522 : 100 Ω + 50 Ω du multiplexeur = 150 Ω d'origine.",
         X + 5, Y + 135, 1.4)
 
 X, Y = 15, 285
@@ -518,17 +538,15 @@ S5.add(Part("R534", "R", "3.3k", (X + 20, Y + 40), rotation=90, nets={1: "HM_O1A
 S5.add(Part("U506", "NJM4558", "NJM4558D", (X + 60, Y + 42), unit=1, nets={3: "HM_P14", 2: "HM_P13", 1: "HM_O3A"}))
 S5.add(Part("R535", "R", "3.3k", (X + 65, Y + 15), rotation=90, nets={1: "HM_O3A", 2: "HM_P13"}))
 S5.add(Part("C527", "C", "470p", (X + 65, Y + 25), rotation=90, nets={1: "HM_O3A", 2: "HM_P13"}))
-S5.add(Part("RV504", "POT", "10k trim (Color Mix L)", (X + 105, Y + 85), nets={1: "HM_P14", 2: "HM_WL", 3: "HM_P13"}))
-S5.add(Part("RV505", "POT", "10k trim (Color Mix H)", (X + 135, Y + 85), nets={1: "HM_P14", 2: "HM_WH", 3: "HM_P13"}))
 for (cs, cv, cg, cgv, rb, rbv, rs, uref, unit, pins, xi, wiper, tag) in (
-        ("C528", "1.5µ 35 V", "C529", "68n", "R536", "100k", "R537", "U506", 2, (5, 6, 7), 175, "HM_WL", "1"),
-        ("C530", "0.15µ 35 V", "C531", "6.8n", "R538", "82k", "R539", "U507", 1, (3, 2, 1), 265, "HM_WH", "2"),
-        ("C532", "0.1µ 35 V", "C533", "4.7n", "R540", "100k", "R541", "U507", 2, (5, 6, 7), 355, "HM_WH", "3")):
+        ("C528", "1.5µ 35 V", "C529", "68n", "R536", "120k", "R537", "U506", 2, (5, 6, 7), 175, "HM_WL", "1"),
+        ("C530", "0.15µ 35 V", "C531", "6.8n", "R538", "100k", "R539", "U507", 1, (3, 2, 1), 265, "HM_WH", "2"),
+        ("C532", "0.1µ 35 V", "C533", "4.7n", "R540", "120k", "R541", "U507", 2, (5, 6, 7), 355, "HM_WH", "3")):
     x = X + xi
     two(S5, cs, "CP", cv, x, Y + 30, wiper, f"HM_X{tag}")
     two(S5, cg, "C", cgv + " film", x, Y + 60, f"HM_X{tag}", f"HM_G{tag}")
     two(S5, rb, "R", rbv, x + 15, Y + 90, f"HM_G{tag}", "HM_VB")
-    S5.add(Part(rs, "R", "330", (x + 30, Y + 45), rotation=90, nets={1: f"HM_X{tag}", 2: f"HM_O{tag}"}))
+    S5.add(Part(rs, "R", "270", (x + 30, Y + 45), rotation=90, nets={1: f"HM_X{tag}", 2: f"HM_O{tag}"}))
     S5.add(Part(uref, "NJM4558", "NJM4558D", (x + 55, Y + 75), unit=unit,
                 nets={pins[0]: f"HM_G{tag}", pins[1]: f"HM_O{tag}", pins[2]: f"HM_O{tag}"}))
 S5.add(Part("C534", "CP", "10µ 16 V", (X + 445, Y + 42), rotation=90, nets={1: "HM_O3A", 2: "HM_N34"}))
@@ -536,7 +554,9 @@ S5.add(Part("R542", "R", "10k", (X + 465, Y + 42), rotation=90, nets={1: "HM_N34
 two(S5, "R543", "R", "10k", X + 485, Y + 70, "HM_LV", "GND")
 S5.add(Part("C535", "C", "1µ film", (X + 505, Y + 42), rotation=90, nets={1: "HM_LV", 2: "HM_OUT"}))
 two(S5, "R544", "R", "100k", X + 525, Y + 70, "HM_OUT", "GND")
-S5.note("Color Mix : potentiomètres entre les entrées + et − de U506A, curseurs vers les gyrateurs (L = 330 Ω × 100 k × 68 nF).",
+S5.note("Color Mix : échelles de 10 k à 15 positions entre les entrées + et − de U506A (feuille Commandes de l'entrée), sorties "
+        "des multiplexeurs vers les gyrateurs. Gyrateurs : 270 Ω (+ 50 Ω du multiplexeur) × 120 k / 100 k / 120 k, mêmes L et R série "
+        "qu'à l'origine.",
         X + 5, Y + 121, 1.4)
 S5.note("À fond (curseur côté −) : +20 dB à 84 Hz, +22 dB à 0,95 et 1,26 kHz (spice/hm2.py). Level fixé au maximum : "
         "10 k + 10 k ; le niveau passe par la VCA du chemin B.", X + 5, Y + 128, 1.4)
@@ -625,7 +645,7 @@ S6.note("Le 0 V du module rejoint la masse de commande : aucun courant de moteur
 
 X, Y = 595, 15
 S6.frame(X, Y, X + 230, Y + 280, "Raspberry Pi 4 B (contrôleur unique) et HAT CAN enfiché")
-rpi = {1: "+3V3", 17: "+3V3", 2: "+5V_PI", 4: "+5V_PI", 3: "I2C_SDA", 5: "I2C_SCL", 7: "W1_DQ", 8: None, 10: None,
+rpi = {1: "+3V3", 17: "+3V3", 2: "+5V_PI", 4: "+5V_PI", 3: "I2C_SDA", 5: "I2C_SCL", 7: "W1_DQ", 8: "SR_LATCH", 10: None,
        11: "CS_ADC2", 12: "CS_ADC1", 13: "CS_DAC2", 15: "FS1", 16: "FS2", 18: "TFT_DC", 19: "SPI0_MOSI", 21: "SPI0_MISO",
        22: "CAN_INT", 23: "SPI0_SCK", 24: "CAN_CS", 26: "CS_TFT", 27: None, 28: None, 29: "ENC_A", 31: "ENC_B",
        32: "MIDI_TX", 33: "MIDI_RX", 35: "SPI1_MISO", 36: "CS_DAC1", 37: "ENC_SW", 38: "SPI1_MOSI", 40: "SPI1_SCK"}
@@ -638,7 +658,7 @@ S6.note("config.txt : dtparam=spi=on ; dtoverlay=mcp2515-can0,oscillator=1200000
         X + 5, Y + 245, 1.3)
 S6.note("dtoverlay=uart5 (MIDI 31 250 bauds) ; dtoverlay=w1-gpio,gpiopin=4 ; dtoverlay=disable-wifi ; dtoverlay=disable-bt.",
         X + 5, Y + 251, 1.3)
-S6.note("CS_DAC2 sur GPIO27 en sélection logicielle. GPIO14/15 restent au RS485 du HAT (inutilisé), GPIO4 libre (RSE non câblé).",
+S6.note("CS_DAC2 sur GPIO27 en sélection logicielle. GPIO14 : verrou des registres de l'entrée (entrée DI du RS485 du HAT, inutilisé) ; GPIO15 reste au RS485.",
         X + 5, Y + 257, 1.3)
 S6.note("Système en lecture seule (overlay), presets écrits de façon atomique sur une partition à part ; chien de garde actif.",
         X + 5, Y + 263, 1.3)
@@ -695,6 +715,30 @@ S6.note("Pistes capteur et VREF sur le même +3V3 : mesure ratiométrique. CNA e
         X + 5, Y + 150, 1.3)
 S6.note("Pots 1-10 : SENSE1-10 ; courant des 6L6GC : BIAS_ADC1-4 ; enveloppe du gate : ENV_MON (affichage du seuil).",
         X + 5, Y + 156, 1.3)
+
+X, Y = 595, 435
+S6.frame(X, Y, X + 230, Y + 105, "Registres des commandes de l'entrée : 3 × 74HC595 sur SPI1, nappe vers le boîtier d'entrée")
+SR_BITS = [f"{t}_A{i}" for t in ("TSD", "TST", "HMD", "HML", "HMH") for i in range(4)] + [f"REL_A{i}" for i in range(3)]
+qpins = [15, 1, 2, 3, 4, 5, 6, 7]
+for u in range(3):
+    nets = {14: ("SPI1_MOSI", "SR_D1", "SR_D2")[u], 11: "SPI1_SCK", 12: "SR_LATCH", 10: "+3V3", 13: "SR_OE",
+            16: "+3V3", 8: "GND", 9: ("SR_D1", "SR_D2", None)[u]}
+    for j, q in enumerate(qpins):
+        b = u * 8 + j
+        nets[q] = SR_BITS[b] if b < len(SR_BITS) else None
+    S6.add(Part(f"U{614 + u}", "74HC595", "74HC595N", (X + 35 + u * 60, Y + 38), nets=nets))
+    two(S6, f"C{635 + u}", "C", "100n", X + 20 + u * 60, Y + 68, "+3V3", "GND")
+jn = {k + 1: n for k, n in enumerate(SR_BITS)}
+jn.update({24: "GND", 25: "GND", 26: "GND"})
+S6.add(Part("J606", "HDR_2x13", "Nappe 26 points", (X + 205, Y + 45), nets=jn))
+S6.note("Écriture : 24 bits sur SPI1 sans sélection (SPI_NO_CS ; à défaut sous CS_ADC1, le MCP3208 ignore la trame), puis",
+        X + 5, Y + 81, 1.2)
+S6.note("impulsion sur SR_LATCH (GPIO14) : les adresses ne changent qu'au verrouillage, le trafic SPI1 ne les touche pas.",
+        X + 5, Y + 86, 1.2)
+S6.note("SR_OE (MCP23017, tiré à 3,3 V) : sorties en haute impédance au démarrage, adresses à 0 par les réseaux de la feuille 9.",
+        X + 5, Y + 91, 1.2)
+S6.note("Bits : TSD, TST (TS drive, tone), HMD, HML, HMH (HM-2 dist, Color Mix L et H) sur 4 bits, REL (gate) sur 3 bits.",
+        X + 5, Y + 96, 1.2)
 
 X, Y = 305, 315
 S6.frame(X, Y, X + 270, Y + 170, "Mesure du courant des 6L6GC (gain 21) vers le MCP3208")
@@ -771,9 +815,10 @@ for k in range(2):
             20: None, 19: None, 11: None, 14: None, 10: "GND"}
     for j in range(16):
         g = k * 16 + j
-        nets[gp[j]] = f"DRV{g + 1}" if g < len(loads) else ("GATE_OFF" if g == 31 else None)
+        nets[gp[j]] = f"DRV{g + 1}" if g < len(loads) else {31: "GATE_OFF", 30: "SR_OE"}.get(g)
     S7.add(Part(f"U70{6 + k}", "MCP23017", "MCP23017-E/SP", (X + 45, Y + 60 + k * 110), nets=nets))
 two(S7, "R740", "R", "10k", X + 100, Y + 210, "+3V3", "GATE_OFF")
+two(S7, "R741", "R", "10k", X + 115, Y + 210, "+3V3", "SR_OE")
 for u in range(3):
     nets = {9: "GND", 10: "+5V"}
     for i in range(1, 9):
@@ -793,7 +838,8 @@ names = dict(LDRS + RELS)
 legend = "  ".join(f"{g}:{ref} {names[ref]}" for g, (ref, _) in enumerate(loads, start=1))
 S7.note("Affectation DRVn / SINKn : " + legend[:160], X + 5, Y + 208, 1.25)
 S7.note(legend[160:], X + 5, Y + 215, 1.25)
-S7.note("GATE_OFF (U707 GPB7, tiré à 3,3 V) : gate ouvert tant que le Pi ne l'a pas activé.", X + 5, Y + 222, 1.25)
+S7.note("GATE_OFF (U707 GPB7, tiré à 3,3 V) : gate ouvert tant que le Pi ne l'a pas activé. SR_OE (U707 GPB6, tiré à 3,3 V) : "
+        "registres de l'entrée en haute impédance jusqu'à la première écriture.", X + 5, Y + 222, 1.25)
 
 # =================================================================================================
 # 8. VCA, mélange et noise gate
@@ -875,7 +921,6 @@ S8.add(Part("R835", "R", "10M", (X + 420, Y + 18), rotation=90, nets={1: "CMP_A"
 S8.add(Part("U806", "LM393", "LM393", (X + 430, Y + 47), unit=1, nets={3: "THR_H", 2: "ENV", 1: "CMP_A"}))
 S8.add(Part("R840", "R", "470", (X + 465, Y + 47), rotation=90, nets={1: "CMP_A", 2: "GATE_CAP"}))
 two(S8, "R839", "R", "47k", X + 495, Y + 25, "+15V", "REL_X")
-S8.add(Part("RV801", "POT", "2M trim (Release)", (X + 495, Y + 55), nets={1: "REL_X", 2: "GATE_CAP", 3: "GATE_CAP"}))
 two(S8, "C811", "C", "220n film", X + 515, Y + 85, "GATE_CAP", "GND")
 two(S8, "R836", "R", "120k", X + 545, Y + 25, "+15V", "GOFF_REF")
 two(S8, "R837", "R", "15k", X + 545, Y + 60, "GOFF_REF", "GND")
@@ -899,7 +944,8 @@ S8.add(Part("U805", "TL074", "TL074", (X + 280, Y + 120), unit=5, nets={4: "+15V
 S8.add(Part("U806", "LM393", "LM393", (X + 580, Y + 120), unit=3, nets={8: "+15V", 4: "GND"}))
 S8.note("Guitare propre ×11 (passe-haut 48 Hz), redressement double alternance de précision, crête 1 µF / 22 k (22 ms). "
         "Comparateur U806A : seuil DAC_THR, hystérésis par 10 M.", X + 5, Y + 141, 1.4)
-S8.note("Ouverture par 470 Ω (0,1 ms), fermeture par 47 k + RV801 (τ 10 à 450 ms ; preset de référence : 10 ms). GATE_OFF : U806B court-circuite "
+S8.note("Ouverture par 470 Ω (0,1 ms), fermeture par 47 k + échelle de 8 positions entre REL_X et GATE_CAP (τ 10 à 450 ms, "
+        "feuille Commandes de l'entrée). GATE_OFF : U806B court-circuite "
         "GATE_CAP, gate ouvert. CV_G = GATE_CAP/4 + DAC_FADE − 75 mV, bornée à 0 V par D815.", X + 5, Y + 148, 1.4)
 
 X, Y = 15, 310
@@ -932,6 +978,89 @@ two(S8, "C832", "CP", "22µ 25 V", X + 30, Y + 85, "+15V", "GND")
 two(S8, "C833", "CP", "22µ 25 V", X + 60, Y + 85, "GND", "-15V")
 S8.note("Un 100 nF par boîtier et par rail, au plus près des broches (U801-U808).", X + 5, Y + 115, 1.4)
 
+
+# =================================================================================================
+# 9. Commandes de l'entrée : échelles de résistances et multiplexeurs (boîtier d'entrée)
+# =================================================================================================
+import json
+import os
+
+STEPS = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "spice", "steps.json")))
+
+
+def rval(v):
+    if v >= 1e6:
+        return f"{v / 1e6:g}M"
+    if v >= 1e3:
+        return f"{v / 1e3:g}k"
+    return f"{v:g}"
+
+
+S9 = P.sheet(Sheet("Commandes de l'entrée", "commandes_entree.kicad_sch", "A1",
+                   "Échelles de la TS et de la HM-2, multiplexeurs"))
+CTRL = [  # ref, sym, key, tag, start node, end node, mux output, title
+    ("U901", "ADG406", "ts_drive", "TSD", "TS_ND", None, "TS_NF", "TS Drive : rhéostat 0 à 500 k, 16 positions de 21,5 à 41,5 dB par pas de 1,33 dB"),
+    ("U902", "ADG406", "ts_tone", "TST", "TS_TN", "TS_TA", "TS_TW", "TS Tone : 20 k, 16 positions de −2,4 à −17,4 dB (4 kHz / 200 Hz) par pas de 1 dB"),
+    ("U903", "ADG406", "hm_dist", "HMD", "HM_P7", "HM_P10", "GND", "HM-2 Dist : 250 k, 16 positions de 24 à 59 dB de gain par pas de 2,3 dB"),
+    ("U904", "ADG406", "hm_low", "HML", "HM_P14", "HM_P13", "HM_WL", "HM-2 Color Mix L : 10 k, 15 positions de −20 à +20 dB à 84 Hz, plate au milieu"),
+    ("U905", "ADG406", "hm_high", "HMH", "HM_P14", "HM_P13", "HM_WH", "HM-2 Color Mix H : 10 k, 15 positions de −22 à +22 dB vers 1 kHz, plate au milieu"),
+    ("U906", "ADG408", "release", "REL", "GATE_CAP", None, "REL_X", "Fermeture du gate : rhéostat 0 à 2 M avec 47 k et 220 nF, 8 positions de 10 à 450 ms"),
+]
+nres, ncap = 901, 901
+for k, (ref, sym, key, tag, start, end, out, title) in enumerate(CTRL):
+    X, Y = 15 + (k % 3) * 275, 15 + (k // 3) * 185
+    S9.frame(X, Y, X + 265, Y + 175, title)
+    inc = STEPS[key]["inc"]
+    taps = [start] + [f"{tag}_T{i}" for i in range(1, len(inc))] + [end or f"{tag}_T{len(inc)}"]
+    for i, v in enumerate(inc):
+        x, y = X + 95 + (i % 5) * 34, Y + 30 + (i // 5) * 40
+        two(S9, f"R{nres}", "R", rval(v), x, y, taps[i], taps[i + 1])
+        nres += 1
+    addr = {f"A{i}": f"{tag}_A{i}" for i in range(4 if sym == "ADG406" else 3)}
+    if sym == "ADG406":
+        spins = [19 + i if i < 8 else 11 - (i - 8) for i in range(16)]
+        nets = {1: "+15V", 27: "-15V", 12: "GND", 18: "+15V", 28: out, 17: addr["A0"], 16: addr["A1"], 15: addr["A2"],
+                14: addr["A3"], 2: None, 3: None, 13: None}
+    else:
+        spins = [4, 5, 6, 7, 12, 11, 10, 9]
+        nets = {13: "+15V", 3: "-15V", 14: "GND", 2: "+15V", 8: out, 1: addr["A0"], 16: addr["A1"], 15: addr["A2"]}
+    for i, pin in enumerate(spins):
+        nets[pin] = taps[i] if i < len(taps) else taps[len(taps) // 2]
+    S9.add(Part(ref, sym, sym + "BNZ", (X + 40, Y + 75), nets=nets))
+    two(S9, f"C{ncap}", "C", "100n", X + 95, Y + 150, "+15V", "GND")
+    two(S9, f"C{ncap + 1}", "C", "100n", X + 110, Y + 150, "GND", "-15V")
+    ncap += 2
+    cum = STEPS[key]["cum"]
+    S9.note("Prises (Ω depuis " + start + ") : " + ", ".join(rval(c) for c in cum[:9]), X + 130, Y + 148, 1.25)
+    S9.note(", ".join(rval(c) for c in cum[9:]) + ("" if len(taps) == 16 else
+            ("  ; S16 = prise du milieu (plat)" if sym == "ADG406" else "")), X + 130, Y + 154, 1.25)
+    S9.note("Entrée Sn = prise n−1 ; adresse = position (0 = " + start + ").", X + 130, Y + 160, 1.25)
+
+X, Y = 15, 385
+S9.frame(X, Y, X + 540, Y + 120, "Nappe depuis la carte d'interface (feuille Pilotage), tirages au repos et découplage")
+jn = {k + 1: n for k, n in enumerate(SR_BITS)}
+jn.update({24: "GND", 25: "GND", 26: "GND"})
+S9.add(Part("J901", "HDR_2x13", "Nappe 26 points", (X + 30, Y + 55), nets=jn))
+for r in range(3):
+    nets = {1: "GND"}
+    for i in range(8):
+        b = r * 8 + i
+        nets[i + 2] = SR_BITS[b] if b < len(SR_BITS) else None
+    S9.add(Part(f"RN{901 + r}", "RN_SIP9", "100k ×8", (X + 110 + r * 60, Y + 55), nets=nets))
+two(S9, f"C{ncap}", "CP", "10µ 25 V", X + 300, Y + 55, "+15V", "GND")
+two(S9, f"C{ncap + 1}", "CP", "10µ 25 V", X + 320, Y + 55, "GND", "-15V")
+S9.note("Adresses en 3,3 V depuis les 74HC595 (entrées TTL des ADG4xx, seuil 2,4 V) ; lignes statiques en jeu, elles ne changent qu'au "
+        "verrouillage.", X + 5, Y + 95, 1.4)
+S9.note("Au repos (SR_OE haut ou nappe débranchée) : adresses à 0 par les réseaux 100 k. Changement de position sous le fondu des VCA "
+        "(quelques ms) ; RON 50 Ω typ., 80 Ω max, compensés dans R511, R522 et les gyrateurs.", X + 5, Y + 102, 1.4)
+S9.note("Valeurs des prises : spice/steps.py (paliers réguliers en dB, incréments E96 1 %, multiplexeur compris).", X + 5, Y + 109, 1.4)
+
+X, Y = 565, 385
+S9.frame(X, Y, X + 265, Y + 120, "Implantation")
+S9.note("Sur une carte du boîtier d'entrée, près de la TS et de la HM-2 :", X + 5, Y + 20, 1.4)
+S9.note("liaisons courtes vers TS_ND, TS_NF, TS_TA, TS_TW, TS_TN,", X + 5, Y + 27, 1.4)
+S9.note("HM_P7, HM_P10, HM_P13, HM_P14, HM_WL, HM_WH ; U906 près de C811.", X + 5, Y + 34, 1.4)
+S9.note("Brochage des ADG406 / ADG408 : celui des DG406 / DG408 (à vérifier).", X + 5, Y + 41, 1.4)
 
 P.root_texts += [
     ("Tête 100 W pilotable — famille SLO-100", 20, 25, 3.0, True),

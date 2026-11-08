@@ -1,16 +1,13 @@
 Catégorie;Ensemble;Symbole;Valeur;Quantité;Repères
 6N138;Pilotage;6N138;6N138;1;U605
+74HC595;Pilotage;74HC595;74HC595N;3;U614 U615 U616
 78L09;Boîtier d'entrée;78L09;78L09;2;U502 U504
 78XX;Pilotage;78XX;LM7815;1;U601
 79XX;Pilotage;79XX;LM7915;1;U602
+ADG406;Commandes de l'entrée;ADG406;ADG406BNZ;5;U901 U902 U903 U904 U905
+ADG408;Commandes de l'entrée;ADG408;ADG408BNZ;1;U906
 AS2164;VCA et noise gate;AS2164;AS2164;2;U802 U808
-Ajustable;Boîtier d'entrée;POT;100k trim (Drive);1;RV501
-Ajustable;Boîtier d'entrée;POT;10k trim (Color Mix H);1;RV505
-Ajustable;Boîtier d'entrée;POT;10k trim (Color Mix L);1;RV504
-Ajustable;Boîtier d'entrée;POT;20k trim (Tone);1;RV502
-Ajustable;Boîtier d'entrée;POT;250k trim (Dist, vers mi-course);1;RV503
 Ajustable;tête;POT;25k trim;4;RV101 RV102 RV103 RV104
-Ajustable;VCA et noise gate;POT;2M trim (Release);1;RV801
 BOLT;tête;BOLT;Point de masse unique;1;E102
 BOLT;tête;BOLT;Terre secteur;1;E101
 BUCK_MOD;Pilotage;BUCK_MOD;LM2596 → 5,0 V 3 A;1;U603
@@ -18,7 +15,8 @@ BUCK_MOD;Pilotage;BUCK_MOD;Pololu D36V28F5 → 5,0 V 3,2 A;1;U609
 CAN_HAT;Pilotage;CAN_HAT;Waveshare RS485 CAN HAT;1;A602
 Condensateur céramique / film basse tension;Boîtier d'entrée;C;100n;8;C504 C514 C536 C537 C538 C539 C540 C541
 Condensateur céramique / film basse tension;Commandes;C;100n;20;C701 C702 C703 C704 C705 C706 C707 C708 C709 C710 C711 C712 C713 C714 C715 C716 C717 C718 C719 C720
-Condensateur céramique / film basse tension;Pilotage;C;100n;11;C610 C611 C612 C613 C614 C615 C623 C630 C631 C632 C633
+Condensateur céramique / film basse tension;Commandes de l'entrée;C;100n;12;C901 C902 C903 C904 C905 C906 C907 C908 C909 C910 C911 C912
+Condensateur céramique / film basse tension;Pilotage;C;100n;14;C610 C611 C612 C613 C614 C615 C623 C630 C631 C632 C633 C635 C636 C637
 Condensateur céramique / film basse tension;VCA et noise gate;C;100n;17;C812 C816 C817 C818 C819 C820 C821 C822 C823 C824 C825 C826 C827 C828 C829 C830 C831
 Condensateur céramique / film basse tension;VCA et noise gate;C;100n film;1;C809
 Condensateur céramique / film basse tension;Boîtier d'entrée;C;100p;4;C501 C518 C521 C522
@@ -79,6 +77,8 @@ FUSE;Pilotage;FUSE;PTC 2,5 A;1;F602
 FUSE;Pilotage;FUSE;T1 A;1;F601
 FUSE;tête;FUSE;T1 A;1;F102
 FUSE;tête;FUSE;T3,15 A;1;F101
+HDR_2x13;Commandes de l'entrée;HDR_2x13;Nappe 26 points;1;J901
+HDR_2x13;Pilotage;HDR_2x13;Nappe 26 points;1;J606
 IEC;tête;IEC;IEC C14 + fusible;1;J101
 JACK_TRS;Pilotage;JACK_TRS;Pédalier;1;J602
 JACK_TS;tête;JACK_TS;HP 1;1;J401
@@ -115,6 +115,7 @@ Pot motorisé ALPS RK16812MG;tête;ALPS_2G;20k lin (Presence);1;RV306
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;20k lin (Treble);1;RV301
 Q_NPN;Boîtier d'entrée;Q_NPN;BC550C;1;Q501
 Q_PNP;Boîtier d'entrée;Q_PNP;BC560C;1;Q502
+RN_SIP9;Commandes de l'entrée;RN_SIP9;100k ×8;3;RN901 RN902 RN903
 RPI4_40P;Pilotage;RPI4_40P;Raspberry Pi 4 B (2 Go);1;A601
 Relais signal 2RT 5 V;Boîtier d'entrée;RELAY_2C;G6K-2 5 V;3;K501 K502 K503
 Relais signal 2RT 5 V;tête;RELAY_2C;G6K-2 5 V;2;K201 K202
@@ -129,54 +130,114 @@ Résistance 1 à 3 W;tête;R;330k 3 W;2;R124 R128
 Résistance 1 à 3 W;tête;R;470 1 W;4;R403 R413 R423 R433
 Résistance 1 à 3 W;tête;R;47k 2 W;1;R209
 Résistance 1 à 3 W;tête;R;68k 1 W;1;R110
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;1.27k;4;R951 R954 R965 R968
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;1.5M;1;R850
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;10;1;R614
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;100;1;R545
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;10.7k;1;R902
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;100;2;R522 R545
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;100;3;R811 R841 R849
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;100k;7;R513 R518 R524 R536 R540 R544 R546
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;100k;6;R513 R518 R524 R538 R544 R546
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;100k;3;R801 R806 R826
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;10M;1;R835
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;10k;13;R503 R504 R505 R506 R507 R514 R515 R521 R527 R531 R532 R542 R543
-Résistance 1/4 W 1 % (basse tension);Commandes;R;10k;1;R740
+Résistance 1/4 W 1 % (basse tension);Commandes;R;10k;2;R740 R741
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;10k;11;R603 R604 R605 R606 R607 R611 R615 R621 R627 R633 R640
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;10k;11;R803 R814 R817 R821 R827 R828 R829 R831 R834 R843 R851
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;113;1;R920
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;12.4k;1;R903
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;120;1;R526
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;120k;2;R536 R540
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;120k;1;R836
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;150;1;R522
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;124;1;R929
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;127;2;R960 R973
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;133;3;R934 R961 R972
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;137;2;R946 R959
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;14.7k;2;R904 R926
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;143;1;R921
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;154;2;R947 R958
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;15k;1;R837
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;16.9k;1;R905
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;169;1;R511
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;169k;1;R977
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;19.6k;1;R945
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;191;1;R922
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;196;1;R935
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;1M;1;R502
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;1M;1;R844
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;1k;4;R501 R510 R512 R516
 Résistance 1/4 W 1 % (basse tension);Commandes;R;1k;10;R701 R702 R703 R704 R705 R706 R707 R708 R709 R710
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;1k;7;R608 R609 R612 R616 R622 R628 R634
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;1k;3;R812 R815 R822
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;2.15k;2;R966 R967
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;2.1k;2;R952 R953
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;2.55k;1;R820
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;2.94k;1;R927
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;20k;1;R906
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;20k;4;R617 R623 R629 R635
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;20k;2;R830 R832
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;22;1;R520
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;220;1;R511
 Résistance 1/4 W 1 % (basse tension);Commandes;R;220;14;R721 R722 R723 R724 R725 R726 R727 R728 R729 R730 R731 R732 R733 R734
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;220;1;R610
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;220k;1;R529
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;22k;2;R517 R523
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;22k;1;R833
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;23.2k;1;R907
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;237;3;R928 R962 R971
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;255;2;R948 R957
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;26.7k;1;R908
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;261;1;R923
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;270;3;R537 R539 R541
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;287k;1;R978
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;28k;1;R944
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;2k;1;R939
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;3.3k;2;R534 R535
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;301;1;R936
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;30k;5;R802 R804 R818 R845 R848
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;31.6k;1;R909
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;33;1;R613
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;330;3;R537 R539 R541
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;33.2k;1;R974
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;33k;1;R825
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;36.5k;1;R910
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;392;1;R924
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;4.7k;1;R509
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;4.7k;1;R650
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;402;2;R963 R970
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;412;2;R949 R956
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;43.2k;1;R911
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;46.4k;1;R943
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;470;1;R840
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;470k;2;R519 R525
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;47k;1;R530
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;47k;2;R839 R842
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;487;1;R937
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;49.9k;1;R912
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;499k;1;R979
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;500;3;R805 R808 R846
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;51.1;1;R931
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;51k;1;R508
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;57.6k;2;R913 R975
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;6.2k;2;R813 R816
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;60.4;1;R916
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;63.4k;1;R941
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;649;1;R925
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;66.5;1;R917
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;68.1;1;R932
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;68.1k;1;R914
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;681;2;R964 R969
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;68k;2;R528 R533
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;698;2;R950 R955
 Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;7.5k;5;R807 R809 R810 R819 R847
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;82k;1;R538
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;7.68k;1;R940
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;76.8;1;R918
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;78.7k;1;R915
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;80.6k;1;R942
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;84.5;1;R930
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;845k;1;R980
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;887;1;R938
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;9.31k;1;R901
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;93.1;1;R919
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;95.3;1;R933
+Résistance 1/4 W 1 % (basse tension);Commandes de l'entrée;R;97.6k;1;R976
 Résistance couche métal 1/2 W 1 %;tête;R;1 1 % 0,5 W;4;R404 R414 R424 R434
 Résistance couche métal 1/2 W 1 %;tête;R;1.2M;1;R206
 Résistance couche métal 1/2 W 1 %;tête;R;1.8k;3;R204 R219 R238
@@ -226,6 +287,7 @@ ULN2803A;Commandes;ULN2803A;ULN2803A;3;U708 U709 U710
 Électrolytique basse tension;Pilotage;CP;10µ 10 V;1;C634
 Électrolytique basse tension;Boîtier d'entrée;CP;10µ 16 V;2;C519 C534
 Électrolytique basse tension;Boîtier d'entrée;CP;10µ 25 V;2;C503 C513
+Électrolytique basse tension;Commandes de l'entrée;CP;10µ 25 V;2;C913 C914
 Électrolytique basse tension;Boîtier d'entrée;CP;1µ 50 V;2;C524 C526
 Électrolytique basse tension;Pilotage;CP;2.2µ 35 V;1;C605
 Électrolytique basse tension;Pilotage;CP;220µ 10 V;1;C627
