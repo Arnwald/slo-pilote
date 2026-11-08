@@ -17,6 +17,9 @@ BUE = "Bürklin (DE)"
 RS = "RS Components"
 ED = "Electric Druid (UK)"
 BAN = "Banzai Music (DE)"
+THONK = "Thonk (UK)"
+PIHUT = "The Pi Hut (UK)"
+ROBO = "RobotShop (EU)"
 ELEC = "Distributeur électronique (Mouser, Bürklin, Distrelec…)"
 SHEET = "Découpe laser en ligne (ex. laserteile4you.de) ou atelier local"
 LOCAL = "Achat local / divers"
@@ -78,43 +81,61 @@ ITEMS = [
      "https://tubetown.net/ttstore/en/components-10662/parts-for-amps/turrets-eyeletts-boards/tt-ez-boards", 1, 7.30, 0.19, "EUR", R,
      "Alimentation"),
 
-    ("Commandes motorisées", "RV201–RV307", "Pot motorisé ALPS RK16812MG, 2 pistes (100 k log ×3, 100 k lin ×3, 20 k lin ×2, 10 k log ×1)",
+    ("Commandes motorisées", "RV201–RV307, RV802", "Pot motorisé ALPS RK16812MG, 2 pistes (100 k log ×3, 100 k lin ×3, 20 k lin ×2, 10 k log ×1, 10 k lin ×1 pour le Blend)",
      "RK16812MG", AUD,
      "https://www.audiophonics.fr/en/potentiometres-potentiometre-alps/alps-rk16812mg-2-way-motorized-potentiometer-d-log-100k-p-5028.html",
-     9, 15.90, 0.20, "EUR", R, "12,90 à 15,90 € chez Audiophonics selon valeur et stock ; 27,79 € chez Bürklin. "
+     10, 15.90, 0.20, "EUR", R, "12,90 à 15,90 € chez Audiophonics selon valeur et stock ; 27,79 € chez Bürklin. "
      "Mid : 10 k log avec 3,3 k en parallèle (à 1 dB près d'un 2,5 k), la seconde piste sert de capteur"),
-    ("Commandes motorisées", "", "Boutons aluminium, axe 6 mm", "", LOCAL, "", 10, 4.00, 0.19, "EUR", E, ""),
+    ("Commandes motorisées", "", "Boutons aluminium, axe 6 mm", "", LOCAL, "", 11, 4.00, 0.19, "EUR", E, "10 pots et l'encodeur"),
 
     ("Commutation (LDR)", "", "Optocoupleur LED/LDR Xvive VTL5C1", "Xvive VTL5C1", ED,
      "https://electricdruid.net/product/xvive-vtl5c1/", 16, 4.95, 0.0, "GBP", R, "14 en service + 2 de réserve ; prix hors TVA ; aussi chez Tube-Town"),
-    ("Commutation (LDR)", "U710–U712", "Pilote ULN2803 + résistances", "ULN2803A", ELEC, "", 3, 1.00, 0.19, "EUR", E, ""),
-    ("Commutation (LDR)", "U708, U709", "Extenseur 16 E/S I²C", "MCP23017-E/SO", ELEC, "", 2, 1.50, 0.19, "EUR", E, ""),
+    ("Commutation (LDR)", "U708–U710", "Pilote ULN2803 + résistances", "ULN2803A (DIP-18)", ELEC, "", 3, 1.00, 0.19, "EUR", E, ""),
+    ("Commutation (LDR)", "U706, U707", "Extenseur 16 E/S I²C", "MCP23017-E/SP (DIP-28)", ELEC, "", 2, 1.50, 0.19, "EUR", E, ""),
 
-    ("Pilotage", "", "Carte STM32G474 (Nucleo-64)", "NUCLEO-G474RE", RS,
-     "https://ie.rs-online.com/web/p/microcontroller-development-tools/1939786", 1, 18.02, 0.0, "EUR", R, "Prix hors TVA"),
-    ("Pilotage", "U703–U707", "Module double pont en H", "DRV8833", LOCAL, "", 5, 3.00, 0.19, "EUR", E, ""),
-    ("Pilotage", "U701, U702", "PWM 16 voies I²C", "PCA9685PW", ELEC, "", 2, 2.50, 0.19, "EUR", E, ""),
-    ("Pilotage", "", "Écran 2,4\" SPI", "TFT ou OLED", LOCAL, "", 1, 10.00, 0.19, "EUR", E, ""),
+    ("Pilotage", "A601", "Raspberry Pi 4 modèle B, 2 Go (contrôleur unique, Ethernet intégré)", "RPI4-MODBP-2GB", BUE,
+     "https://www.buerklin.com/en/p/raspberry-pi/single-board-computer/rpi4-modbp-2gb/64S3341", 1, 58.83, 0.19, "EUR", R,
+     "Wi-Fi et Bluetooth désactivés, système en lecture seule, refroidissement passif"),
+    ("Pilotage", "", "Carte microSD d'endurance 16 Go", "", LOCAL, "", 1, 15.00, 0.19, "EUR", E, ""),
+    ("Pilotage", "A602", "HAT CAN (MCP2515 + SN65HVD230) pour le robot de micro", "Waveshare RS485 CAN HAT", PIHUT,
+     "https://thepihut.com/products/rs485-can-hat-for-raspberry-pi", 1, 12.60, 0.20, "GBP", R, "Prix soldé ; partie RS485 inutilisée"),
+    ("Pilotage", "U701–U705", "Contrôleur double de moteurs CC, I²C (pots motorisés)", "Pololu Motoron M2T256, picots soudés", ROBO,
+     "https://eu.robotshop.com/products/pololu-motoron-m2t256-dual-i2c-motor-controller-header-pins-soldered", 5, 21.68, 0.20, "EUR", R,
+     "Prix soldé, 29,90 € au prix normal ; un 6e pour motoriser plus tard le drive et le tone de la TS"),
+    ("Pilotage", "U609", "Régulateur abaisseur 5 V 3,2 A (alimentation du Pi)", "Pololu D36V28F5", ROBO, "", 1, 16.00, 0.20, "EUR", E, ""),
+    ("Pilotage", "U610, U611", "CAN 8 voies 12 bits SPI (pistes capteur, bias, enveloppe du gate)", "MCP3208-CI/P (DIP-16)", ELEC, "", 2,
+     4.50, 0.19, "EUR", E, ""),
+    ("Pilotage", "U612, U613", "CNA double 12 bits SPI (VCA, seuil et fondu du gate)", "MCP4822-E/P (DIP-8)", ELEC, "", 2, 3.00, 0.19,
+     "EUR", E, ""),
+    ("Pilotage", "", "Écran 2,4\" SPI", "TFT ST7789", LOCAL, "", 1, 10.00, 0.19, "EUR", E, ""),
     ("Pilotage", "", "Encodeur rotatif à poussoir", "EC11", ELEC, "", 1, 1.50, 0.19, "EUR", E, ""),
     ("Pilotage", "", "Interface MIDI (6N138 + passifs)", "", ELEC, "", 1, 3.00, 0.19, "EUR", E, ""),
     ("Pilotage", "U601–U603", "LM7815, LM7915, module abaisseur 5 V, redresseur et filtrage", "", ELEC, "", 1, 12.00, 0.19, "EUR", E, ""),
-    ("Pilotage", "U604, F601", "Module secteur 24 V 60 W à bornier (robot et 5 V)", "Mean Well IRM-60-24ST", ELEC, "", 1, 22.00, 0.19, "EUR", E,
-     "Fusible T1 A en amont"),
-    ("Pilotage", "U608", "Module Ethernet W5500 (SPI) avec RJ45", "W5500", LOCAL, "", 1, 6.00, 0.19, "EUR", E,
-     "Pas de Wi-Fi : page de commande et OSC sur câble"),
-    ("Pilotage", "U607", "Module émetteur-récepteur CAN 3,3 V", "SN65HVD230", LOCAL, "", 1, 3.00, 0.19, "EUR", E, "Bus du robot de micro"),
-    ("Pilotage", "", "Mesure du bias (ampli op quadruple)", "", ELEC, "", 1, 2.00, 0.19, "EUR", E, ""),
-    ("Pilotage", "", "Plaques de prototypage, connecteurs, nappes", "", LOCAL, "", 1, 20.00, 0.19, "EUR", E, ""),
+    ("Pilotage", "U604, F601", "Module secteur 24 V 60 W à bornier (robot, moteurs, Pi)", "Mean Well IRM-60-24ST", ELEC, "", 1, 22.00, 0.19,
+     "EUR", E, "Fusible T1 A en amont"),
+    ("Pilotage", "U606", "Mesure du bias (ampli op quadruple 3,3 V)", "MCP6004-I/P (DIP-14)", ELEC, "", 1, 2.00, 0.19, "EUR", E, ""),
+    ("Pilotage", "", "Carte d'interface traversante, connecteurs, nappes, câble de la barrette des moteurs", "", LOCAL, "", 1, 25.00, 0.19,
+     "EUR", E, "Plaque à pastilles ou circuit imprimé traversant commandé nu"),
     ("Pilotage", "", "Boîtier de blindage", "", LOCAL, "", 1, 8.00, 0.19, "EUR", E, ""),
 
-    ("Boîtier d'entrée", "", "Pot numérique 100 k / 10 k, 256 pas, 36 V", "MCP41HV51-104E/ST, -103E/ST", RS,
-     "https://uk.rs-online.com/web/p/digital-potentiometers/0649547", 3, 1.50, 0.0, "GBP", R, "Prix hors TVA, par 2"),
-    ("Boîtier d'entrée", "", "VCA (noise gate)", "THAT2181AS08-U", BAN,
-     "https://www.banzaimusic.com/THAT-2181AS08-U.html", 1, 14.67, 0.19, "EUR", R, ""),
-    ("Boîtier d'entrée", "", "Amplis op doubles", "", ELEC, "", 4, 1.00, 0.19, "EUR", E, ""),
-    ("Boîtier d'entrée", "", "DAC double 12 bits", "MCP4822", ELEC, "", 1, 3.00, 0.19, "EUR", E, ""),
-    ("Boîtier d'entrée", "", "Relais signal (bypass, insert, diodes)", "", ELEC, "", 4, 2.00, 0.19, "EUR", E, ""),
-    ("Boîtier d'entrée", "", "Passifs et diodes d'écrêtage", "", ELEC, "", 1, 8.00, 0.19, "EUR", E, ""),
+    ("Boîtier d'entrée et gate", "U802, U808", "Quadruple VCA (mélange TS / HM-2 ; noise gate)", "Alfa AS2164 (DIP-16)", THONK,
+     "https://www.thonk.co.uk/shop/as2164/", 2, 5.75, 0.0, "GBP", R, "Prix hors TVA ; brochage SSM2164 / V2164"),
+    ("Boîtier d'entrée et gate", "U503, U505–U507", "Ampli op double 4558 (TS808, clone HM-2)", "NJM4558D", ELEC, "", 4, 0.60, 0.19, "EUR",
+     E, ""),
+    ("Boîtier d'entrée et gate", "U501, U801, U803, U807", "Ampli op double faible bruit", "OPA2134PA", ELEC, "", 4, 4.00, 0.19, "EUR", E,
+     ""),
+    ("Boîtier d'entrée et gate", "U804–U806", "Commandes et détection du gate", "2 × TL074CN, LM393N", ELEC, "", 1, 2.00, 0.19, "EUR", E,
+     ""),
+    ("Boîtier d'entrée et gate", "Q501, Q502, D506, D507", "Transistors et diodes germanium de la HM-2", "BC550C, BC560C, 2 × 1N34A", ELEC,
+     "", 1, 2.50, 0.19, "EUR", E, "Remplacent les 2SC2240, 2SA970 et 1S188FM d'origine"),
+    ("Boîtier d'entrée et gate", "RV501–RV505, RV801", "Ajustables multitours (drive, tone, dist, Color Mix ×2, release)",
+     "Bourns 3296W", ELEC, "", 6, 2.00, 0.19, "EUR", E, ""),
+    ("Boîtier d'entrée et gate", "U502, U504, U809", "Régulateurs 78L09 et sonde de température", "2 × 78L09, DS18B20", ELEC, "", 1, 4.00,
+     0.19, "EUR", E, ""),
+    ("Boîtier d'entrée et gate", "K501–K503", "Relais signal (TS, insert, polarité du chemin B)", "Omron G6K-2", ELEC, "", 3, 2.00, 0.19,
+     "EUR", E, ""),
+    ("Boîtier d'entrée et gate", "", "Passifs (film, électrolytiques, résistances 1 %) et diodes", "", ELEC, "", 1, 15.00, 0.19, "EUR", E,
+     ""),
 
     ("Connectique et façade", "", "Jack d'entrée", "Neutrik NMJ4HC-S", TT,
      "https://tubetown.net/ttstore/en/components-10662/jacks-plugs/jacks-6-3-mm", 1, 1.65, 0.19, "EUR", R, ""),
@@ -153,7 +174,7 @@ ITEMS = [
 ]
 
 SHIPPING = [  # supplier, CHF estimate for shipping + Swiss clearance fee
-    (TT, 35), (TAD, 20), (THO, 15), (AUD, 20), (RS, 15), (ED, 15), (BAN, 15), (ELEC, 20), (BUE, 15),
+    (TT, 35), (TAD, 20), (THO, 15), (AUD, 20), (ED, 15), (ELEC, 20), (BUE, 15), (THONK, 15), (PIHUT, 15), (ROBO, 20),
 ]
 
 FONT = "Arial"

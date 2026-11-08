@@ -20,7 +20,13 @@ Prérequis : ngspice (≥ 42), Python 3 avec numpy. Chaque script se lance depui
   - `drive_pi=True` : la source attaque directement l'entrée du déphaseur ;
   - `noise_req=True` : résistances de bruit équivalentes (2,5/gm) dans les grilles, pour les analyses de bruit.
 - `sim.py` : lancement de ngspice (transitoire, AC, bruit) et analyse harmonique.
-- `ts.py` : Tube Screamer TS808 (9 V) et version pilotable (±15 V, MCP41HV51).
+- `ts.py` : Tube Screamer TS808 d'origine (9 V), retenu pour l'entrée, et l'ancienne version à potentiomètres numériques
+  (±15 V, MCP41HV51), abandonnée.
+- `hm2.py` : Boss HM-2 (MIJ) avec les valeurs du schéma Boss : préampli à transistors, Dist, écrêtage asymétrique,
+  zone morte germanium, Color Mix à gyrateurs (84 Hz, 0,95 et 1,26 kHz : +20 à +22 dB à fond), sortie. Positions des
+  potentiomètres en fraction de course, loi linéaire.
+- `slo.py`, option `gate_buf=True` : la VCA du noise gate entre la sélection des masters (`piin`) et le condensateur de
+  liaison du déphaseur, prise comme un tampon idéal de gain 1 (nœud `pidr`).
 
 ## Campagne de tests
 

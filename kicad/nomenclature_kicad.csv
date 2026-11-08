@@ -1,25 +1,45 @@
 Catégorie;Ensemble;Symbole;Valeur;Quantité;Repères
 6N138;Pilotage;6N138;6N138;1;U605
+78L09;Boîtier d'entrée;78L09;78L09;2;U502 U504
 78XX;Pilotage;78XX;LM7815;1;U601
 79XX;Pilotage;79XX;LM7915;1;U602
+AS2164;VCA et noise gate;AS2164;AS2164;2;U802 U808
+Ajustable;Boîtier d'entrée;POT;10k trim (Color Mix H);1;RV505
+Ajustable;Boîtier d'entrée;POT;10k trim (Color Mix L);1;RV504
+Ajustable;VCA et noise gate;POT;1M trim (Release);1;RV801
+Ajustable;Boîtier d'entrée;POT;20k trim (Tone);1;RV502
+Ajustable;Boîtier d'entrée;POT;250k trim (Dist);1;RV503
 Ajustable;tête;POT;25k trim;4;RV101 RV102 RV103 RV104
-Ajustable;Boîtier d'entrée;POT;50k trim (SYM);1;RV501
+Ajustable;Boîtier d'entrée;POT;500k trim (Drive);1;RV501
 BOLT;tête;BOLT;Point de masse unique;1;E102
 BOLT;tête;BOLT;Terre secteur;1;E101
-BUCK_MOD;Pilotage;BUCK_MOD;LM2596 → 5,0 V;1;U603
-CAN_MOD;Pilotage;CAN_MOD;SN65HVD230;1;U607
-Condensateur céramique / film basse tension;Boîtier d'entrée;C;100n;11;C510 C513 C514 C515 C516 C517 C518 C519 C520 C521 C522
-Condensateur céramique / film basse tension;Commandes;C;100n;18;C701 C702 C703 C704 C705 C706 C707 C708 C709 C711 C712 C713 C714 C715 C716 C717 C718 C719
-Condensateur céramique / film basse tension;Pilotage;C;100n;7;C610 C611 C612 C613 C614 C615 C622
-Condensateur céramique / film basse tension;Boîtier d'entrée;C;100p;1;C501
+BUCK_MOD;Pilotage;BUCK_MOD;LM2596 → 5,0 V 3 A;1;U603
+BUCK_MOD;Pilotage;BUCK_MOD;Pololu D36V28F5 → 5,0 V 3,2 A;1;U609
+CAN_HAT;Pilotage;CAN_HAT;Waveshare RS485 CAN HAT;1;A602
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;100n;8;C504 C514 C536 C537 C538 C539 C540 C541
+Condensateur céramique / film basse tension;Commandes;C;100n;20;C701 C702 C703 C704 C705 C706 C707 C708 C709 C710 C711 C712 C713 C714 C715 C716 C717 C718 C719 C720
+Condensateur céramique / film basse tension;Pilotage;C;100n;11;C610 C611 C612 C613 C614 C615 C623 C630 C631 C632 C633
+Condensateur céramique / film basse tension;VCA et noise gate;C;100n;17;C812 C816 C817 C818 C819 C820 C821 C822 C823 C824 C825 C826 C827 C828 C829 C830 C831
+Condensateur céramique / film basse tension;VCA et noise gate;C;100n film;1;C809
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;100p;4;C501 C518 C521 C522
+Condensateur céramique / film basse tension;VCA et noise gate;C;100p;1;C814
 Condensateur céramique / film basse tension;Pilotage;C;10n;3;C607 C608 C609
-Condensateur céramique / film basse tension;Boîtier d'entrée;C;10µ bipolaire;1;C508
-Condensateur céramique / film basse tension;Boîtier d'entrée;C;1µ;1;C511
-Condensateur céramique / film basse tension;Boîtier d'entrée;C;1µ film;2;C502 C507
-Condensateur céramique / film basse tension;Boîtier d'entrée;C;220n;3;C504 C505 C506
-Condensateur céramique / film basse tension;Boîtier d'entrée;C;270p;1;C503
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;1n;1;C525
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;1µ film;3;C506 C511 C535
+Condensateur céramique / film basse tension;VCA et noise gate;C;1µ film;5;C806 C807 C808 C810 C811
+Condensateur céramique / film basse tension;VCA et noise gate;C;2.2µ film;2;C801 C803
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;220n;2;C509 C510
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;330n;2;C502 C512
 Condensateur céramique / film basse tension;Pilotage;C;330n;1;C603
-Condensateur céramique / film basse tension;Boîtier d'entrée;C;82p;1;C509
+Condensateur céramique / film basse tension;VCA et noise gate;C;390p;1;C805
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;4.7n film;1;C533
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;470p;1;C527
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;47n;1;C508
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;47n film;3;C517 C520 C523
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;51p;1;C507
+Condensateur céramique / film basse tension;VCA et noise gate;C;560p;3;C802 C804 C813
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;6.8n film;1;C531
+Condensateur céramique / film basse tension;Boîtier d'entrée;C;68n film;1;C529
 Condensateur film 63 V;tête;C;0.12µ 63 V;1;C311
 Condensateur film 63 V;tête;C;0.1µ 63 V;1;C312
 Condensateur film 63 V;tête;C;0.47µ 63 V;4;C201 C202 C211 C212
@@ -43,13 +63,15 @@ Condensateur mica / céramique HT (500 V);tête;C;4.7n;2;C207 C313
 Condensateur mica / céramique HT (500 V);tête;C;47p;1;C309
 DIN5;Pilotage;DIN5;MIDI IN;1;J603
 DIN5;Pilotage;DIN5;MIDI THRU;1;J604
-DRV8833_MOD;Commandes;DRV8833_MOD;DRV8833;5;U703 U704 U705 U706 U707
+DS18B20;VCA et noise gate;DS18B20;DS18B20;1;U809
+Diode 1N34A;Boîtier d'entrée;D;1N34A;2;D506 D507
 Diode 1N4007;Pilotage;D;1N4007;6;D601 D602 D603 D604 D614 D615
 Diode 1N4007;tête;D;1N4007;1;D105
+Diode 1N4148;Boîtier d'entrée;D;1N4148;5;D503 D504 D505 D508 D509
 Diode 1N4148;Pilotage;D;1N4148;1;D605
-Diode 1N914;Boîtier d'entrée;D;1N914;3;D501 D502 D505
-Diode BAT54;Pilotage;D;BAT54;8;D606 D607 D608 D609 D610 D611 D612 D613
-Diode LED;Boîtier d'entrée;D;LED rouge;2;D503 D504
+Diode 1N4148;VCA et noise gate;D;1N4148;4;D810 D811 D812 D815
+Diode 1N914;Boîtier d'entrée;D;1N914;2;D501 D502
+Diode BAT85;Pilotage;D;BAT85;8;D606 D607 D608 D609 D610 D611 D612 D613
 Diode UF4007;tête;D;UF4007;4;D101 D102 D103 D104
 EC11;Pilotage;EC11;EC11;1;SW601
 FUSE;Pilotage;FUSE;PTC 2,5 A;1;F602
@@ -65,21 +87,20 @@ JACK_TS;Boîtier d'entrée;JACK_TS;Send;1;J502
 JACK_TSN;Boîtier d'entrée;JACK_TSN;Entrée guitare;1;J501
 L;tête;L;10 H (TT-CK10);1;L101
 LDR VTL5C1;tête;VTL5C1;VTL5C1;14;LDR201 LDR202 LDR203 LDR204 LDR205 LDR206 LDR207 LDR208 LDR209 LDR210 LDR301 LDR302 LDR303 LDR304
+LM393;VCA et noise gate;LM393;LM393;1;U806
 Lampe 12AU7;tête;12AU7;ECC82;2;V4 V6
 Lampe 12AX7;tête;12AX7;ECC83;4;V1 V2 V3 V5
 Lampe 6L6GC;tête;6L6GC;6L6GC;4;V7 V8 V9 V10
 M12_5;Pilotage;M12_5;Robot;1;J605
-MCP23017;Commandes;MCP23017;MCP23017;2;U708 U709
-MCP41HV51;Boîtier d'entrée;MCP41HV51;MCP41HV51-103 (Tone);1;U503
-MCP41HV51;Boîtier d'entrée;MCP41HV51;MCP41HV51-104 (Drive);1;U502
-MCP41HV51;Boîtier d'entrée;MCP41HV51;MCP41HV51-104 (Level);1;U505
-MCP4822;Boîtier d'entrée;MCP4822;MCP4822;1;U508
-MCP6002;Boîtier d'entrée;MCP6002;MCP6002;1;U509
-MCP6004;Pilotage;MCP6004;MCP6004;1;U606
-NUCLEO_G474RE;Pilotage;NUCLEO_G474RE;NUCLEO-G474RE;1;A601
-OPA2134;Boîtier d'entrée;OPA2134;OPA2134;3;U501 U504 U506
+MCP23017;Commandes;MCP23017;MCP23017-E/SP;2;U706 U707
+MCP3208;Pilotage;MCP3208;MCP3208-CI/P;2;U610 U611
+MCP4822;Pilotage;MCP4822;MCP4822-E/P;2;U612 U613
+MCP6004;Pilotage;MCP6004;MCP6004-I/P;1;U606
+MOTORON_M2T;Commandes;MOTORON_M2T;Motoron M2T256;5;U701 U702 U703 U704 U705
+NJM4558;Boîtier d'entrée;NJM4558;NJM4558D;4;U503 U505 U506 U507
+OPA2134;Boîtier d'entrée;OPA2134;OPA2134;1;U501
+OPA2134;VCA et noise gate;OPA2134;OPA2134;3;U801 U803 U807
 OT_SLO;tête;OT_SLO;TT-SLO100;1;T401
-PCA9685;Commandes;PCA9685;PCA9685;2;U701 U702
 PT_SLO;tête;PT_SLO;TT-SLO100;1;T101
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;100k lin (Depth);1;RV307
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;100k lin (Normal Gain);1;RV202
@@ -87,10 +108,14 @@ Pot motorisé ALPS RK16812MG;tête;ALPS_2G;100k lin (OD Gain);1;RV201
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;100k log (Bass);1;RV302
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;100k log (Master Normal);1;RV305
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;100k log (Master OD);1;RV304
+Pot motorisé ALPS RK16812MG;Commandes;ALPS_2G;10k lin (Blend);1;RV802
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;10k log (Mid);1;RV303
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;20k lin (Presence);1;RV306
 Pot motorisé ALPS RK16812MG;tête;ALPS_2G;20k lin (Treble);1;RV301
-Relais signal 2RT 5 V;Boîtier d'entrée;RELAY_2C;G6K-2 5 V;4;K501 K502 K503 K504
+Q_NPN;Boîtier d'entrée;Q_NPN;BC550C;1;Q501
+Q_PNP;Boîtier d'entrée;Q_PNP;BC560C;1;Q502
+RPI4_40P;Pilotage;RPI4_40P;Raspberry Pi 4 B (2 Go);1;A601
+Relais signal 2RT 5 V;Boîtier d'entrée;RELAY_2C;G6K-2 5 V;3;K501 K502 K503
 Relais signal 2RT 5 V;tête;RELAY_2C;G6K-2 5 V;2;K201 K202
 Résistance 1 à 3 W;tête;R;100k 1 W;2;R225 R239
 Résistance 1 à 3 W;tête;R;10k 2 W;1;R109
@@ -103,27 +128,53 @@ Résistance 1 à 3 W;tête;R;330k 3 W;2;R124 R128
 Résistance 1 à 3 W;tête;R;470 1 W;4;R403 R413 R423 R433
 Résistance 1 à 3 W;tête;R;47k 2 W;1;R209
 Résistance 1 à 3 W;tête;R;68k 1 W;1;R110
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;1.5M;1;R850
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;10;1;R614
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;100;2;R509 R519
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;100k;3;R510 R522 R524
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;10k;6;R503 R504 R512 R520 R521 R523
-Résistance 1/4 W 1 % (basse tension);Pilotage;R;10k;13;R603 R604 R605 R606 R607 R611 R615 R618 R619 R620 R621 R627 R633
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;150;1;R507
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;100;1;R545
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;100;3;R811 R841 R849
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;100k;7;R513 R518 R524 R536 R540 R544 R546
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;100k;3;R801 R806 R826
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;10M;1;R835
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;10k;13;R503 R504 R505 R506 R507 R514 R515 R521 R527 R531 R532 R542 R543
+Résistance 1/4 W 1 % (basse tension);Commandes;R;10k;1;R740
+Résistance 1/4 W 1 % (basse tension);Pilotage;R;10k;11;R603 R604 R605 R606 R607 R611 R615 R621 R627 R633 R640
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;10k;11;R803 R814 R817 R821 R827 R828 R829 R831 R834 R843 R851
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;120;1;R526
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;120k;1;R836
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;150;1;R522
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;15k;1;R837
 Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;1M;1;R502
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;1k;4;R501 R505 R506 R508
-Résistance 1/4 W 1 % (basse tension);Commandes;R;1k;9;R701 R702 R703 R704 R705 R706 R707 R708 R709
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;1M;1;R844
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;1k;4;R501 R510 R512 R516
+Résistance 1/4 W 1 % (basse tension);Commandes;R;1k;10;R701 R702 R703 R704 R705 R706 R707 R708 R709 R710
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;1k;7;R608 R609 R612 R616 R622 R628 R634
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;20k;1;R513
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;1k;3;R812 R815 R822
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;2.55k;1;R820
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;20k;4;R617 R623 R629 R635
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;20k;2;R830 R832
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;22;1;R520
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;220;1;R511
 Résistance 1/4 W 1 % (basse tension);Commandes;R;220;14;R721 R722 R723 R724 R725 R726 R727 R728 R729 R730 R731 R732 R733 R734
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;220;1;R610
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;30k;1;R511
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;220k;1;R529
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;22k;2;R517 R523
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;3.3k;2;R534 R535
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;30k;5;R802 R804 R818 R845 R848
 Résistance 1/4 W 1 % (basse tension);Pilotage;R;33;1;R613
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;4.7k;1;R517
-Résistance 1/4 W 1 % (basse tension);Pilotage;R;4.7k;2;R601 R602
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;5.1k;2;R514 R516
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;680;1;R518
-Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;680k;1;R515
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;330;3;R537 R539 R541
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;33k;1;R825
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;4.7k;1;R509
+Résistance 1/4 W 1 % (basse tension);Pilotage;R;4.7k;1;R650
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;470;1;R840
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;470k;2;R519 R525
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;47k;1;R530
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;47k;3;R833 R839 R842
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;500;3;R805 R808 R846
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;51k;1;R508
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;6.2k;2;R813 R816
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;68k;2;R528 R533
+Résistance 1/4 W 1 % (basse tension);VCA et noise gate;R;7.5k;5;R807 R809 R810 R819 R847
+Résistance 1/4 W 1 % (basse tension);Boîtier d'entrée;R;82k;1;R538
 Résistance couche métal 1/2 W 1 %;tête;R;1 1 % 0,5 W;4;R404 R414 R424 R434
 Résistance couche métal 1/2 W 1 %;tête;R;1.2M;1;R206
 Résistance couche métal 1/2 W 1 %;tête;R;1.8k;3;R204 R219 R238
@@ -155,10 +206,9 @@ SW_1P3T;tête;SW_1P3T;Impédance;1;SW401
 SW_DPST;tête;SW_DPST;Power;1;SW101
 SW_SPST;tête;SW_SPST;Standby;1;SW102
 TFT_ST7789;Pilotage;TFT_ST7789;"TFT 2,4"" SPI";1;J601
-THAT2181;Boîtier d'entrée;THAT2181;THAT2181AS08;1;U507
+TL074;VCA et noise gate;TL074;TL074;2;U804 U805
 T_LV;Pilotage;T_LV;2 × 15 V 10 VA;1;T601
-ULN2803A;Commandes;ULN2803A;ULN2803A;3;U710 U711 U712
-W5500_MOD;Pilotage;W5500_MOD;Module W5500;1;U608
+ULN2803A;Commandes;ULN2803A;ULN2803A;3;U708 U709 U710
 Électrolytique (tête);tête;CP;100µ 160 V;2;C111 C112
 Électrolytique (tête);tête;CP;10µ 550 V;3;C106 C107 C110
 Électrolytique (tête);tête;CP;220µ 25 V;1;C304
@@ -167,10 +217,18 @@ W5500_MOD;Pilotage;W5500_MOD;Module W5500;1;U608
 Électrolytique (tête);tête;CP;47µ 100 V;1;C113
 Électrolytique (tête);tête;CP;47µ 160 V;1;C114
 Électrolytique (tête);tête;CP;47µ 550 V;3;C105 C108 C109
+Électrolytique basse tension;Boîtier d'entrée;CP;0.15µ 35 V;1;C530
+Électrolytique basse tension;Boîtier d'entrée;CP;0.1µ 35 V;1;C532
+Électrolytique basse tension;Boîtier d'entrée;CP;1.5µ 35 V;1;C528
 Électrolytique basse tension;Pilotage;CP;1000µ 35 V;2;C601 C602
-Électrolytique basse tension;Boîtier d'entrée;CP;10µ;1;C512
-Électrolytique basse tension;Boîtier d'entrée;CP;10µ 25 V;2;C523 C524
+Électrolytique basse tension;Pilotage;CP;10µ 10 V;1;C634
+Électrolytique basse tension;Boîtier d'entrée;CP;10µ 16 V;2;C519 C534
+Électrolytique basse tension;Boîtier d'entrée;CP;10µ 25 V;2;C503 C513
+Électrolytique basse tension;Boîtier d'entrée;CP;1µ 50 V;2;C524 C526
 Électrolytique basse tension;Pilotage;CP;2.2µ 35 V;1;C605
+Électrolytique basse tension;Pilotage;CP;220µ 10 V;1;C627
 Électrolytique basse tension;Pilotage;CP;22µ 25 V;2;C604 C606
+Électrolytique basse tension;VCA et noise gate;CP;22µ 25 V;2;C832 C833
+Électrolytique basse tension;Commandes;CP;470µ 10 V;1;C730
 Électrolytique basse tension;Pilotage;CP;470µ 35 V;1;C620
-Électrolytique basse tension;Pilotage;CP;47µ 10 V;1;C621
+Électrolytique basse tension;Boîtier d'entrée;CP;47µ 16 V;3;C505 C515 C516

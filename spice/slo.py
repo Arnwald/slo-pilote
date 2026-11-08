@@ -82,9 +82,11 @@ def netlist(variant="orig", gain_od=0.7, gain_n=0.5, treble=0.5, bass=0.5, mid=0
             psu="ideal", psu_par=None, sw=None, load="r", noise_req=False, buf_filter=None,
             wcf_filter=False, bias_offsets=None, gain_od_law="lin", drive_pi=False, clipper_mode="dc", push_net="dc0",
             cex="1n", rex1="1Meg", rex2="330k", rwat="300k", bypass_sw="relay",
-            rwa="3.3k", rwk="1k", rdw="10k", rwb1="820k"):
+            rwa="3.3k", rwk="1k", rdw="10k", rwb1="820k", gate_buf=False):
     """sw: dict overriding any switch state, keys among
     ldr1 ldr2 ldr3 ldr4 ldrx mute push br cr1 cr2 cl1 cl2 bp1 bp2 dir ext cc20 cc22
+    gate_buf: noise-gate VCA between the master selection (piin) and the PI coupling capacitor, taken as an
+    ideal unity buffer (op-amp buffer, VCA at 0 dB, I/V converter) driving node pidr.
     """
     m = variant == "mod"
     if buf_filter is None:
@@ -279,7 +281,9 @@ def netlist(variant="orig", gain_od=0.7, gain_n=0.5, treble=0.5, bass=0.5, mid=0
     rtail = "14.3k" if scaled10 else "10k"
     if drive_pi:
         L += [f"Vin pis 0 {vin_spec}", "Rpis pis piin 1k"]
-    L += ["Cpi piin g5b 0.02u", "Rgl5b g5b pt 1Meg", "Rgl5a g5a pt 1Meg"]
+    if gate_buf:
+        L += ["Egate pidr 0 piin 0 1"]
+    L += [f"Cpi {'pidr' if gate_buf else 'piin'} g5b 0.02u", "Rgl5b g5b pt 1Meg", "Rgl5a g5a pt 1Meg"]
     tube("5b", "p5b", "g5b", "pk", "12AX7")
     tube("5a", "p5a", "g5a", "pk", "12AX7")
     L += ["Rpk pk pt 470", f"Rtail pt nfb {rtail}",

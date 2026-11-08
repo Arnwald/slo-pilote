@@ -1,6 +1,6 @@
-410 composants, 411 réseaux, 49 étiquettes globales
+560 composants, 455 réseaux, 55 étiquettes globales
 Structure : aucun problème
-SPICE : 168 éléments retrouvés, 0 en défaut, 5 écarts voulus, 29 propres au modèle
+SPICE : 168 éléments retrouvés, 0 en défaut, 5 écarts voulus, 30 propres au modèle
   ~ Cb3 40u → C105 47µ 550 V (+18 %)
   ~ Rat1 94000 → R210 91k (-3 %)
   ~ Cbr 5e-09 → C207 4.7n (-6 %)

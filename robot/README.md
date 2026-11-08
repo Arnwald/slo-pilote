@@ -25,11 +25,12 @@ de moins, le plus sensé est de régler l'angle à la main : retirer le pignon e
 ## Liaison avec la tête
 
 - Câble M12 code A 5 points blindé (câble capteur CANopen), 3 m : 1 blindage, 2 +24 V, 3 0 V, 4 CAN_H, 5 CAN_L.
-  Côté tête : module CAN 3,3 V sur le FDCAN1 du STM32G474, fusible réarmable 2,5 A sur le 24 V (feuille Pilotage du schéma).
+  Côté tête : HAT CAN du Raspberry Pi (Waveshare RS485 CAN HAT, MCP2515 et SN65HVD230, interface `can0` de Linux),
+  fusible réarmable 2,5 A sur le 24 V (feuille Pilotage du schéma).
 - Sur le robot, un petit bornier répartit le bus vers les trois servos, en chaîne ; 120 Ω au dernier servo.
 - 500 kbit/s ; adresses 1 (X), 2 (Y), 3 (A).
 
-## Pilotage par le firmware de la tête
+## Pilotage par le logiciel de la tête
 
 Commandes MKS SERVO42D utilisées, d'après la bibliothèque [mksservocan](https://github.com/thespaceegg/mksservocan)
 et le manuel CAN V1.0.9 de Makerbase (unités exactes à confirmer au premier essai) :
@@ -40,10 +41,10 @@ mise à zéro `0x92`, lecture du codeur `0x31`, débit et adresse `0x8A` / `0x8B
   A 360 × 14 / 148 = 34,05° par tour, soit 481 points par degré.
 - Prise d'origine au démarrage, Y d'abord en s'éloignant du baffle, puis X, puis A ; fins de course sur les entrées des servos.
 - Garde au tissu : la face avant du SM57 (rayon 16 mm, 8 mm devant la capsule) est à `D − 8 cos A − 16 |sin A|` du tissu.
-  Le firmware refuse toute cible à moins de 2 mm (paramètres par modèle de micro).
+  Le logiciel refuse toute cible à moins de 2 mm (paramètres par modèle de micro).
 - Déplacement sûr : reculer d'abord (Y), puis tourner et décaler, puis avancer.
 - Surveillance : relecture des codeurs après chaque mouvement ; un écart de suivi arrête tout (micro bloqué, obstacle).
-- Courant : le module 24 V de la tête fournit 2,5 A pour le robot et le 5 V ; le firmware déplace le robot après les pots.
+- Courant : le module 24 V de la tête fournit 2,5 A pour le robot et le 5 V ; le logiciel déplace le robot après les pots.
 - Au repos, servos désactivés 250 ms après chaque mouvement : silence et aucun champ pendant les prises.
   Les vis T8 pas 2 mm sont irréversibles ; l'arc tient par frottement et démultiplication.
 - La position du micro peut faire partie d'un preset de la tête, et se commande aussi depuis la régie en Ethernet :
@@ -83,7 +84,7 @@ mise à zéro `0x92`, lecture du codeur `0x31`, débit et adresse `0x8A` / `0x8B
 | Câble M12 code A 5 points blindé, 3 m | 1 | 12 € |
 | Bornier de répartition CAN, câbles, visserie, filament | — | 35 € |
 
-Côté tête (dans sa nomenclature) : module CAN, embase M12 et fusible, module secteur 24 V, module Ethernet et traversée.
+Côté tête (dans sa nomenclature) : HAT CAN du Pi, embase M12 et fusible, module secteur 24 V, traversée Ethernet.
 Masse : ≈ 2,8 kg avec le SM57, centre de masse au-dessus de l'adaptateur de pied.
 
 ## Montage et réglages

@@ -6,9 +6,9 @@ Net names follow the SPICE model (spice/slo.py, variant "mod") through NETMAP in
 import sys
 
 import kgen
-from kgen import Part, Project, Sheet, ic_symbol, opamp_units, Sym, Unit, Pin, rect, poly, text
+from kgen import Part, Project, Sheet, ic_symbol, opamp_units, Sym, Unit, Pin, rect, poly, text, circle
 
-P = Project("slo-pilote", "Tête 100 W pilotable, famille SLO-100", rev="0.1", date="2026-11-07",
+P = Project("slo-pilote", "Tête 100 W pilotable, famille SLO-100", rev="0.2", date="2026-11-08",
             company="Projet open source (CERN-OHL-S)",
             comments=["Schéma de référence : SLO-100 annoté par Rob Robinette (v1.6f), redessiné et modifié",
                       "Haute tension mortelle : voir la procédure de mise en route du dossier",
@@ -20,80 +20,100 @@ for n, down in P.POWER.items():
     P.symbol(kgen.power_symbol(n, down))
 
 # ---- integrated circuits and modules ------------------------------------------------------------
-P.symbol(ic_symbol("MCP41HV51", "U",
-                   [(1, "VL", "power_in"), (2, "SCK", "input"), (3, "CS", "input"), (4, "SDI", "input"),
-                    (5, "SDO", "output"), (6, "WLAT", "input"), (7, "SHDN", "input")],
-                   [(14, "V+", "power_in"), (13, "P0A"), (12, "P0W"), (11, "P0B"), (10, "V-", "power_in"),
-                    (9, "NC"), (8, "DGND", "power_in")], 17.78, "Potentiometre numerique 256 pas, 36 V, TSSOP-14"))
-P.symbol(ic_symbol("THAT2181", "U", [(1, "IN", "input"), (2, "EC+", "input"), (3, "EC-", "input"), (4, "SYM", "input")],
-                   [(7, "V+", "power_in"), (8, "OUT", "output"), (6, "GND", "power_in"), (5, "V-", "power_in")], 12.7,
-                   "VCA Blackmer, SO-8 ou SIP-8 (meme brochage)"))
+P.symbol(ic_symbol("AS2164", "U",
+                   [(2, "IIN1", "input"), (3, "VC1", "input"), (7, "IIN2", "input"), (6, "VC2", "input"),
+                    (10, "IIN3", "input"), (11, "VC3", "input"), (15, "IIN4", "input"), (14, "VC4", "input"),
+                    (1, "MODE", "input")],
+                   [(4, "IOUT1", "output"), (5, "IOUT2", "output"), (12, "IOUT3", "output"), (13, "IOUT4", "output"),
+                    None, (16, "VCC", "power_in"), (8, "GND", "power_in"), (9, "VEE", "power_in")], 15.24,
+                   "Quadruple VCA (Alfa AS2164, brochage SSM2164/V2164), DIP-16 ; -33 mV/dB, 0 V = 0 dB"))
 P.symbol(ic_symbol("MCP4822", "U", [(1, "VDD", "power_in"), (2, "CS", "input"), (3, "SCK", "input"), (4, "SDI", "input")],
                    [(8, "VOUTA", "output"), (6, "VOUTB", "output"), (5, "LDAC", "input"), (7, "VSS", "power_in")], 12.7,
-                   "CNA double 12 bits SPI"))
-P.symbol(ic_symbol("PCA9685", "U",
-                   [(28, "VDD", "power_in"), (26, "SCL", "input"), (27, "SDA", "bidirectional"), (23, "OE", "input"),
-                    (25, "EXTCLK", "input"), (1, "A0", "input"), (2, "A1", "input"), (3, "A2", "input"), (4, "A3", "input"),
-                    (5, "A4", "input"), (24, "A5", "input"), (14, "VSS", "power_in")],
-                   [(6, "LED0", "output"), (7, "LED1", "output"), (8, "LED2", "output"), (9, "LED3", "output"),
-                    (10, "LED4", "output"), (11, "LED5", "output"), (12, "LED6", "output"), (13, "LED7", "output"),
-                    (15, "LED8", "output"), (16, "LED9", "output"), (17, "LED10", "output"), (18, "LED11", "output"),
-                    (19, "LED12", "output"), (20, "LED13", "output"), (21, "LED14", "output"), (22, "LED15", "output")],
-                   20.32, "PWM 16 voies I2C, TSSOP-28"))
+                   "CNA double 12 bits SPI, DIP-8"))
+P.symbol(ic_symbol("MCP3208", "U",
+                   [(1, "CH0", "input"), (2, "CH1", "input"), (3, "CH2", "input"), (4, "CH3", "input"),
+                    (5, "CH4", "input"), (6, "CH5", "input"), (7, "CH6", "input"), (8, "CH7", "input")],
+                   [(16, "VDD", "power_in"), (15, "VREF", "input"), (13, "CLK", "input"), (11, "DIN", "input"),
+                    (12, "DOUT", "output"), (10, "CS", "input"), (14, "AGND", "power_in"), (9, "DGND", "power_in")], 15.24,
+                   "CAN 8 voies 12 bits SPI, DIP-16"))
 P.symbol(ic_symbol("MCP23017", "U",
                    [(9, "VDD", "power_in"), (12, "SCL", "input"), (13, "SDA", "bidirectional"), (15, "A0", "input"),
                     (16, "A1", "input"), (17, "A2", "input"), (18, "RESET", "input"), (20, "INTA", "output"),
                     (19, "INTB", "output"), (11, "NC"), (14, "NC"), (10, "VSS", "power_in")],
                    [(21, "GPA0"), (22, "GPA1"), (23, "GPA2"), (24, "GPA3"), (25, "GPA4"), (26, "GPA5"), (27, "GPA6"),
                     (28, "GPA7"), (1, "GPB0"), (2, "GPB1"), (3, "GPB2"), (4, "GPB3"), (5, "GPB4"), (6, "GPB5"),
-                    (7, "GPB6"), (8, "GPB7")], 20.32, "Extenseur 16 E/S I2C, SOIC-28"))
+                    (7, "GPB6"), (8, "GPB7")], 20.32, "Extenseur 16 E/S I2C, MCP23017-E/SP (DIP-28)"))
 P.symbol(ic_symbol("ULN2803A", "U", [(i, f"I{i}", "input") for i in range(1, 9)] + [(9, "GND", "power_in")],
                    [(19 - i, f"O{i}", "open_collector") for i in range(1, 9)] + [(10, "COM", "passive")], 15.24,
-                   "8 Darlington, diodes de roue libre vers COM"))
-P.symbol(ic_symbol("DRV8833_MOD", "U",
-                   [(1, "VM", "power_in"), (2, "GND", "power_in"), (3, "AIN1", "input"), (4, "AIN2", "input"),
-                    (5, "BIN1", "input"), (6, "BIN2", "input"), (7, "nSLEEP", "input"), (8, "nFAULT", "open_collector")],
-                   [(9, "AOUT1", "output"), (10, "AOUT2", "output"), (11, "BOUT1", "output"), (12, "BOUT2", "output")],
-                   17.78, "Module double pont en H DRV8833 ; numerotation du connecteur a adapter au module"))
+                   "8 Darlington, diodes de roue libre vers COM, DIP-18"))
 P.symbol(ic_symbol("6N138", "U", [(2, "A"), (3, "K"), (1, "NC"), (4, "NC")],
                    [(8, "VCC", "power_in"), (7, "VB"), (6, "VO", "open_collector"), (5, "GND", "power_in")], 12.7,
-                   "Optocoupleur MIDI"))
-P.symbol(ic_symbol("78XX", "U", [(1, "IN", "power_in")], [(3, "OUT", "power_out"), (2, "GND", "power_in")], 10.16, "Regulateur positif"))
-P.symbol(ic_symbol("79XX", "U", [(2, "IN", "power_in")], [(3, "OUT", "power_out"), (1, "GND", "power_in")], 10.16, "Regulateur negatif"))
+                   "Optocoupleur MIDI, DIP-8"))
+P.symbol(ic_symbol("78XX", "U", [(1, "IN", "power_in")], [(3, "OUT", "power_out"), (2, "GND", "power_in")], 10.16, "Regulateur positif TO-220"))
+P.symbol(ic_symbol("79XX", "U", [(2, "IN", "power_in")], [(3, "OUT", "power_out"), (1, "GND", "power_in")], 10.16, "Regulateur negatif TO-220"))
+P.symbol(ic_symbol("78L09", "U", [(3, "IN", "power_in")], [(1, "OUT", "power_out"), (2, "GND", "power_in")], 10.16,
+                   "Regulateur 9 V 100 mA TO-92 (1 sortie, 2 masse, 3 entree)"))
 P.symbol(ic_symbol("BUCK_MOD", "U", [(1, "IN+", "power_in"), (2, "IN-", "power_in")],
-                   [(3, "OUT+", "power_out"), (4, "OUT-", "power_in")], 12.7, "Module abaisseur LM2596, reglé a 5,0 V"))
+                   [(3, "OUT+", "power_out"), (4, "OUT-", "power_in")], 12.7, "Module abaisseur a picots"))
 P.symbol(ic_symbol("SMPS_MOD", "PS", [("L", "AC/L", "power_in"), ("N", "AC/N", "power_in")],
                    [("V+", "+V", "power_out"), ("V-", "-V", "power_in")], 15.24,
                    "Module secteur encapsule 24 V 60 W a bornier (type Mean Well IRM-60-24ST)"))
-P.symbol(ic_symbol("W5500_MOD", "U", [(1, "3V3", "power_in"), (2, "GND", "power_in"), (3, "RSTn", "input"), (4, "INTn", "output")],
-                   [(5, "SCLK", "input"), (6, "MOSI", "input"), (7, "MISO", "output"), (8, "SCSn", "input")], 15.24,
-                   "Module Ethernet W5500 (pile TCP/IP cablee, SPI) avec RJ45 et transformateurs ; brochage du module a verifier"))
-P.symbol(ic_symbol("CAN_MOD", "U", [(1, "3V3", "power_in"), (2, "GND", "power_in"), (3, "CTX", "input"), (4, "CRX", "output")],
-                   [(5, "CANH", "bidirectional"), (6, "CANL", "bidirectional")], 15.24,
-                   "Module emetteur-recepteur CAN 3,3 V (SN65HVD230), terminaison 120 ohms sur le module"))
 P.symbol(ic_symbol("M12_5", "J", [(1, "SH"), (2, "V+"), (3, "V-"), (4, "CAN_H"), (5, "CAN_L")], [], 10.16,
                    "Embase M12 code A 5 points, brochage CANopen (CiA 303-1)"))
-NUC_L = ["E5V", "3V3", "GND", "SCL", "SDA", "SCK", "MOSI", "MISO", "CS_DRIVE", "CS_TONE", "CS_LEVEL", "CS_DAC",
-         "CS_TFT", "TFT_DC", "TFT_RST", "MIDI_RX", "MIDI_TX", "ENC_A", "ENC_B", "ENC_SW", "FS1", "FS2",
-         "MOT_EN", "MOT_FAULT", "PCA_OE", "ETH_SCK", "ETH_MOSI", "ETH_MISO", "ETH_CS", "ETH_INT", "ETH_RST",
-         "CAN_TX", "CAN_RX"]
-NUC_R = [f"SENSE{i}" for i in range(1, 10)] + [f"BIAS{i}" for i in range(1, 5)] + ["ENV"]
-P.symbol(ic_symbol("NUCLEO_G474RE", "A",
-                   [(n, n, "power_in" if n in ("E5V", "GND") else ("power_out" if n == "3V3" else "bidirectional")) for n in NUC_L],
-                   [(n, n, "input") for n in NUC_R], 25.4,
-                   "Carte NUCLEO-G474RE ; broches nommees par fonction, affectation aux ports dans STM32CubeMX"))
+# Raspberry Pi 4 B : 40-pin header, odd pins on the left, even pins on the right
+RPI_L = [(1, "3V3", "power_out"), (3, "GPIO2/SDA1"), (5, "GPIO3/SCL1"), (7, "GPIO4"), (9, "GND", "power_in"),
+         (11, "GPIO17"), (13, "GPIO27"), (15, "GPIO22"), (17, "3V3", "power_out"), (19, "GPIO10/MOSI0"),
+         (21, "GPIO9/MISO0"), (23, "GPIO11/SCLK0"), (25, "GND", "power_in"), (27, "ID_SD"), (29, "GPIO5"),
+         (31, "GPIO6"), (33, "GPIO13"), (35, "GPIO19/MISO1"), (37, "GPIO26"), (39, "GND", "power_in")]
+RPI_R = [(2, "5V", "power_in"), (4, "5V", "power_in"), (6, "GND", "power_in"), (8, "GPIO14/TXD0"), (10, "GPIO15/RXD0"),
+         (12, "GPIO18"), (14, "GND", "power_in"), (16, "GPIO23"), (18, "GPIO24"), (20, "GND", "power_in"),
+         (22, "GPIO25"), (24, "GPIO8/CE0"), (26, "GPIO7/CE1"), (28, "ID_SC"), (30, "GND", "power_in"),
+         (32, "GPIO12"), (34, "GND", "power_in"), (36, "GPIO16"), (38, "GPIO20/MOSI1"), (40, "GPIO21/SCLK1")]
+P.symbol(ic_symbol("RPI4_40P", "A", [(n, nm, t[0] if t else "bidirectional") for n, nm, *t in RPI_L],
+                   [(n, nm, t[0] if t else "bidirectional") for n, nm, *t in RPI_R], 30.48,
+                   "Raspberry Pi 4 modele B, connecteur 40 broches (numeros physiques)"))
+P.symbol(ic_symbol("CAN_HAT", "A", [(1, "3V3", "power_in"), (2, "GND", "power_in"), (3, "SCLK"), (4, "MOSI"), (5, "MISO"),
+                                    (6, "CE0"), (7, "INT", "output")],
+                   [("H", "CAN_H", "bidirectional"), ("L", "CAN_L", "bidirectional"), ("G", "GND_B", "passive")], 15.24,
+                   "Waveshare RS485 CAN HAT (MCP2515 12 MHz + SN65HVD230, 120 ohms) enfiche sur le Pi ; RS485 inutilise"))
+P.symbol(ic_symbol("MOTORON_M2T", "U", [(1, "VIN", "power_in"), (2, "VDD", "power_in"), (3, "SDA", "bidirectional"),
+                                        (4, "SCL", "input"), (5, "GND", "power_in")],
+                   [(6, "M1A", "output"), (7, "M1B", "output"), (8, "M2A", "output"), (9, "M2B", "output")], 15.24,
+                   "Pololu Motoron M2T256 : 2 moteurs CC, I2C, 4,5-48 V, 1,8 A ; numerotation generique, brochage a verifier"))
+P.symbol(ic_symbol("DS18B20", "U", [(3, "VDD", "power_in"), (2, "DQ", "bidirectional")], [(1, "GND", "power_in")], 10.16,
+                   "Sonde de temperature 1-Wire TO-92 (1 masse, 2 donnee, 3 alimentation)"))
 P.symbol(ic_symbol("TFT_ST7789", "J", [(1, "GND"), (2, "VCC"), (3, "SCL"), (4, "SDA"), (5, "RES"), (6, "DC"), (7, "CS"), (8, "BLK")],
                    [], 12.7, "Ecran SPI 2,4 pouces 240 x 320"))
 P.symbol(ic_symbol("EC11", "SW", [("A", "A"), ("C", "C"), ("B", "B")], [("S1", "S1"), ("S2", "S2")], 10.16,
                    "Encodeur rotatif a poussoir"))
 P.symbol(Sym("OPA2134", "U", opamp_units((3, 2, 1), (5, 6, 7)), pin_names_hidden=False, ref_at=(1.27, 6.35), val_at=(1.27, -6.35),
-             desc="Double ampli op JFET faible bruit"))
-P.symbol(Sym("MCP6002", "U", opamp_units((3, 2, 1), (5, 6, 7)), pin_names_hidden=False, ref_at=(1.27, 6.35), val_at=(1.27, -6.35),
-             desc="Double ampli op rail-a-rail 3,3 V"))
+             desc="Double ampli op JFET faible bruit, DIP-8"))
+P.symbol(Sym("NJM4558", "U", opamp_units((3, 2, 1), (5, 6, 7)), pin_names_hidden=False, ref_at=(1.27, 6.35), val_at=(1.27, -6.35),
+             desc="Double ampli op 4558 (NJM4558D), DIP-8 : Tube Screamer et HM-2"))
+P.symbol(Sym("LM393", "U", opamp_units((3, 2, 1), (5, 6, 7)), pin_names_hidden=False, ref_at=(1.27, 6.35), val_at=(1.27, -6.35),
+             desc="Double comparateur a collecteur ouvert, DIP-8"))
 q4 = opamp_units((3, 2, 1), (5, 6, 7), (4, 11))
 q4c = opamp_units((10, 9, 8), (12, 13, 14), (4, 11))
 P.symbol(Sym("MCP6004", "U", [q4[0], q4[1], q4c[0], q4c[1], q4[2]], pin_names_hidden=False, ref_at=(1.27, 6.35),
-             val_at=(1.27, -6.35), desc="Quadruple ampli op rail-a-rail 3,3 V"))
+             val_at=(1.27, -6.35), desc="Quadruple ampli op rail-a-rail 3,3 V, DIP-14"))
+P.symbol(Sym("TL074", "U", [q4[0], q4[1], q4c[0], q4c[1], q4[2]], pin_names_hidden=False, ref_at=(1.27, 6.35),
+             val_at=(1.27, -6.35), desc="Quadruple ampli op JFET, DIP-14"))
+
+
+def bjt_symbol(name, pnp, desc):
+    g = [circle(0.635, 0, 3.175), poly([(-0.635, 1.905), (-0.635, -1.905)], 0.508),
+         poly([(-0.635, 0.762), (2.54, 2.54)], 0.254), poly([(-0.635, -0.762), (2.54, -2.54)], 0.254)]
+    if pnp:
+        g.append(poly([(-0.635, -0.762), (0.508, -0.889), (0.127, -1.651), (-0.635, -0.762)], 0.254, "outline"))
+    else:
+        g.append(poly([(2.54, -2.54), (1.397, -2.413), (1.778, -1.651), (2.54, -2.54)], 0.254, "outline"))
+    return Sym(name, "Q", [Unit([Pin(1, "C", 2.54, 5.08, 270, 2.54), Pin(2, "B", -5.08, 0, 0, 4.445),
+                                 Pin(3, "E", 2.54, -5.08, 90, 2.54)], g)],
+               pin_names_hidden=True, ref_at=(5.08, 1.27), val_at=(5.08, -1.27), desc=desc)
+
+
+P.symbol(bjt_symbol("Q_NPN", False, "Transistor NPN TO-92, brochage C-B-E (BC550C)"))
+P.symbol(bjt_symbol("Q_PNP", True, "Transistor PNP TO-92, brochage C-B-E (BC560C)"))
 
 
 def two(sh, ref, sym, val, x, y, n1, n2, rot=0, **fields):
@@ -351,7 +371,7 @@ S3.note("Mid : 10 k log et 3,3 k en parallèle (2,5 k aux extrémités) ; à ±1
 X, Y = 15, 155
 S3.frame(X, Y, X + 300, Y + 140, "Déphaseur (V5), mute et contre-réaction (presence, depth)")
 ldr(S3, "LDR304", X + 15, Y + 70, "PI_IN", "GND")
-S3.add(Part("C308", "C", "20n 630 V", (X + 35, Y + 45), rotation=90, nets={1: "PI_IN", 2: "PI_GB"}))
+S3.add(Part("C308", "C", "20n 630 V", (X + 35, Y + 45), rotation=90, nets={1: "PI_DRV", 2: "PI_GB"}))
 two(S3, "R309", "R", "1M", X + 55, Y + 80, "PI_GB", "PI_TAIL")
 tube(S3, "V5", "12AX7", 2, X + 80, Y + 45, "PI_PB", "PI_GB", "PI_K")
 tube(S3, "V5", "12AX7", 1, X + 140, Y + 45, "PI_PA", "PI_GA", "PI_K")
@@ -370,6 +390,7 @@ S3.add(Part("C312", "C", "0.1µ 63 V", (X + 265, Y + 45), rotation=90, nets={1: 
 S3.add(Part("RV307", "ALPS_2G", "100k lin (Depth)", (X + 255, Y + 90), unit=1, nets={1: "SPK_4R", 2: "DEPTH_X", 3: "DEPTH_X"}))
 two(S3, "C313", "C", "4.7n", X + 280, Y + 90, "DEPTH_X", "SPK_4R")
 S3.note("PI_PB attaque V7 et V8, PI_PA attaque V9 et V10 (feuille Puissance). Contre-réaction prise sur la prise 4 Ω.", X + 5, Y + 133, 1.4)
+S3.note("PI_IN (après LDR302/303 et le mute LDR304) passe par la VCA du gate (feuille VCA) et revient en PI_DRV.", X + 5, Y + 127, 1.4)
 
 X, Y = 325, 155
 S3.frame(X, Y, X + 120, Y + 80, "Chauffage")
@@ -404,123 +425,170 @@ S4.note("Le point milieu du primaire reçoit B+1 ; la contre-réaction part de l
         15, 282, 1.5)
 
 # =================================================================================================
-# 5. Boîtier d'entrée
+# 5. Boîtier d'entrée : buffer, Tube Screamer, HM-2, sélection des chemins
 # =================================================================================================
-S5 = P.sheet(Sheet("Boîtier d'entrée", "boitier_entree.kicad_sch", "A1", "Buffer, Tube Screamer pilotable, insert, noise gate"))
+S5 = P.sheet(Sheet("Boîtier d'entrée", "boitier_entree.kicad_sch", "A1", "Buffer, Tube Screamer TS808, clone HM-2, insert"))
 X, Y = 15, 15
-S5.frame(X, Y, X + 150, Y + 110, "Entrée et buffer")
+S5.frame(X, Y, X + 200, Y + 110, "Entrée, buffer et inverseur de polarité du chemin B")
 S5.add(Part("J501", "JACK_TSN", "Entrée guitare", (X + 15, Y + 40), nets={"T": "GTR_IN", "S": "GND", "TN": "GND"}))
 S5.add(Part("R501", "R", "1k", (X + 45, Y + 38), rotation=90, nets={1: "GTR_IN", 2: "BUF_IN"}))
 two(S5, "C501", "C", "100p", X + 60, Y + 65, "BUF_IN", "GND")
 two(S5, "R502", "R", "1M", X + 72, Y + 65, "BUF_IN", "GND")
 S5.add(Part("U501", "OPA2134", "OPA2134", (X + 105, Y + 40), unit=1, nets={3: "BUF_IN", 2: "BUF_OUT", 1: "BUF_OUT"}))
-S5.add(Part("U501", "OPA2134", "OPA2134", (X + 125, Y + 85), unit=3, nets={8: "+15V", 4: "-15V"}))
+S5.add(Part("R503", "R", "10k", (X + 125, Y + 72), rotation=90, nets={1: "PB_SRC", 2: "PB_INVN"}))
+S5.add(Part("U501", "OPA2134", "OPA2134", (X + 160, Y + 75), unit=2, nets={5: "GND", 6: "PB_INVN", 7: "PB_INV"}))
+S5.add(Part("R504", "R", "10k", (X + 160, Y + 58), rotation=90, nets={1: "PB_INV", 2: "PB_INVN"}))
+S5.add(Part("U501", "OPA2134", "OPA2134", (X + 190, Y + 40), unit=3, nets={8: "+15V", 4: "-15V"}))
+S5.note("BUF_OUT attaque la TS, la HM-2, l'envoi d'insert et la détection du gate (feuille VCA).", X + 5, Y + 105, 1.4)
 
-X, Y = 175, 15
-S5.frame(X, Y, X + 300, Y + 110, "Tube Screamer : étage d'écrêtage (drive numérique 100 k)")
-S5.add(Part("C502", "C", "1µ film", (X + 15, Y + 35), rotation=90, nets={1: "BUF_OUT", 2: "TS_X1"}))
-two(S5, "R503", "R", "10k", X + 30, Y + 65, "TS_X1", "GND")
-S5.add(Part("U501", "OPA2134", "OPA2134", (X + 60, Y + 37), unit=2, nets={5: "TS_X1", 6: "TS_NF", 7: "TS_O1"}))
-S5.add(Part("R504", "R", "10k", (X + 95, Y + 25), rotation=90, nets={1: "TS_O1", 2: "TS_ND"}))
-S5.add(Part("U502", "MCP41HV51", "MCP41HV51-104 (Drive)", (X + 140, Y + 40),
-            nets={1: "+3V3", 2: "SPI_SCK", 3: "CS_DRIVE", 4: "SPI_MOSI", 5: None, 6: "GND", 7: "+3V3",
-                  14: "+15V", 13: "TS_ND", 12: "TS_NF", 11: "TS_NF", 10: "-15V", 9: "GND", 8: "GND"}))
-two(S5, "C503", "C", "270p", X + 185, Y + 30, "TS_O1", "TS_NF")
-two(S5, "R505", "R", "1k", X + 200, Y + 30, "TS_NF", "TS_NG")
-two(S5, "C504", "C", "220n", X + 200, Y + 58, "TS_NG", "GND")
-S5.add(Part("K501", "RELAY_2C", "G6K-2 5 V", (X + 225, Y + 40), unit=1, nets={1: "TS_O1", 2: "DS_TOP", 3: "DL_TOP"}))
-S5.add(Part("K501", "RELAY_2C", "G6K-2 5 V", (X + 225, Y + 95), unit=2, nets={4: None, 5: None, 6: None}))
-S5.add(Part("D501", "D", "1N914", (X + 255, Y + 25), nets={1: "DS_TOP", 2: "TS_NF"}))
-S5.add(Part("D502", "D", "1N914", (X + 255, Y + 45), nets={1: "TS_NF", 2: "DS_ASY"}))
-S5.add(Part("D505", "D", "1N914", (X + 280, Y + 45), nets={1: "DS_ASY", 2: "DS_TOP"}))
-S5.add(Part("K502", "RELAY_2C", "G6K-2 5 V", (X + 270, Y + 70), unit=1, nets={1: "DS_ASY", 2: "DS_TOP", 3: None}))
-S5.add(Part("K502", "RELAY_2C", "G6K-2 5 V", (X + 270, Y + 95), unit=2, nets={4: None, 5: None, 6: None}))
-S5.add(Part("D503", "D", "LED rouge", (X + 240, Y + 65), nets={1: "DL_TOP", 2: "TS_NF"}))
-S5.add(Part("D504", "D", "LED rouge", (X + 240, Y + 85), nets={1: "TS_NF", 2: "DL_TOP"}))
-S5.note("K501 au repos : diodes silicium ; activé : LED. K502 activé : écrêtage asymétrique (D505 en série).", X + 5, Y + 105, 1.4)
+X, Y = 225, 15
+S5.frame(X, Y, X + 360, Y + 110, "Tube Screamer TS808 d'origine (9 V) ; niveau par la VCA du chemin A")
+S5.add(Part("C506", "C", "1µ film", (X + 15, Y + 30), rotation=90, nets={1: "BUF_OUT", 2: "TS_X1"}))
+two(S5, "R507", "R", "10k", X + 30, Y + 60, "TS_X1", "TS_VB")
+S5.add(Part("U503", "NJM4558", "NJM4558D", (X + 60, Y + 32), unit=1, nets={3: "TS_X1", 2: "TS_NF", 1: "TS_O1"}))
+S5.add(Part("R508", "R", "51k", (X + 95, Y + 20), rotation=90, nets={1: "TS_O1", 2: "TS_ND"}))
+S5.add(Part("RV501", "POT", "500k trim (Drive)", (X + 120, Y + 35), nets={1: "TS_ND", 2: "TS_NF", 3: "TS_NF"}))
+two(S5, "C507", "C", "51p", X + 140, Y + 60, "TS_O1", "TS_NF")
+S5.add(Part("D501", "D", "1N914", (X + 160, Y + 25), nets={1: "TS_O1", 2: "TS_NF"}))
+S5.add(Part("D502", "D", "1N914", (X + 160, Y + 40), nets={1: "TS_NF", 2: "TS_O1"}))
+two(S5, "R509", "R", "4.7k", X + 180, Y + 60, "TS_NF", "TS_NG")
+two(S5, "C508", "C", "47n", X + 180, Y + 85, "TS_NG", "TS_VB")
+S5.add(Part("R510", "R", "1k", (X + 200, Y + 32), rotation=90, nets={1: "TS_O1", 2: "TS_TA"}))
+two(S5, "C509", "C", "220n", X + 215, Y + 60, "TS_TA", "TS_VB")
+S5.add(Part("RV502", "POT", "20k trim (Tone)", (X + 235, Y + 55), nets={3: "TS_TA", 2: "TS_TW", 1: "TS_TN"}))
+two(S5, "R511", "R", "220", X + 255, Y + 75, "TS_TW", "TS_TC")
+two(S5, "C510", "C", "220n", X + 255, Y + 95, "TS_TC", "TS_VB")
+S5.add(Part("U503", "NJM4558", "NJM4558D", (X + 285, Y + 32), unit=2, nets={5: "TS_TA", 6: "TS_TN", 7: "TS_O2"}))
+two(S5, "R512", "R", "1k", X + 300, Y + 60, "TS_O2", "TS_TN")
+S5.add(Part("C511", "C", "1µ film", (X + 320, Y + 32), rotation=90, nets={1: "TS_O2", 2: "TS_OUT"}))
+two(S5, "R513", "R", "100k", X + 340, Y + 60, "TS_OUT", "GND")
+S5.add(Part("U503", "NJM4558", "NJM4558D", (X + 340, Y + 90), unit=3, nets={8: "+9V_TS", 4: "GND"}))
+S5.note("Drive et tone sur trimmers multitours, réglés une fois au recalage sur le preset Line 6 (TS808, 1N914).",
+        X + 5, Y + 105, 1.4)
 
 X, Y = 15, 135
-S5.frame(X, Y, X + 230, Y + 110, "Tone (numérique 10 k) et level (numérique 100 k)")
-S5.add(Part("R506", "R", "1k", (X + 15, Y + 30), rotation=90, nets={1: "TS_O1", 2: "TS_TA"}))
-two(S5, "C505", "C", "220n", X + 30, Y + 60, "TS_TA", "GND")
-S5.add(Part("U503", "MCP41HV51", "MCP41HV51-103 (Tone)", (X + 75, Y + 50),
-            nets={1: "+3V3", 2: "SPI_SCK", 3: "CS_TONE", 4: "SPI_MOSI", 5: None, 6: "GND", 7: "+3V3",
-                  14: "+15V", 13: "TS_TA", 12: "TS_TWP", 11: "TS_TN", 10: "-15V", 9: "GND", 8: "GND"}))
-two(S5, "R507", "R", "150", X + 115, Y + 50, "TS_TWP", "TS_TC")
-two(S5, "C506", "C", "220n", X + 115, Y + 78, "TS_TC", "GND")
-S5.add(Part("U504", "OPA2134", "OPA2134", (X + 150, Y + 35), unit=1, nets={3: "TS_TA", 2: "TS_TN", 1: "TS_O2"}))
-two(S5, "R508", "R", "1k", X + 175, Y + 60, "TS_O2", "TS_TN")
-S5.add(Part("C507", "C", "1µ film", (X + 190, Y + 30), rotation=90, nets={1: "TS_O2", 2: "TS_LV"}))
-S5.add(Part("U505", "MCP41HV51", "MCP41HV51-104 (Level)", (X + 170, Y + 95),
-            nets={1: "+3V3", 2: "SPI_SCK", 3: "CS_LEVEL", 4: "SPI_MOSI", 5: None, 6: "GND", 7: "+3V3",
-                  14: "+15V", 13: "TS_LV", 12: "TS_LVW", 11: "GND", 10: "-15V", 9: "GND", 8: "GND"}))
-S5.add(Part("U504", "OPA2134", "OPA2134", (X + 215, Y + 75), unit=2, nets={5: "TS_LVW", 6: "TS_OUT", 7: "TS_OUT"}))
-S5.add(Part("U504", "OPA2134", "OPA2134", (X + 215, Y + 40), unit=3, nets={8: "+15V", 4: "-15V"}))
+S5.frame(X, Y, X + 570, Y + 140, "HM-2 (schéma Boss MIJ) : préampli à transistors, écrêtage, zone morte germanium (9 V)")
+S5.add(Part("C517", "C", "47n film", (X + 15, Y + 40), rotation=90, nets={1: "BUF_OUT", 2: "HM_N6"}))
+S5.add(Part("R517", "R", "22k", (X + 35, Y + 40), rotation=90, nets={1: "HM_N6", 2: "HM_B6"}))
+two(S5, "R518", "R", "100k", X + 50, Y + 75, "HM_B6", "GND")
+S5.add(Part("R519", "R", "470k", (X + 70, Y + 18), rotation=90, nets={1: "HM_C6", 2: "HM_B6"}))
+S5.add(Part("C518", "C", "100p", (X + 70, Y + 28), rotation=90, nets={1: "HM_C6", 2: "HM_B6"}))
+S5.add(Part("Q501", "Q_NPN", "BC550C", (X + 75, Y + 50), nets={1: "HM_C6", 2: "HM_B6", 3: "HM_E6"}))
+two(S5, "R520", "R", "22", X + 78, Y + 75, "HM_E6", "GND")
+two(S5, "R521", "R", "10k", X + 95, Y + 30, "HM_S", "HM_C6")
+two(S5, "R522", "R", "150", X + 105, Y + 70, "HM_C6", "HM_N49")
+two(S5, "C519", "CP", "10µ 16 V", X + 105, Y + 95, "HM_N49", "HM_P7")
+S5.add(Part("RV503", "POT", "250k trim (Dist)", (X + 125, Y + 115), nets={1: "HM_P7", 2: "GND", 3: "HM_P10"}))
+S5.add(Part("C520", "C", "47n film", (X + 125, Y + 45), rotation=90, nets={1: "HM_C6", 2: "HM_N11"}))
+S5.add(Part("R523", "R", "22k", (X + 145, Y + 45), rotation=90, nets={1: "HM_N11", 2: "HM_B7"}))
+two(S5, "R524", "R", "100k", X + 160, Y + 25, "HM_S", "HM_B7")
+S5.add(Part("R525", "R", "470k", (X + 180, Y + 80), rotation=90, nets={1: "HM_B7", 2: "HM_C7"}))
+S5.add(Part("C521", "C", "100p", (X + 180, Y + 92), rotation=90, nets={1: "HM_B7", 2: "HM_C7"}))
+S5.add(Part("Q502", "Q_PNP", "BC560C", (X + 185, Y + 50), nets={1: "HM_C7", 2: "HM_B7", 3: "HM_E7"}))
+two(S5, "R526", "R", "120", X + 200, Y + 25, "HM_S", "HM_E7")
+two(S5, "R527", "R", "10k", X + 210, Y + 75, "HM_C7", "GND")
+two(S5, "R528", "R", "68k", X + 225, Y + 25, "+9V_HM", "HM_C7")
+S5.add(Part("U505", "NJM4558", "NJM4558D", (X + 260, Y + 55), unit=2, nets={5: "HM_C7", 6: "HM_NM", 7: "HM_O1B"}))
+S5.add(Part("R529", "R", "220k", (X + 265, Y + 15), rotation=90, nets={1: "HM_O1B", 2: "HM_NM"}))
+S5.add(Part("C522", "C", "100p", (X + 265, Y + 24), rotation=90, nets={1: "HM_O1B", 2: "HM_NM"}))
+S5.add(Part("D503", "D", "1N4148", (X + 290, Y + 15), nets={1: "HM_NM", 2: "HM_O1B"}))
+S5.add(Part("D504", "D", "1N4148", (X + 290, Y + 28), nets={1: "HM_O1B", 2: "HM_D45"}))
+S5.add(Part("D505", "D", "1N4148", (X + 305, Y + 28), nets={1: "HM_D45", 2: "HM_NM"}))
+two(S5, "C523", "C", "47n film", X + 250, Y + 90, "HM_NM", "HM_N22")
+two(S5, "R530", "R", "47k", X + 250, Y + 115, "HM_N22", "HM_P10")
+S5.add(Part("C524", "CP", "1µ 50 V", (X + 315, Y + 55), rotation=90, nets={1: "HM_O1B", 2: "HM_N12"}))
+S5.add(Part("R531", "R", "10k", (X + 335, Y + 55), rotation=90, nets={1: "HM_N12", 2: "HM_N23"}))
+S5.add(Part("D506", "D", "1N34A", (X + 355, Y + 48), nets={1: "HM_N23", 2: "HM_N30"}))
+S5.add(Part("D507", "D", "1N34A", (X + 355, Y + 62), nets={1: "HM_N30", 2: "HM_N23"}))
+S5.add(Part("R532", "R", "10k", (X + 375, Y + 55), rotation=90, nets={1: "HM_N30", 2: "HM_N16"}))
+S5.add(Part("D508", "D", "1N4148", (X + 395, Y + 85), nets={1: "HM_N16", 2: "GND"}))
+S5.add(Part("D509", "D", "1N4148", (X + 395, Y + 100), nets={1: "GND", 2: "HM_N16"}))
+two(S5, "C525", "C", "1n", X + 415, Y + 90, "HM_N16", "GND")
+S5.add(Part("C526", "CP", "1µ 50 V", (X + 435, Y + 55), rotation=90, nets={1: "HM_N1A", 2: "HM_N16"}))
+two(S5, "R533", "R", "68k", X + 455, Y + 85, "HM_N1A", "HM_VB")
+S5.add(Part("U505", "NJM4558", "NJM4558D", (X + 490, Y + 57), unit=1, nets={3: "HM_N1A", 2: "HM_O1A", 1: "HM_O1A"}))
+S5.note("Q501, Q502 : BC550C et BC560C pour 2SC2240-GR et 2SA970-GR. D503-D505, D508, D509 : 1N4148 (1S2473) ; "
+        "D506, D507 : germanium 1N34A (1S188FM).", X + 5, Y + 128, 1.4)
+S5.note("Dist (RV503) : extrémités vers le collecteur de Q501 (150 Ω + 10 µF) et vers la jambe de masse de U505B ; curseur à la masse.",
+        X + 5, Y + 135, 1.4)
 
-X, Y = 255, 135
-S5.frame(X, Y, X + 220, Y + 110, "Bypass du TS et boucle d'insertion HM-2")
-S5.add(Part("K503", "RELAY_2C", "G6K-2 5 V", (X + 25, Y + 35), unit=1, nets={1: "FX1", 2: "BUF_OUT", 3: "TS_OUT"}))
-S5.add(Part("K503", "RELAY_2C", "G6K-2 5 V", (X + 25, Y + 80), unit=2, nets={4: None, 5: None, 6: None}))
-S5.add(Part("K504", "RELAY_2C", "G6K-2 5 V", (X + 75, Y + 35), unit=1, nets={1: "FX1", 2: "FX_DIRECT", 3: "SEND_A"}))
-S5.add(Part("K504", "RELAY_2C", "G6K-2 5 V", (X + 75, Y + 70), unit=2, nets={4: "FX2", 5: "FX_DIRECT", 6: "RET_IN"}))
-S5.add(Part("R509", "R", "100", (X + 120, Y + 25), rotation=90, nets={1: "SEND_A", 2: "SEND_T"}))
-S5.add(Part("J502", "JACK_TS", "Send", (X + 150, Y + 30), nets={"T": "SEND_T", "S": "GND"}))
-S5.add(Part("J503", "JACK_TS", "Return", (X + 150, Y + 60), nets={"T": "RET_IN", "S": "GND"}))
-two(S5, "R510", "R", "100k", X + 185, Y + 75, "RET_IN", "GND")
-S5.note("Au repos : TS contourné, insert contourné (FX1 relié à FX2).", X + 5, Y + 105, 1.4)
+X, Y = 15, 285
+S5.frame(X, Y, X + 570, Y + 140, "HM-2 : Color Mix (gyrateurs 84 Hz, 0,95 et 1,26 kHz) et sortie au niveau maximal")
+S5.add(Part("R534", "R", "3.3k", (X + 20, Y + 40), rotation=90, nets={1: "HM_O1A", 2: "HM_P14"}))
+S5.add(Part("U506", "NJM4558", "NJM4558D", (X + 60, Y + 42), unit=1, nets={3: "HM_P14", 2: "HM_P13", 1: "HM_O3A"}))
+S5.add(Part("R535", "R", "3.3k", (X + 65, Y + 15), rotation=90, nets={1: "HM_O3A", 2: "HM_P13"}))
+S5.add(Part("C527", "C", "470p", (X + 65, Y + 25), rotation=90, nets={1: "HM_O3A", 2: "HM_P13"}))
+S5.add(Part("RV504", "POT", "10k trim (Color Mix L)", (X + 105, Y + 85), nets={1: "HM_P14", 2: "HM_WL", 3: "HM_P13"}))
+S5.add(Part("RV505", "POT", "10k trim (Color Mix H)", (X + 135, Y + 85), nets={1: "HM_P14", 2: "HM_WH", 3: "HM_P13"}))
+for (cs, cv, cg, cgv, rb, rbv, rs, uref, unit, pins, xi, wiper, tag) in (
+        ("C528", "1.5µ 35 V", "C529", "68n", "R536", "100k", "R537", "U506", 2, (5, 6, 7), 175, "HM_WL", "1"),
+        ("C530", "0.15µ 35 V", "C531", "6.8n", "R538", "82k", "R539", "U507", 1, (3, 2, 1), 265, "HM_WH", "2"),
+        ("C532", "0.1µ 35 V", "C533", "4.7n", "R540", "100k", "R541", "U507", 2, (5, 6, 7), 355, "HM_WH", "3")):
+    x = X + xi
+    two(S5, cs, "CP", cv, x, Y + 30, wiper, f"HM_X{tag}")
+    two(S5, cg, "C", cgv + " film", x, Y + 60, f"HM_X{tag}", f"HM_G{tag}")
+    two(S5, rb, "R", rbv, x + 15, Y + 90, f"HM_G{tag}", "HM_VB")
+    S5.add(Part(rs, "R", "330", (x + 30, Y + 45), rotation=90, nets={1: f"HM_X{tag}", 2: f"HM_O{tag}"}))
+    S5.add(Part(uref, "NJM4558", "NJM4558D", (x + 55, Y + 75), unit=unit,
+                nets={pins[0]: f"HM_G{tag}", pins[1]: f"HM_O{tag}", pins[2]: f"HM_O{tag}"}))
+S5.add(Part("C534", "CP", "10µ 16 V", (X + 445, Y + 42), rotation=90, nets={1: "HM_O3A", 2: "HM_N34"}))
+S5.add(Part("R542", "R", "10k", (X + 465, Y + 42), rotation=90, nets={1: "HM_N34", 2: "HM_LV"}))
+two(S5, "R543", "R", "10k", X + 485, Y + 70, "HM_LV", "GND")
+S5.add(Part("C535", "C", "1µ film", (X + 505, Y + 42), rotation=90, nets={1: "HM_LV", 2: "HM_OUT"}))
+two(S5, "R544", "R", "100k", X + 525, Y + 70, "HM_OUT", "GND")
+S5.note("Color Mix : potentiomètres entre les entrées + et − de U506A, curseurs vers les gyrateurs (L = 330 Ω × 100 k × 68 nF).",
+        X + 5, Y + 121, 1.4)
+S5.note("À fond (curseur côté −) : +20 dB à 84 Hz, +22 dB à 0,95 et 1,26 kHz (spice/hm2.py). Level fixé au maximum : "
+        "10 k + 10 k ; le niveau passe par la VCA du chemin B.", X + 5, Y + 128, 1.4)
 
-X, Y = 15, 255
-S5.frame(X, Y, X + 320, Y + 120, "Noise gate : +12 dB, VCA THAT 2181, I/V à −12 dB")
-S5.add(Part("U506", "OPA2134", "OPA2134", (X + 30, Y + 40), unit=1, nets={3: "FX2", 2: "G_FB", 1: "G_PRE"}))
-two(S5, "R511", "R", "30k", X + 50, Y + 70, "G_PRE", "G_FB")
-two(S5, "R512", "R", "10k", X + 35, Y + 85, "G_FB", "GND")
-S5.add(Part("C508", "C", "10µ bipolaire", (X + 70, Y + 35), rotation=90, nets={1: "G_PRE", 2: "VCA_INC"}))
-S5.add(Part("R513", "R", "20k", (X + 95, Y + 35), rotation=90, nets={1: "VCA_INC", 2: "VCA_IN"}))
-S5.add(Part("U507", "THAT2181", "THAT2181AS08", (X + 135, Y + 45),
-            nets={1: "VCA_IN", 2: "VCA_EC", 3: "GND", 4: "VCA_SYM", 7: "+15V", 8: "VCA_OUT", 6: "GND", 5: "VCA_VM"}))
-two(S5, "R514", "R", "5.1k", X + 165, Y + 80, "VCA_VM", "-15V")
-S5.add(Part("RV501", "POT", "50k trim (SYM)", (X + 115, Y + 95), nets={3: "+15V", 2: "SYM_W", 1: "-15V"}))
-S5.add(Part("R515", "R", "680k", (X + 140, Y + 95), rotation=90, nets={1: "SYM_W", 2: "VCA_SYM"}))
-S5.add(Part("U506", "OPA2134", "OPA2134", (X + 215, Y + 45), unit=2, nets={5: "GND", 6: "VCA_OUT", 7: "GATE_OUT"}))
-two(S5, "R516", "R", "5.1k", X + 240, Y + 75, "GATE_OUT", "VCA_OUT")
-two(S5, "C509", "C", "82p", X + 255, Y + 75, "GATE_OUT", "VCA_OUT")
-S5.add(Part("R519", "R", "100", (X + 285, Y + 40), rotation=90, nets={1: "GATE_OUT", 2: "IN_V1"}))
-S5.add(Part("U506", "OPA2134", "OPA2134", (X + 300, Y + 85), unit=3, nets={8: "+15V", 4: "-15V"}))
-S5.note("Sortie IN_V1 vers la grille de V1B par câble blindé (feuille Préampli).", X + 5, Y + 115, 1.4)
+X, Y = 595, 15
+S5.frame(X, Y, X + 230, Y + 180, "Sélection des chemins : TS, insert, polarité")
+S5.add(Part("K501", "RELAY_2C", "G6K-2 5 V", (X + 30, Y + 40), unit=1, nets={1: "PA_IN", 2: "BUF_OUT", 3: "TS_OUT"}))
+S5.add(Part("K501", "RELAY_2C", "G6K-2 5 V", (X + 30, Y + 70), unit=2, nets={4: None, 5: None, 6: None}))
+S5.add(Part("K502", "RELAY_2C", "G6K-2 5 V", (X + 100, Y + 40), unit=1, nets={1: "PB_SRC", 2: "HM_OUT", 3: "RET_IN"}))
+S5.add(Part("K502", "RELAY_2C", "G6K-2 5 V", (X + 100, Y + 70), unit=2, nets={4: None, 5: None, 6: None}))
+S5.add(Part("K503", "RELAY_2C", "G6K-2 5 V", (X + 170, Y + 40), unit=1, nets={1: "PB_IN", 2: "PB_SRC", 3: "PB_INV"}))
+S5.add(Part("K503", "RELAY_2C", "G6K-2 5 V", (X + 170, Y + 70), unit=2, nets={4: None, 5: None, 6: None}))
+S5.add(Part("R545", "R", "100", (X + 30, Y + 110), rotation=90, nets={1: "BUF_OUT", 2: "SEND_T"}))
+S5.add(Part("J502", "JACK_TS", "Send", (X + 75, Y + 112), nets={"T": "SEND_T", "S": "GND"}))
+S5.add(Part("J503", "JACK_TS", "Return", (X + 75, Y + 140), nets={"T": "RET_IN", "S": "GND"}))
+two(S5, "R546", "R", "100k", X + 110, Y + 150, "RET_IN", "GND")
+S5.note("Au repos : chemin A = guitare tamponnée (TS hors service), chemin B = clone HM-2, polarité directe.", X + 5, Y + 166, 1.4)
+S5.note("L'insert reçoit la guitare tamponnée : une HM-2 du commerce s'y compare directement au clone.", X + 5, Y + 173, 1.4)
 
-X, Y = 345, 255
-S5.frame(X, Y, X + 230, Y + 120, "Commande du VCA et détection d'enveloppe")
-S5.add(Part("U508", "MCP4822", "MCP4822", (X + 30, Y + 35),
-            nets={1: "+3V3", 2: "CS_DAC", 3: "SPI_SCK", 4: "SPI_MOSI", 8: "DAC_A", 6: None, 5: "GND", 7: "GND"}))
-S5.add(Part("R517", "R", "4.7k", (X + 70, Y + 25), rotation=90, nets={1: "DAC_A", 2: "VCA_EC"}))
-two(S5, "R518", "R", "680", X + 90, Y + 50, "VCA_EC", "GND")
-two(S5, "C510", "C", "100n", X + 105, Y + 50, "VCA_EC", "GND")
-S5.add(Part("C511", "C", "1µ", (X + 25, Y + 80), rotation=90, nets={1: "BUF_OUT", 2: "ENV_INB"}))
-two(S5, "R524", "R", "100k", X + 45, Y + 100, "ENV_INB", "VREF")
-S5.add(Part("U509", "MCP6002", "MCP6002", (X + 80, Y + 85), unit=1, nets={3: "ENV_INB", 2: "ENV_FB", 1: "ENV_ADC"}))
-two(S5, "R522", "R", "100k", X + 110, Y + 100, "ENV_ADC", "ENV_FB")
-two(S5, "R523", "R", "10k", X + 125, Y + 100, "ENV_FB", "VREF")
-two(S5, "R520", "R", "10k", X + 150, Y + 75, "+3V3", "VREF")
-two(S5, "R521", "R", "10k", X + 150, Y + 100, "VREF", "GND")
-two(S5, "C512", "CP", "10µ", X + 165, Y + 100, "VREF", "GND")
-S5.add(Part("U509", "MCP6002", "MCP6002", (X + 195, Y + 85), unit=2, nets={5: "VREF", 6: "ENV_SPARE", 7: "ENV_SPARE"}))
-S5.add(Part("U509", "MCP6002", "MCP6002", (X + 215, Y + 40), unit=3, nets={8: "+3V3", 4: "GND"}))
-S5.note("Gain 11 autour de 1,65 V ; l'enveloppe et le seuil sont calculés en firmware.", X + 5, Y + 115, 1.4)
-
-X, Y = 15, 385
-S5.frame(X, Y, X + 300, Y + 50, "Découplage ±15 V")
-for i in range(5):
-    two(S5, f"C{513 + 2 * i}", "C", "100n", X + 15 + i * 30, Y + 25, "+15V", "GND")
-    two(S5, f"C{514 + 2 * i}", "C", "100n", X + 30 + i * 30, Y + 25, "GND", "-15V")
-two(S5, "C523", "CP", "10µ 25 V", X + 170, Y + 25, "+15V", "GND")
-two(S5, "C524", "CP", "10µ 25 V", X + 190, Y + 25, "GND", "-15V")
+X, Y = 595, 205
+S5.frame(X, Y, X + 230, Y + 220, "Alimentations 9 V séparées (TS, HM-2) et découplage")
+S5.add(Part("U502", "78L09", "78L09", (X + 40, Y + 30), nets={3: "+15V", 1: "+9V_TS", 2: "GND"}))
+two(S5, "C502", "C", "330n", X + 15, Y + 55, "+15V", "GND")
+two(S5, "C503", "CP", "10µ 25 V", X + 70, Y + 55, "+9V_TS", "GND")
+two(S5, "C504", "C", "100n", X + 85, Y + 55, "+9V_TS", "GND")
+two(S5, "R505", "R", "10k", X + 110, Y + 30, "+9V_TS", "TS_VB")
+two(S5, "R506", "R", "10k", X + 110, Y + 55, "TS_VB", "GND")
+two(S5, "C505", "CP", "47µ 16 V", X + 125, Y + 55, "TS_VB", "GND")
+S5.add(Part("U504", "78L09", "78L09", (X + 40, Y + 100), nets={3: "+15V", 1: "+9V_HM", 2: "GND"}))
+two(S5, "C512", "C", "330n", X + 15, Y + 125, "+15V", "GND")
+two(S5, "C513", "CP", "10µ 25 V", X + 70, Y + 125, "+9V_HM", "GND")
+two(S5, "C514", "C", "100n", X + 85, Y + 125, "+9V_HM", "GND")
+two(S5, "R514", "R", "10k", X + 110, Y + 100, "+9V_HM", "HM_VB")
+two(S5, "R515", "R", "10k", X + 110, Y + 125, "HM_VB", "GND")
+two(S5, "C515", "CP", "47µ 16 V", X + 125, Y + 125, "HM_VB", "GND")
+two(S5, "R516", "R", "1k", X + 150, Y + 100, "+9V_HM", "HM_S")
+two(S5, "C516", "CP", "47µ 16 V", X + 165, Y + 125, "HM_S", "GND")
+for i, (a, b) in enumerate((("+15V", "GND"), ("GND", "-15V"), ("+9V_TS", "GND"), ("+9V_HM", "GND"), ("+9V_HM", "GND"),
+                            ("+9V_HM", "GND"))):
+    two(S5, f"C{536 + i}", "C", "100n", X + 15 + i * 18, Y + 165, a, b)
+for i, u in enumerate(("U505", "U506", "U507")):
+    S5.add(Part(u, "NJM4558", "NJM4558D", (X + 140 + i * 25, Y + 180), unit=3, nets={8: "+9V_HM", 4: "GND"}))
+S5.note("HM-2 : 9 V régulés, comme une pile neuve (l'adaptateur Boss ACA donnait ≈ 9 V après 330 Ω et une diode).",
+        X + 5, Y + 207, 1.4)
+S5.note("HM_S : alimentation filtrée du préampli à transistors (R10 1 k et C5 47 µF d'origine).", X + 5, Y + 214, 1.4)
 
 # =================================================================================================
 # 6. Pilotage
 # =================================================================================================
-S6 = P.sheet(Sheet("Pilotage", "pilotage.kicad_sch", "A1", "Alimentation BT, microcontrôleur, interface"))
+S6 = P.sheet(Sheet("Pilotage", "pilotage.kicad_sch", "A1", "Alimentations BT, Raspberry Pi 4, interface"))
 X, Y = 15, 15
-S6.frame(X, Y, X + 280, Y + 120, "Alimentation ±15 V du boîtier d'entrée (transfo séparé 2 × 15 V, 10 VA)")
+S6.frame(X, Y, X + 280, Y + 120, "Alimentation ±15 V de l'entrée et des VCA (transfo séparé 2 × 15 V, 10 VA)")
 S6.add(Part("T601", "T_LV", "2 × 15 V 10 VA", (X + 30, Y + 50),
             nets={1: "N_SW", 2: "L_SW", 3: "LV_A", 4: "GND", 5: "GND", 6: "LV_B"}))
 S6.add(Part("D601", "D", "1N4007", (X + 70, Y + 35), nets={1: "LV_A", 2: "+V_BRUT"}))
@@ -539,33 +607,53 @@ two(S6, "C606", "CP", "22µ 25 V", X + 160, Y + 105, "GND", "-15V")
 S6.add(Part("D615", "D", "1N4007", (X + 180, Y + 105), rotation=90, nets={1: "-15V", 2: "GND"}))
 for i, (n, x) in enumerate((("GND", X + 200), ("+V_BRUT", X + 215), ("-V_BRUT", X + 230))):
     S6.add(Part(f"#FLG06{i + 1:02d}", "PWR_FLAG", "PWR_FLAG", (x, Y + 100), nets={1: n}))
-S6.note("Transfo réservé aux ±15 V analogiques (≈ 60 mA) ; le 5 V et le robot viennent du module 24 V.", X + 5, Y + 115, 1.4)
+S6.note("≈ 110 mA sur +15 V et 70 mA sur −15 V (TS, HM-2, VCA, gate) : LM7815/7915 sur une petite surface de dissipation.",
+        X + 5, Y + 115, 1.4)
 
 X, Y = 305, 15
-S6.frame(X, Y, X + 270, Y + 200, "Microcontrôleur (NUCLEO-G474RE)")
-nuc = {n: n for n in NUC_L + NUC_R}
-nuc.update({"E5V": "+5V", "3V3": "+3V3", "GND": "GND", "SCL": "I2C_SCL", "SDA": "I2C_SDA", "SCK": "SPI_SCK",
-            "MOSI": "SPI_MOSI", "MISO": None, "ENV": "ENV_ADC"})
-for i in range(1, 10):
-    nuc[f"SENSE{i}"] = f"SENSE{i}"
-for i in range(1, 5):
-    nuc[f"BIAS{i}"] = f"BIAS_ADC{i}"
-S6.add(Part("A601", "NUCLEO_G474RE", "NUCLEO-G474RE", (X + 130, Y + 90), nets=nuc))
-two(S6, "R601", "R", "4.7k", X + 20, Y + 160, "+3V3", "I2C_SCL")
-two(S6, "R602", "R", "4.7k", X + 40, Y + 160, "+3V3", "I2C_SDA")
-two(S6, "R618", "R", "10k", X + 60, Y + 160, "+3V3", "MOT_FAULT")
-two(S6, "R619", "R", "10k", X + 80, Y + 160, "+3V3", "PCA_OE")
-S6.note("USB : la traversée de façade NAUSB-W relie le port ST-LINK de la NUCLEO (programmation et port série).",
-        X + 5, Y + 195, 1.4)
+S6.frame(X, Y, X + 280, Y + 120, "Alimentation 24 V (module secteur) : robot, +5 V des moteurs et relais, +5V_PI du Pi")
+S6.add(Part("F601", "FUSE", "T1 A", (X + 20, Y + 35), nets={1: "L_SW", 2: "SMPS_L"}))
+S6.add(Part("U604", "SMPS_MOD", "IRM-60-24ST", (X + 70, Y + 45), nets={"L": "SMPS_L", "N": "N_SW", "V+": "+24V", "V-": "GND"}))
+two(S6, "C620", "CP", "470µ 35 V", X + 110, Y + 50, "+24V", "GND")
+S6.add(Part("U603", "BUCK_MOD", "LM2596 → 5,0 V 3 A", (X + 170, Y + 40), nets={1: "+24V", 2: "GND", 3: "+5V", 4: "GND"}))
+S6.add(Part("U609", "BUCK_MOD", "Pololu D36V28F5 → 5,0 V 3,2 A", (X + 170, Y + 85),
+            nets={1: "+24V", 2: "GND", 3: "+5V_PI", 4: "GND"}))
+two(S6, "C627", "CP", "220µ 10 V", X + 225, Y + 95, "+5V_PI", "GND")
+S6.note("+5V : moteurs des pots (Motoron), relais, LED des LDR. +5V_PI : le Pi seul (jusqu'à 3 A). +3V3 : sortie du Pi.",
+        X + 5, Y + 108, 1.4)
+S6.note("Le 0 V du module rejoint la masse de commande : aucun courant de moteur ne passe par la masse audio.", X + 5, Y + 115, 1.4)
+
+X, Y = 595, 15
+S6.frame(X, Y, X + 230, Y + 280, "Raspberry Pi 4 B (contrôleur unique) et HAT CAN enfiché")
+rpi = {1: "+3V3", 17: "+3V3", 2: "+5V_PI", 4: "+5V_PI", 3: "I2C_SDA", 5: "I2C_SCL", 7: "W1_DQ", 8: None, 10: None,
+       11: "CS_ADC2", 12: "CS_ADC1", 13: "CS_DAC2", 15: "FS1", 16: "FS2", 18: "TFT_DC", 19: "SPI0_MOSI", 21: "SPI0_MISO",
+       22: "CAN_INT", 23: "SPI0_SCK", 24: "CAN_CS", 26: "CS_TFT", 27: None, 28: None, 29: "ENC_A", 31: "ENC_B",
+       32: "MIDI_TX", 33: "MIDI_RX", 35: "SPI1_MISO", 36: "CS_DAC1", 37: "ENC_SW", 38: "SPI1_MOSI", 40: "SPI1_SCK"}
+rpi.update({n: "GND" for n in (6, 9, 14, 20, 25, 30, 34, 39)})
+S6.add(Part("A601", "RPI4_40P", "Raspberry Pi 4 B (2 Go)", (X + 115, Y + 85), nets=rpi))
+S6.add(Part("A602", "CAN_HAT", "Waveshare RS485 CAN HAT", (X + 70, Y + 205),
+            nets={1: "+3V3", 2: "GND", 3: "SPI0_SCK", 4: "SPI0_MOSI", 5: "SPI0_MISO", 6: "CAN_CS", 7: "CAN_INT",
+                  "H": "CAN_H", "L": "CAN_L", "G": "GND"}))
+S6.note("config.txt : dtparam=spi=on ; dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25 ; dtoverlay=spi1-3cs ;",
+        X + 5, Y + 245, 1.3)
+S6.note("dtoverlay=uart5 (MIDI 31 250 bauds) ; dtoverlay=w1-gpio,gpiopin=4 ; dtoverlay=disable-wifi ; dtoverlay=disable-bt.",
+        X + 5, Y + 251, 1.3)
+S6.note("CS_DAC2 sur GPIO27 en sélection logicielle. GPIO14/15 restent au RS485 du HAT (inutilisé), GPIO4 libre (RSE non câblé).",
+        X + 5, Y + 257, 1.3)
+S6.note("Système en lecture seule (overlay), presets écrits de façon atomique sur une partition à part ; chien de garde actif.",
+        X + 5, Y + 263, 1.3)
+S6.note("Ethernet : RJ45 du Pi relié par un cordon court à la traversée etherCON NE8FDP de la face arrière.", X + 5, Y + 269, 1.3)
 
 X, Y = 15, 145
 S6.frame(X, Y, X + 280, Y + 120, "Interface : écran, encodeur, pédalier")
 S6.add(Part("J601", "TFT_ST7789", "TFT 2,4\" SPI", (X + 40, Y + 45),
-            nets={1: "GND", 2: "+3V3", 3: "SPI_SCK", 4: "SPI_MOSI", 5: "TFT_RST", 6: "TFT_DC", 7: "CS_TFT", 8: "+3V3"}))
-S6.add(Part("SW601", "EC11", "EC11", (X + 110, Y + 40), nets={"A": "ENC_A", "C": "GND", "B": "ENC_B", "S1": "ENC_SW", "S2": "GND"}))
+            nets={1: "GND", 2: "+3V3", 3: "SPI0_SCK", 4: "SPI0_MOSI", 5: "TFT_RES", 6: "TFT_DC", 7: "CS_TFT", 8: "+3V3"}))
+two(S6, "R640", "R", "10k", X + 70, Y + 30, "+3V3", "TFT_RES")
+two(S6, "C623", "C", "100n", X + 70, Y + 60, "TFT_RES", "GND")
+S6.add(Part("SW601", "EC11", "EC11", (X + 120, Y + 40), nets={"A": "ENC_A", "C": "GND", "B": "ENC_B", "S1": "ENC_SW", "S2": "GND"}))
 for i, n in enumerate(("ENC_A", "ENC_B", "ENC_SW")):
-    two(S6, f"R{603 + i}", "R", "10k", X + 140 + i * 15, Y + 30, "+3V3", n)
-    two(S6, f"C{607 + i}", "C", "10n", X + 140 + i * 15, Y + 60, n, "GND")
+    two(S6, f"R{603 + i}", "R", "10k", X + 150 + i * 15, Y + 30, "+3V3", n)
+    two(S6, f"C{607 + i}", "C", "10n", X + 150 + i * 15, Y + 60, n, "GND")
 S6.add(Part("J602", "JACK_TRS", "Pédalier", (X + 25, Y + 95), nets={"T": "FS1_IN", "R": "FS2_IN", "S": "GND"}))
 for i, (a, b) in enumerate((("FS1_IN", "FS1"), ("FS2_IN", "FS2"))):
     S6.add(Part(f"R{608 + i}", "R", "1k", (X + 60 + i * 50, Y + 92), rotation=90, nets={1: a, 2: b}))
@@ -573,7 +661,7 @@ for i, (a, b) in enumerate((("FS1_IN", "FS1"), ("FS2_IN", "FS2"))):
     two(S6, f"C{610 + i}", "C", "100n", X + 80 + i * 50, Y + 105, b, "GND")
 
 X, Y = 15, 275
-S6.frame(X, Y, X + 280, Y + 120, "MIDI IN et THRU")
+S6.frame(X, Y, X + 280, Y + 120, "MIDI IN et THRU (UART5 du Pi)")
 S6.add(Part("J603", "DIN5", "MIDI IN", (X + 20, Y + 45), nets={4: "MIDI_4", 2: None, 5: "MIDI_IN_K"}))
 S6.add(Part("R610", "R", "220", (X + 45, Y + 42), rotation=90, nets={1: "MIDI_4", 2: "MIDI_IN_A"}))
 S6.add(Part("D605", "D", "1N4148", (X + 60, Y + 70), nets={1: "MIDI_IN_K", 2: "MIDI_IN_A"}))
@@ -586,106 +674,96 @@ two(S6, "R613", "R", "33", X + 235, Y + 30, "+3V3", "THRU_4")
 two(S6, "R614", "R", "10", X + 250, Y + 60, "MIDI_TX", "THRU_5")
 S6.note("Sortie MIDI en 3,3 V (33 Ω et 10 Ω, spécification MIDI 1.0 à 3,3 V).", X + 5, Y + 115, 1.4)
 
-X, Y = 305, 225
-S6.frame(X, Y, X + 270, Y + 170, "Mesure du courant des 6L6GC (gain 21)")
+X, Y = 305, 145
+S6.frame(X, Y, X + 280, Y + 160, "Carte d'interface traversante : 2 × MCP3208 (SPI1), 2 × MCP4822, 1-Wire")
+S6.add(Part("U610", "MCP3208", "MCP3208-CI/P", (X + 50, Y + 45),
+            nets={1: "SENSE1", 2: "SENSE2", 3: "SENSE3", 4: "SENSE4", 5: "SENSE5", 6: "SENSE6", 7: "SENSE7", 8: "SENSE8",
+                  16: "+3V3", 15: "+3V3", 13: "SPI1_SCK", 11: "SPI1_MOSI", 12: "SPI1_MISO", 10: "CS_ADC1", 14: "GND", 9: "GND"}))
+S6.add(Part("U611", "MCP3208", "MCP3208-CI/P", (X + 50, Y + 115),
+            nets={1: "SENSE9", 2: "SENSE10", 3: "BIAS_ADC1", 4: "BIAS_ADC2", 5: "BIAS_ADC3", 6: "BIAS_ADC4", 7: "ENV_MON",
+                  8: "GND", 16: "+3V3", 15: "+3V3", 13: "SPI1_SCK", 11: "SPI1_MOSI", 12: "SPI1_MISO", 10: "CS_ADC2",
+                  14: "GND", 9: "GND"}))
+S6.add(Part("U612", "MCP4822", "MCP4822-E/P", (X + 165, Y + 40),
+            nets={1: "+3V3", 2: "CS_DAC1", 3: "SPI1_SCK", 4: "SPI1_MOSI", 8: "DAC_VCA_A", 6: "DAC_VCA_B", 5: "GND", 7: "GND"}))
+S6.add(Part("U613", "MCP4822", "MCP4822-E/P", (X + 165, Y + 90),
+            nets={1: "+3V3", 2: "CS_DAC2", 3: "SPI1_SCK", 4: "SPI1_MOSI", 8: "DAC_THR", 6: "DAC_FADE", 5: "GND", 7: "GND"}))
+two(S6, "R650", "R", "4.7k", X + 235, Y + 40, "+3V3", "W1_DQ")
+for i in range(4):
+    two(S6, f"C{630 + i}", "C", "100n", X + 140 + i * 15, Y + 130, "+3V3", "GND")
+two(S6, "C634", "CP", "10µ 10 V", X + 215, Y + 130, "+3V3", "GND")
+S6.note("Pistes capteur et VREF sur le même +3V3 : mesure ratiométrique. CNA en gain 1 (0-2,048 V), mis à l'échelle côté VCA.",
+        X + 5, Y + 150, 1.3)
+S6.note("Pots 1-10 : SENSE1-10 ; courant des 6L6GC : BIAS_ADC1-4 ; enveloppe du gate : ENV_MON (affichage du seuil).",
+        X + 5, Y + 156, 1.3)
+
+X, Y = 305, 315
+S6.frame(X, Y, X + 270, Y + 170, "Mesure du courant des 6L6GC (gain 21) vers le MCP3208")
 for i, t in enumerate(("V7", "V8", "V9", "V10")):
     x = X + 15 + i * 65
     n = 615 + i * 6
     S6.add(Part(f"R{n}", "R", "10k", (x + 5, Y + 30), rotation=90, nets={1: f"{t}_K", 2: f"BS{i + 1}_F"}))
     two(S6, f"C{612 + i}", "C", "100n", x + 10, Y + 60, f"BS{i + 1}_F", "GND")
-    S6.add(Part(f"D{606 + 2 * i}", "D", "BAT54", (x + 25, Y + 50), rotation=90, nets={1: f"BS{i + 1}_F", 2: "+3V3"}))
-    S6.add(Part(f"D{607 + 2 * i}", "D", "BAT54", (x + 40, Y + 50), rotation=90, nets={1: "GND", 2: f"BS{i + 1}_F"}))
+    S6.add(Part(f"D{606 + 2 * i}", "D", "BAT85", (x + 25, Y + 50), rotation=90, nets={1: f"BS{i + 1}_F", 2: "+3V3"}))
+    S6.add(Part(f"D{607 + 2 * i}", "D", "BAT85", (x + 40, Y + 50), rotation=90, nets={1: "GND", 2: f"BS{i + 1}_F"}))
     u = {0: (1, {3: "BS1_F", 2: "BS1_N", 1: "BIAS_ADC1"}), 1: (2, {5: "BS2_F", 6: "BS2_N", 7: "BIAS_ADC2"}),
          2: (3, {10: "BS3_F", 9: "BS3_N", 8: "BIAS_ADC3"}), 3: (4, {12: "BS4_F", 13: "BS4_N", 14: "BIAS_ADC4"})}[i]
-    S6.add(Part("U606", "MCP6004", "MCP6004", (x + 25, Y + 95), unit=u[0], nets=u[1]))
+    S6.add(Part("U606", "MCP6004", "MCP6004-I/P", (x + 25, Y + 95), unit=u[0], nets=u[1]))
     two(S6, f"R{n + 1}", "R", "1k", x + 10, Y + 130, f"BS{i + 1}_N", "GND")
     two(S6, f"R{n + 2}", "R", "20k", x + 30, Y + 130, f"BIAS_ADC{i + 1}", f"BS{i + 1}_N")
-S6.add(Part("U606", "MCP6004", "MCP6004", (X + 250, Y + 150), unit=5, nets={4: "+3V3", 11: "GND"}))
+S6.add(Part("U606", "MCP6004", "MCP6004-I/P", (X + 250, Y + 150), unit=5, nets={4: "+3V3", 11: "GND"}))
 
-X, Y = 585, 15
-S6.frame(X, Y, X + 238, Y + 120, "Alimentation 24 V : robot et 5 V (module secteur)")
-S6.add(Part("F601", "FUSE", "T1 A", (X + 30, Y + 35), nets={1: "L_SW", 2: "SMPS_L"}))
-S6.add(Part("U604", "SMPS_MOD", "IRM-60-24ST", (X + 85, Y + 45), nets={"L": "SMPS_L", "N": "N_SW", "V+": "+24V", "V-": "GND"}))
-two(S6, "C620", "CP", "470µ 35 V", X + 130, Y + 50, "+24V", "GND")
-S6.add(Part("U603", "BUCK_MOD", "LM2596 → 5,0 V", (X + 190, Y + 50), nets={1: "+24V", 2: "GND", 3: "+5V", 4: "GND"}))
-S6.note("+5V : moteurs des pots, LED des LDR, relais, NUCLEO (E5V). +3V3 : sortie de la NUCLEO (≈ 300 mA sur 500 mA).",
-        X + 5, Y + 108, 1.4)
-S6.note("Le 0 V du module rejoint la masse de commande : aucun courant de moteur ne passe par la masse audio.", X + 5, Y + 115, 1.4)
-
-X, Y = 585, 145
-S6.frame(X, Y, X + 238, Y + 120, "Ethernet vers la régie (W5500 sur SPI2)")
-S6.add(Part("U608", "W5500_MOD", "Module W5500", (X + 80, Y + 50),
-            nets={1: "+3V3", 2: "GND", 3: "ETH_RST", 4: "ETH_INT", 5: "ETH_SCK", 6: "ETH_MOSI", 7: "ETH_MISO", 8: "ETH_CS"}))
-two(S6, "R620", "R", "10k", X + 150, Y + 40, "+3V3", "ETH_INT")
-two(S6, "C621", "CP", "47µ 10 V", X + 170, Y + 55, "+3V3", "GND")
-two(S6, "C622", "C", "100n", X + 185, Y + 55, "+3V3", "GND")
-S6.note("RJ45 du module relié par un cordon court à la traversée etherCON NE8FDP de la face arrière.", X + 5, Y + 108, 1.4)
-S6.note("Câble UTP vers la régie : l'Ethernet est isolé par transformateur, sans boucle de masse avec l'audio.", X + 5, Y + 115, 1.4)
-
-X, Y = 585, 275
-S6.frame(X, Y, X + 238, Y + 120, "Bus CAN et 24 V vers le robot (M12, brochage CANopen)")
-S6.add(Part("U607", "CAN_MOD", "SN65HVD230", (X + 55, Y + 50),
-            nets={1: "+3V3", 2: "GND", 3: "CAN_TX", 4: "CAN_RX", 5: "CAN_H", 6: "CAN_L"}))
-S6.add(Part("F602", "FUSE", "PTC 2,5 A", (X + 120, Y + 30), nets={1: "+24V", 2: "ROBOT_24V"}))
-S6.add(Part("J605", "M12_5", "Robot", (X + 185, Y + 55),
+X, Y = 595, 305
+S6.frame(X, Y, X + 230, Y + 120, "Bus CAN et 24 V vers le robot (M12, brochage CANopen)")
+S6.add(Part("F602", "FUSE", "PTC 2,5 A", (X + 60, Y + 30), nets={1: "+24V", 2: "ROBOT_24V"}))
+S6.add(Part("J605", "M12_5", "Robot", (X + 150, Y + 55),
             nets={1: "CHASSIS", 2: "ROBOT_24V", 3: "GND", 4: "CAN_H", 5: "CAN_L"}))
-S6.note("500 kbit/s ; 120 Ω sur le module et sur le dernier servo. Adresses : 1 radial, 2 distance, 3 angle.", X + 5, Y + 108, 1.4)
+S6.note("500 kbit/s ; 120 Ω sur le HAT et sur le dernier servo. Adresses : 1 radial, 2 distance, 3 angle.", X + 5, Y + 108, 1.4)
 S6.note("Blindage du câble à la face arrière par le corps de l'embase ; paire torsadée pour CAN_H et CAN_L.", X + 5, Y + 115, 1.4)
 
 # =================================================================================================
 # 7. Commandes : moteurs, capteurs, LED des LDR, bobines des relais
 # =================================================================================================
 S7 = P.sheet(Sheet("Commandes", "commandes.kicad_sch", "A1", "Moteurs des pots, capteurs de position, LDR et relais"))
-POTS = [("RV201", "ALPS_2G", "OD Gain"), ("RV202", "ALPS_2G", "Normal Gain"), ("RV301", "ALPS_2G", "Treble"),
-        ("RV302", "ALPS_2G", "Bass"), ("RV303", "ALPS_2G", "Mid"), ("RV304", "ALPS_2G", "Master OD"),
-        ("RV305", "ALPS_2G", "Master Normal"), ("RV306", "ALPS_2G", "Presence"), ("RV307", "ALPS_2G", "Depth")]
+POTS = [("RV201", "OD Gain"), ("RV202", "Normal Gain"), ("RV301", "Treble"), ("RV302", "Bass"), ("RV303", "Mid"),
+        ("RV304", "Master OD"), ("RV305", "Master Normal"), ("RV306", "Presence"), ("RV307", "Depth"), ("RV802", "Blend")]
 VALS = {"RV201": "100k lin (OD Gain)", "RV202": "100k lin (Normal Gain)", "RV301": "20k lin (Treble)",
         "RV302": "100k log (Bass)", "RV303": "10k log (Mid)", "RV304": "100k log (Master OD)",
-        "RV305": "100k log (Master Normal)", "RV306": "20k lin (Presence)", "RV307": "100k lin (Depth)"}
+        "RV305": "100k log (Master Normal)", "RV306": "20k lin (Presence)", "RV307": "100k lin (Depth)",
+        "RV802": "10k lin (Blend)"}
 X, Y = 15, 15
-S7.frame(X, Y, X + 560, Y + 175, "Pilotage des moteurs : 2 × PCA9685 (PWM I²C) et 5 × DRV8833")
-pca_out = {}
-for k in range(2):
-    ch = {}
-    for j in range(16):
-        g = k * 16 + j
-        m, side = g // 2 + 1, g % 2 + 1
-        ch[{0: 6, 1: 7, 2: 8, 3: 9, 4: 10, 5: 11, 6: 12, 7: 13, 8: 15, 9: 16, 10: 17, 11: 18, 12: 19, 13: 20, 14: 21, 15: 22}[j]] = \
-            f"MOT{m}_IN{side}" if m <= 9 else None
-    nets = {28: "+3V3", 26: "I2C_SCL", 27: "I2C_SDA", 23: "PCA_OE", 25: "GND", 1: "+3V3" if k else "GND", 2: "GND", 3: "GND",
-            4: "GND", 5: "GND", 24: "GND", 14: "GND"}
-    nets.update(ch)
-    S7.add(Part(f"U70{1 + k}", "PCA9685", "PCA9685", (X + 50 + k * 110, Y + 75), nets=nets))
+S7.frame(X, Y, X + 600, Y + 120, "Moteurs des pots : 5 × Pololu Motoron M2T256 (I²C, PWM 20 kHz), sur une barrette près de la façade")
 for d in range(5):
     ma, mb = 2 * d + 1, 2 * d + 2
-    nets = {1: "+5V", 2: "GND", 3: f"MOT{ma}_IN1", 4: f"MOT{ma}_IN2", 5: f"MOT{mb}_IN1" if mb <= 9 else "GND",
-            6: f"MOT{mb}_IN2" if mb <= 9 else "GND", 7: "MOT_EN", 8: "MOT_FAULT", 9: f"MOT{ma}_A", 10: f"MOT{ma}_B",
-            11: f"MOT{mb}_A" if mb <= 9 else None, 12: f"MOT{mb}_B" if mb <= 9 else None}
-    S7.add(Part(f"U70{3 + d}", "DRV8833_MOD", "DRV8833", (X + 285 + (d % 3) * 92, Y + 50 + (d // 3) * 70), nets=nets))
-S7.note("MOTn_IN1/IN2 : canaux PCA9685 2n-2 et 2n-1 ; MOT_EN coupe les ponts au repos (moteurs en roue libre).", X + 5, Y + 170, 1.4)
+    S7.add(Part(f"U70{1 + d}", "MOTORON_M2T", "Motoron M2T256", (X + 55 + d * 110, Y + 55),
+                nets={1: "+5V", 2: "+3V3", 3: "I2C_SDA", 4: "I2C_SCL", 5: "GND",
+                      6: f"MOT{ma}_A", 7: f"MOT{ma}_B", 8: f"MOT{mb}_A", 9: f"MOT{mb}_B"}))
+two(S7, "C730", "CP", "470µ 10 V", X + 575, Y + 60, "+5V", "GND")
+S7.note("Adresses I²C 16 à 20, programmées une carte à la fois. PWM à 20 kHz, hors bande audio ; les moteurs s'arrêtent si le Pi "
+        "cesse d'émettre (délai de commande).", X + 5, Y + 108, 1.4)
+S7.note("Un seul câble vers le Pi : I²C, +3V3 logique, +5V moteurs, masse. MOT1-9 : pots de l'ampli ; MOT10 : Blend.",
+        X + 5, Y + 115, 1.4)
 
-X, Y = 15, 200
-S7.frame(X, Y, X + 560, Y + 120, "Moteurs (100 nF aux bornes) et pistes capteur (filtre 1 k / 100 nF vers l'ADC)")
-for m, (ref, sym, name) in enumerate(POTS, start=1):
-    x = X + 15 + (m - 1) * 60
-    mot_unit = 6 if sym == "ALPS_5G" else 3
-    sense_unit = 5 if sym == "ALPS_5G" else 2
-    sp = {2: (4, 5, 6), 5: (13, 14, 15)}[sense_unit]
-    S7.add(Part(ref, sym, VALS[ref], (x + 5, Y + 30), unit=mot_unit, nets={"M+": f"MOT{m}_A", "M-": f"MOT{m}_B"}))
+X, Y = 15, 145
+S7.frame(X, Y, X + 640, Y + 120, "Moteurs (100 nF aux bornes) et pistes capteur (filtre 1 k / 100 nF vers le MCP3208)")
+for m, (ref, name) in enumerate(POTS, start=1):
+    x = X + 15 + (m - 1) * 62
+    S7.add(Part(ref, "ALPS_2G", VALS[ref], (x + 5, Y + 30), unit=3, nets={"M+": f"MOT{m}_A", "M-": f"MOT{m}_B"}))
     two(S7, f"C{700 + m}", "C", "100n", x + 22, Y + 30, f"MOT{m}_A", f"MOT{m}_B")
-    S7.add(Part(ref, sym, VALS[ref], (x + 5, Y + 80), unit=sense_unit, nets={sp[2]: "+3V3", sp[1]: f"POT{m}_S", sp[0]: "GND"}))
+    S7.add(Part(ref, "ALPS_2G", VALS[ref], (x + 5, Y + 80), unit=2, nets={6: "+3V3", 5: f"POT{m}_S", 4: "GND"}))
     two(S7, f"R{700 + m}", "R", "1k", x + 25, Y + 75, f"POT{m}_S", f"SENSE{m}")
     two(S7, f"C{710 + m}", "C", "100n", x + 40, Y + 95, f"SENSE{m}", "GND")
     S7.note(name, x, Y + 112, 1.3)
+S7.add(Part("RV802", "ALPS_2G", VALS["RV802"], (X + 625, Y + 30), unit=1, nets={1: None, 2: None, 3: None}))
+S7.note("RV802 : piste audio libre", X + 600, Y + 45, 1.2)
 
-X, Y = 15, 330
-S7.frame(X, Y, X + 560, Y + 230, "LED des LDR et bobines des relais : 2 × MCP23017 et 3 × ULN2803")
+X, Y = 15, 275
+S7.frame(X, Y, X + 600, Y + 230, "LED des LDR et bobines des relais : 2 × MCP23017 et 3 × ULN2803 ; GATE_OFF")
 LDRS = [("LDR201", "Crunch"), ("LDR202", "Clean"), ("LDR203", "Bright"), ("LDR204", "Canal clair coupé"),
         ("LDR205", "Liaison directe"), ("LDR206", "Étage sup."), ("LDR207", "LDR1 (clean)"), ("LDR208", "Clipper 10 k"),
         ("LDR209", "Clipper 4,4 k"), ("LDR210", "LDR2 (OD)"), ("LDR301", "Poussée"), ("LDR302", "LDR3 master OD"),
         ("LDR303", "LDR4 master N"), ("LDR304", "Mute")]
-RELS = [("K201", "Découplages réduits"), ("K202", "Liaison 2,2 nF"), ("K501", "Diodes LED"), ("K502", "Asymétrique"),
-        ("K503", "TS en service"), ("K504", "Insert en service")]
+RELS = [("K201", "Découplages réduits"), ("K202", "Liaison 2,2 nF"), ("K501", "TS en service"), ("K502", "Insert"),
+        ("K503", "Polarité B")]
 loads = [(r, "LDR") for r, _ in LDRS] + [(r, "REL") for r, _ in RELS]
 gp = [21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8]
 for k in range(2):
@@ -693,15 +771,16 @@ for k in range(2):
             20: None, 19: None, 11: None, 14: None, 10: "GND"}
     for j in range(16):
         g = k * 16 + j
-        nets[gp[j]] = f"DRV{g + 1}" if g < 24 else None
-    S7.add(Part(f"U70{8 + k}", "MCP23017", "MCP23017", (X + 45, Y + 60 + k * 110), nets=nets))
+        nets[gp[j]] = f"DRV{g + 1}" if g < len(loads) else ("GATE_OFF" if g == 31 else None)
+    S7.add(Part(f"U70{6 + k}", "MCP23017", "MCP23017-E/SP", (X + 45, Y + 60 + k * 110), nets=nets))
+two(S7, "R740", "R", "10k", X + 100, Y + 210, "+3V3", "GATE_OFF")
 for u in range(3):
     nets = {9: "GND", 10: "+5V"}
     for i in range(1, 9):
         g = u * 8 + i
-        nets[i] = f"DRV{g}"
+        nets[i] = f"DRV{g}" if g <= len(loads) else "GND"
         nets[19 - i] = f"SINK{g}" if g <= len(loads) else None
-    S7.add(Part(f"U71{u}", "ULN2803A", "ULN2803A", (X + 140, Y + 45 + u * 65), nets=nets))
+    S7.add(Part(f"U7{u + 8:02d}", "ULN2803A", "ULN2803A", (X + 140, Y + 45 + u * 65), nets=nets))
 for g, (ref, kind) in enumerate(loads, start=1):
     col, rr = (g - 1) % 10, (g - 1) // 10
     x, y = X + 210 + col * 34, Y + 40 + rr * 70
@@ -712,12 +791,151 @@ for g, (ref, kind) in enumerate(loads, start=1):
         S7.add(Part(ref, "RELAY_2C", "G6K-2 5 V", (x + 8, y + 15), unit=3, nets={7: "+5V", 8: f"SINK{g}"}))
 names = dict(LDRS + RELS)
 legend = "  ".join(f"{g}:{ref} {names[ref]}" for g, (ref, _) in enumerate(loads, start=1))
-S7.note("Affectation DRVn / SINKn : " + legend[:150], X + 5, Y + 215, 1.25)
-S7.note(legend[150:], X + 5, Y + 222, 1.25)
+S7.note("Affectation DRVn / SINKn : " + legend[:160], X + 5, Y + 208, 1.25)
+S7.note(legend[160:], X + 5, Y + 215, 1.25)
+S7.note("GATE_OFF (U707 GPB7, tiré à 3,3 V) : gate ouvert tant que le Pi ne l'a pas activé.", X + 5, Y + 222, 1.25)
+
+# =================================================================================================
+# 8. VCA, mélange et noise gate
+# =================================================================================================
+S8 = P.sheet(Sheet("VCA et noise gate", "vca_gate.kicad_sch", "A1", "Mélange TS / HM-2 par VCA, noise gate analogique"))
+X, Y = 15, 15
+S8.frame(X, Y, X + 400, Y + 120, "Mélange : préampli ×4 du chemin A, VCA AS2164, sommation à −12 dB")
+S8.add(Part("C801", "C", "2.2µ film", (X + 15, Y + 30), rotation=90, nets={1: "PA_IN", 2: "PA_X"}))
+two(S8, "R801", "R", "100k", X + 30, Y + 55, "PA_X", "GND")
+S8.add(Part("U801", "OPA2134", "OPA2134", (X + 60, Y + 32), unit=1, nets={3: "PA_X", 2: "PA_FB", 1: "PA_G"}))
+S8.add(Part("R802", "R", "30k", (X + 65, Y + 15), rotation=90, nets={1: "PA_G", 2: "PA_FB"}))
+two(S8, "R803", "R", "10k", X + 45, Y + 65, "PA_FB", "GND")
+S8.add(Part("R804", "R", "30k", (X + 95, Y + 32), rotation=90, nets={1: "PA_G", 2: "VCA_IA"}))
+two(S8, "R805", "R", "500", X + 110, Y + 55, "VCA_IA", "VCA_IAS")
+two(S8, "C802", "C", "560p", X + 110, Y + 78, "VCA_IAS", "GND")
+S8.add(Part("C803", "C", "2.2µ film", (X + 15, Y + 80), rotation=90, nets={1: "PB_IN", 2: "PB_X"}))
+two(S8, "R806", "R", "100k", X + 30, Y + 96, "PB_X", "GND")
+S8.add(Part("U801", "OPA2134", "OPA2134", (X + 60, Y + 82), unit=2, nets={5: "PB_X", 6: "PB_BUF", 7: "PB_BUF"}))
+S8.add(Part("R807", "R", "7.5k", (X + 95, Y + 82), rotation=90, nets={1: "PB_BUF", 2: "VCA_IB"}))
+two(S8, "R808", "R", "500", X + 130, Y + 90, "VCA_IB", "VCA_IBS")
+two(S8, "C804", "C", "560p", X + 145, Y + 90, "VCA_IBS", "GND")
+S8.add(Part("U802", "AS2164", "AS2164", (X + 205, Y + 60),
+            nets={2: "VCA_IA", 3: "CV_A", 7: "VCA_IB", 6: "CV_B", 10: "GND", 11: "GND", 15: "GND", 14: "GND",
+                  1: "VCA_MODE", 4: "MIX_SUM", 5: "MIX_SUM", 12: "GND", 13: "GND", 16: "+15V", 8: "GND", 9: "-15V"}))
+two(S8, "R809", "R", "7.5k", X + 175, Y + 92, "VCA_MODE", "+15V")
+S8.add(Part("U803", "OPA2134", "OPA2134", (X + 285, Y + 52), unit=1, nets={3: "GND", 2: "MIX_SUM", 1: "MIX_OUT"}))
+S8.add(Part("R810", "R", "7.5k", (X + 290, Y + 30), rotation=90, nets={1: "MIX_OUT", 2: "MIX_SUM"}))
+S8.add(Part("C805", "C", "390p", (X + 290, Y + 20), rotation=90, nets={1: "MIX_OUT", 2: "MIX_SUM"}))
+S8.add(Part("R811", "R", "100", (X + 325, Y + 52), rotation=90, nets={1: "MIX_OUT", 2: "IN_V1"}))
+S8.add(Part("U803", "OPA2134", "OPA2134", (X + 330, Y + 90), unit=2, nets={5: "GND", 6: "U803_SP", 7: "U803_SP"}))
+S8.add(Part("U801", "OPA2134", "OPA2134", (X + 365, Y + 90), unit=3, nets={8: "+15V", 4: "-15V"}))
+S8.add(Part("U803", "OPA2134", "OPA2134", (X + 385, Y + 90), unit=3, nets={8: "+15V", 4: "-15V"}))
+S8.note("0 V de commande = 0 dB, +33 mV/dB d'atténuation. Chemin A : +12 dB avant la VCA, −12 dB à la sommation (bruit du VCA "
+        "12 dB plus bas) ;", X + 5, Y + 108, 1.4)
+S8.note("chemin B (HM-2, ≈ +3 dBu) par 7,5 k : gain unité à 0 V. Sortie IN_V1 vers la grille de V1B (câble blindé).",
+        X + 5, Y + 115, 1.4)
+
+X, Y = 425, 15
+S8.frame(X, Y, X + 400, Y + 120, "Commandes des VCA (CNA 0-2,048 V × 1,62 → 0-3,3 V, soit 0 à −100 dB) et sonde de température")
+S8.add(Part("R812", "R", "1k", (X + 15, Y + 32), rotation=90, nets={1: "DAC_VCA_A", 2: "CVA_F"}))
+two(S8, "C806", "C", "1µ film", X + 30, Y + 60, "CVA_F", "GND")
+S8.add(Part("U804", "TL074", "TL074", (X + 60, Y + 34), unit=1, nets={3: "CVA_F", 2: "CVA_FB", 1: "CV_A"}))
+S8.add(Part("R813", "R", "6.2k", (X + 65, Y + 15), rotation=90, nets={1: "CV_A", 2: "CVA_FB"}))
+two(S8, "R814", "R", "10k", X + 45, Y + 70, "CVA_FB", "GND")
+S8.add(Part("R815", "R", "1k", (X + 115, Y + 32), rotation=90, nets={1: "DAC_VCA_B", 2: "CVB_F"}))
+two(S8, "C807", "C", "1µ film", X + 130, Y + 60, "CVB_F", "GND")
+S8.add(Part("U804", "TL074", "TL074", (X + 160, Y + 34), unit=2, nets={5: "CVB_F", 6: "CVB_FB", 7: "CV_B"}))
+S8.add(Part("R816", "R", "6.2k", (X + 165, Y + 15), rotation=90, nets={1: "CV_B", 2: "CVB_FB"}))
+two(S8, "R817", "R", "10k", X + 145, Y + 70, "CVB_FB", "GND")
+S8.add(Part("U809", "DS18B20", "DS18B20", (X + 260, Y + 45), nets={3: "+3V3", 2: "W1_DQ", 1: "GND"}))
+S8.add(Part("U804", "TL074", "TL074", (X + 360, Y + 60), unit=5, nets={4: "+15V", 11: "-15V"}))
+S8.note("U809 collé sur U802 : la constante de commande dérive de −3300 ppm/K (kT/q) ; le Pi corrige les tensions.",
+        X + 5, Y + 108, 1.4)
+S8.note("Loi du bouton Blend (logiciel) : TS fixe, HM-2 de −∞ à 0 dB par rapport à elle, toute la course sur la plage utile.",
+        X + 5, Y + 115, 1.4)
+
+X, Y = 15, 145
+S8.frame(X, Y, X + 810, Y + 155, "Noise gate : détection sur la guitare (U805, U806), forme et commande de la VCA du gate")
+S8.add(Part("C809", "C", "100n film", (X + 15, Y + 35), rotation=90, nets={1: "BUF_OUT", 2: "ENV_X"}))
+two(S8, "R825", "R", "33k", X + 30, Y + 62, "ENV_X", "GND")
+S8.add(Part("U805", "TL074", "TL074", (X + 60, Y + 37), unit=1, nets={3: "ENV_X", 2: "ENV_FB", 1: "ENV_G"}))
+S8.add(Part("R826", "R", "100k", (X + 65, Y + 15), rotation=90, nets={1: "ENV_G", 2: "ENV_FB"}))
+two(S8, "R827", "R", "10k", X + 45, Y + 72, "ENV_FB", "GND")
+S8.add(Part("R828", "R", "10k", (X + 105, Y + 40), rotation=90, nets={1: "ENV_G", 2: "HW_A"}))
+S8.add(Part("U805", "TL074", "TL074", (X + 140, Y + 42), unit=2, nets={5: "GND", 6: "HW_A", 7: "HW_OUT"}))
+S8.add(Part("D810", "D", "1N4148", (X + 140, Y + 20), nets={1: "HW_OUT", 2: "HW_A"}))
+S8.add(Part("D811", "D", "1N4148", (X + 170, Y + 62), nets={1: "HW_B", 2: "HW_OUT"}))
+S8.add(Part("R829", "R", "10k", (X + 140, Y + 78), rotation=90, nets={1: "HW_B", 2: "HW_A"}))
+S8.add(Part("R830", "R", "20k", (X + 195, Y + 25), rotation=90, nets={1: "ENV_G", 2: "FW_N"}))
+S8.add(Part("R831", "R", "10k", (X + 195, Y + 78), rotation=90, nets={1: "HW_B", 2: "FW_N"}))
+S8.add(Part("U805", "TL074", "TL074", (X + 230, Y + 47), unit=3, nets={10: "GND", 9: "FW_N", 8: "FW_OUT"}))
+S8.add(Part("R832", "R", "20k", (X + 235, Y + 25), rotation=90, nets={1: "FW_OUT", 2: "FW_N"}))
+S8.add(Part("U805", "TL074", "TL074", (X + 290, Y + 47), unit=4, nets={12: "FW_OUT", 13: "ENV", 14: "PK_O"}))
+S8.add(Part("D812", "D", "1N4148", (X + 320, Y + 47), nets={1: "PK_O", 2: "ENV"}))
+two(S8, "C810", "C", "1µ film", X + 340, Y + 75, "ENV", "GND")
+two(S8, "R833", "R", "47k", X + 355, Y + 75, "ENV", "GND")
+S8.add(Part("R834", "R", "10k", (X + 380, Y + 30), rotation=90, nets={1: "DAC_THR", 2: "THR_H"}))
+S8.add(Part("R835", "R", "10M", (X + 420, Y + 18), rotation=90, nets={1: "CMP_A", 2: "THR_H"}))
+S8.add(Part("U806", "LM393", "LM393", (X + 430, Y + 47), unit=1, nets={3: "THR_H", 2: "ENV", 1: "CMP_A"}))
+S8.add(Part("R840", "R", "470", (X + 465, Y + 47), rotation=90, nets={1: "CMP_A", 2: "GATE_CAP"}))
+two(S8, "R839", "R", "47k", X + 495, Y + 25, "+15V", "REL_X")
+S8.add(Part("RV801", "POT", "1M trim (Release)", (X + 495, Y + 55), nets={1: "REL_X", 2: "GATE_CAP", 3: "GATE_CAP"}))
+two(S8, "C811", "C", "1µ film", X + 515, Y + 85, "GATE_CAP", "GND")
+two(S8, "R836", "R", "120k", X + 545, Y + 25, "+15V", "GOFF_REF")
+two(S8, "R837", "R", "15k", X + 545, Y + 60, "GOFF_REF", "GND")
+S8.add(Part("U806", "LM393", "LM393", (X + 580, Y + 47), unit=2, nets={5: "GOFF_REF", 6: "GATE_OFF", 7: "CMP_B"}))
+S8.add(Part("R841", "R", "100", (X + 615, Y + 47), rotation=90, nets={1: "CMP_B", 2: "GATE_CAP"}))
+S8.add(Part("U804", "TL074", "TL074", (X + 650, Y + 47), unit=4, nets={12: "GATE_CAP", 13: "GATE_BUF", 14: "GATE_BUF"}))
+S8.add(Part("R818", "R", "30k", (X + 690, Y + 80), rotation=90, nets={1: "GATE_BUF", 2: "SUM_P"}))
+S8.add(Part("R822", "R", "1k", (X + 640, Y + 100), rotation=90, nets={1: "DAC_FADE", 2: "FADE_F"}))
+two(S8, "C808", "C", "1µ film", X + 655, Y + 125, "FADE_F", "GND")
+S8.add(Part("R819", "R", "7.5k", (X + 690, Y + 100), rotation=90, nets={1: "FADE_F", 2: "SUM_P"}))
+S8.add(Part("R850", "R", "1.5M", (X + 690, Y + 115), rotation=90, nets={1: "-15V", 2: "SUM_P"}))
+S8.add(Part("U804", "TL074", "TL074", (X + 735, Y + 102), unit=3, nets={10: "SUM_P", 9: "SUM_N", 8: "SUM_O"}))
+S8.add(Part("D815", "D", "1N4148", (X + 765, Y + 102), nets={1: "SUM_O", 2: "CV_G"}))
+S8.add(Part("R820", "R", "2.55k", (X + 765, Y + 82), rotation=90, nets={1: "CV_G", 2: "SUM_N"}))
+two(S8, "R821", "R", "10k", X + 720, Y + 130, "SUM_N", "GND")
+two(S8, "R851", "R", "10k", X + 790, Y + 125, "CV_G", "GND")
+S8.add(Part("R842", "R", "47k", (X + 380, Y + 110), rotation=90, nets={1: "ENV", 2: "ENV_MON"}))
+two(S8, "R843", "R", "10k", X + 400, Y + 130, "ENV_MON", "GND")
+two(S8, "C812", "C", "100n", X + 415, Y + 130, "ENV_MON", "GND")
+S8.add(Part("U805", "TL074", "TL074", (X + 280, Y + 120), unit=5, nets={4: "+15V", 11: "-15V"}))
+S8.add(Part("U806", "LM393", "LM393", (X + 580, Y + 120), unit=3, nets={8: "+15V", 4: "GND"}))
+S8.note("Guitare propre ×11 (passe-haut 48 Hz), redressement double alternance de précision, crête 1 µF / 47 k (47 ms). "
+        "Comparateur U806A : seuil DAC_THR, hystérésis par 10 M.", X + 5, Y + 141, 1.4)
+S8.note("Ouverture par 470 Ω (0,5 ms), fermeture par 47 k + RV801 (τ 0,05 à 1 s). GATE_OFF à 3,3 V : U806B court-circuite "
+        "GATE_CAP, gate ouvert. CV_G = GATE_CAP/4 + DAC_FADE − 75 mV, bornée à 0 V par D815.", X + 5, Y + 148, 1.4)
+
+X, Y = 15, 310
+S8.frame(X, Y, X + 400, Y + 120, "VCA du gate entre masters et déphaseur (petite carte près de V5)")
+two(S8, "R844", "R", "1M", X + 20, Y + 55, "PI_IN", "GND")
+S8.add(Part("U807", "OPA2134", "OPA2134", (X + 50, Y + 37), unit=1, nets={3: "PI_IN", 2: "GV_BUF", 1: "GV_BUF"}))
+S8.add(Part("R845", "R", "30k", (X + 85, Y + 37), rotation=90, nets={1: "GV_BUF", 2: "GV_IIN"}))
+two(S8, "R846", "R", "500", X + 100, Y + 62, "GV_IIN", "GV_IS")
+two(S8, "C813", "C", "560p", X + 100, Y + 85, "GV_IS", "GND")
+S8.add(Part("U808", "AS2164", "AS2164", (X + 180, Y + 60),
+            nets={2: "GV_IIN", 3: "CV_G", 7: "GND", 6: "GND", 10: "GND", 11: "GND", 15: "GND", 14: "GND",
+                  1: "GV_MODE", 4: "GV_SUM", 5: "GND", 12: "GND", 13: "GND", 16: "+15V", 8: "GND", 9: "-15V"}))
+two(S8, "R847", "R", "7.5k", X + 150, Y + 100, "GV_MODE", "+15V")
+S8.add(Part("U807", "OPA2134", "OPA2134", (X + 260, Y + 52), unit=2, nets={5: "GND", 6: "GV_SUM", 7: "GV_OUT"}))
+S8.add(Part("R848", "R", "30k", (X + 265, Y + 30), rotation=90, nets={1: "GV_OUT", 2: "GV_SUM"}))
+S8.add(Part("C814", "C", "100p", (X + 265, Y + 20), rotation=90, nets={1: "GV_OUT", 2: "GV_SUM"}))
+S8.add(Part("R849", "R", "100", (X + 300, Y + 52), rotation=90, nets={1: "GV_OUT", 2: "PI_DRV"}))
+S8.add(Part("U807", "OPA2134", "OPA2134", (X + 340, Y + 90), unit=3, nets={8: "+15V", 4: "-15V"}))
+S8.note("Quelques volts au plus après les masters : dans la plage d'une VCA en ±15 V. Le mute LDR304 reste en amont, sur PI_IN.",
+        X + 5, Y + 108, 1.4)
+S8.note("Détection sur la guitare propre, action après le préampli : coupe aussi le souffle des étages à lampes et de la HM-2.",
+        X + 5, Y + 115, 1.4)
+
+X, Y = 425, 310
+S8.frame(X, Y, X + 400, Y + 120, "Découplage ±15 V")
+for i in range(8):
+    two(S8, f"C{816 + 2 * i}", "C", "100n", X + 15 + i * 42, Y + 40, "+15V", "GND")
+    two(S8, f"C{817 + 2 * i}", "C", "100n", X + 30 + i * 42, Y + 40, "GND", "-15V")
+two(S8, "C832", "CP", "22µ 25 V", X + 30, Y + 85, "+15V", "GND")
+two(S8, "C833", "CP", "22µ 25 V", X + 60, Y + 85, "GND", "-15V")
+S8.note("Un 100 nF par boîtier et par rail, au plus près des broches (U801-U808).", X + 5, Y + 115, 1.4)
+
 
 P.root_texts += [
     ("Tête 100 W pilotable — famille SLO-100", 20, 25, 3.0, True),
-    ("Révision 0.1 du 7 novembre 2026, générée par slo_sch.py et vérifiée contre la simulation (check_sch.py).", 20, 33, 1.6, False),
+    ("Révision 0.2 du 8 novembre 2026 (Raspberry Pi 4, entrée TS808 ∥ HM-2 par VCA, gate analogique), générée par slo_sch.py et vérifiée contre la simulation (check_sch.py).", 20, 33, 1.6, False),
     ("Les feuilles sont reliées par des étiquettes globales : B+1 à B+5, B+BUF, B+WCF, B+EXT, HEAT_*, BIAS_*, signaux de pilotage.", 20, 39, 1.6, False),
     ("Chaque broche porte le nom de son nœud ; les noms suivent la simulation SPICE (voir NETMAP dans check_sch.py).", 20, 45, 1.6, False),
     ("Haute tension mortelle (jusqu'à 535 V à vide). Ne pas intervenir sous tension ; décharger les condensateurs.", 20, 262, 2.0, True),

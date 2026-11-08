@@ -31,7 +31,7 @@ NETMAP = {
     "jn": "JN", "g3b": "V3B_G", "p3b": "V3B_P", "k3b": "V3B_K", "k3a": "V3A_K",
     "w0": "ATT_IN", "w1": "ATT_OUT", "gw": "WCF_G", "pw1": "WCF_PA", "ts": "WCF_OUT", "gw2": "WCF_GB", "kw2": "WCF_KB",
     "tt": "STK_TT", "ta": "STK_TA", "tb": "STK_TB", "tm": "STK_TM", "tmw": "STK_TMW", "tw": "STK_TW",
-    "mw": "MOD_W", "mnw": "MN_W", "piin": "PI_IN",
+    "mw": "MOD_W", "mnw": "MN_W", "piin": "PI_IN", "pidr": "PI_DRV",
     "g5b": "PI_GB", "g5a": "PI_GA", "pt": "PI_TAIL", "pk": "PI_K", "p5b": "PI_PB", "p5a": "PI_PA",
     "nfb": "NFB", "pr": "PRES", "nx": "NFB_X", "nd": "DEPTH_X", "sec": "SPK_4R",
     "b1": "B+1", "b2": "B+2", "b3": "B+3", "b4": "B+4", "b5": "B+5", "bf": "B+BUF", "bw": "B+WCF", "bx": "B+EXT",
@@ -44,8 +44,8 @@ for side, tubes in (("a", ("V7", "V8")), ("b", ("V9", "V10"))):
 
 LDRS = {"cr1", "cr2", "br", "ldrx", "dir", "ext", "ldr1", "cl1", "cl2", "ldr2", "push", "ldr3", "ldr4", "mute"}
 RELAYS = {"bp1", "bp2", "cc20", "cc22"}
-# elements of the model with no part of their own: sources, transformer and choke internals, load
-MODEL_ONLY = re.compile(r"^(V|K\d|L[123]$|R[123]w$|Rw\d|Lw\d|Rct$|Cot\d|Rload|Rch$)")
+# elements of the model with no part of their own: sources, gate buffer, transformer and choke internals, load
+MODEL_ONLY = re.compile(r"^(V|E|K\d|L[123]$|R[123]w$|Rw\d|Lw\d|Rct$|Cot\d|Rload|Rch$)")
 # deliberate differences, each justified (see README)
 KNOWN = {
     "Rmdu": "Mid : 10 k log + 3,3 k en parallèle au lieu d'un 2,5 k introuvable en motorisé (≤ 1 dB, mid_test.py)",
@@ -160,7 +160,8 @@ def main(proj):
     report["global_nets"] = sorted(P.global_nets())
 
     # ---- 2. against the SPICE model --------------------------------------------------------------
-    net = slo.netlist("mod", psu="real", bias_offsets={"a1": 0, "a2": 0, "b1": 0, "b2": 0}, depth=0.5, depth_net="lin100k")
+    net = slo.netlist("mod", psu="real", bias_offsets={"a1": 0, "a2": 0, "b1": 0, "b2": 0}, depth=0.5, depth_net="lin100k",
+                      gate_buf=True)
     els = spice_elements(net)
     # closed fuses and switches in the HT path are not in the model: merge their nets
     alias = {"HT_RECT": "B+1", "HT_F": "B+1"}
