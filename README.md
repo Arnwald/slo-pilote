@@ -43,6 +43,7 @@ kicad/    générateur (kgen.py, slo_sch.py) et vérificateur (check_sch.py) du 
 bom/      nomenclature sourcée (xlsx) et son générateur
 mech/     châssis : géométrie, plans PDF, DXF de découpe, rendus
 robot/    robot de micro : CAO, pièces STEP et STL, contrôles, maquette 3D (web/robot_micro.html)
+tools/    mise en forme de l'export du dossier de conception
 ```
 
 ## Régénérer
